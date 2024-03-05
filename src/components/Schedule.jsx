@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import Grid from "./Grid";
 import Colors from "../constants/Colors";
+import DaysBox from "./DaysBox"
 
 const Schedule = ({ colCount, rowCount }) => {
 	const dummyClasses = [
@@ -36,7 +37,7 @@ const Schedule = ({ colCount, rowCount }) => {
 				{
 					col: 3,
 					row: 3,
-					length: 3,
+					length: 1,
 				},
 			],
 		},
@@ -44,16 +45,28 @@ const Schedule = ({ colCount, rowCount }) => {
 			code: "PHI3681",
 			meetings: [
 				{
+					col: 0,
+					row: 4,
+					length: 1,
+				},
+				{
 					col: 2,
 					row: 4,
-					length: 3,
+					length: 1,
+				},
+				{
+					col: 4,
+					row: 4,
+					length: 1,
 				},
 			],
+			
 		},
 	];
 
 	const [grid, setGrid] = useState([]);
 	const [classes] = useState(dummyClasses);
+	const [credits, setCredits] = useState(0)
 
 	useEffect(() => {
 		const rows = [];
@@ -64,8 +77,10 @@ const Schedule = ({ colCount, rowCount }) => {
 		}
 
 		var colorIndex = 0;
+		let totalCredits = 0;
 		classes.forEach((classItem) => {
 			classItem.meetings.forEach((meetingItem) => {
+				totalCredits += meetingItem.length;
 				rows[meetingItem.row][meetingItem.col] = {
 					isClass: true,
 					color: Colors.classColors[colorIndex],
@@ -83,19 +98,31 @@ const Schedule = ({ colCount, rowCount }) => {
 		});
 
 		setGrid(rows);
+		setCredits(totalCredits);
 	}, [colCount, rowCount, classes]);
 
 	return (
-		<div className="w-full h-full border border-slate-300 relative">
-			{/* 
-        There are TWO grids, one is a skeleton that creates the grid lines,
-        the other is the grid actually containing the classes and their colored
-        rectangles. This is done to achieve the visual effect of the grid lines
-        behind the transparent class boxes.
-      */}
-			<Grid grid={grid} colCount={colCount} rowCount={rowCount} isSkeleton={false} />
-			<Grid grid={grid} colCount={colCount} rowCount={rowCount} isSkeleton={true} />
+		<>
+		<div style={{marginRight:"2%"}}>
+			<p style={{whiteSpace: "nowrap"}}>Credits: {credits}</p>
 		</div>
+		<div style={{ display: "flex", flexDirection: "column", width: "100%"}}>
+			<div className="grid w-full h-full relative" style={{ marginBottom: "3vh", height: "5vh", gridTemplateColumns: `repeat(${colCount}, minmax(0, 1fr))`, gridTemplateRows: `repeat(${1}, minmax(0, 1fr))`}}>
+				<DaysBox/>
+			</div>
+
+			<div className="w-full h-full border border-slate-300 relative">
+				{/* 
+				There are TWO grids, one is a skeleton that creates the grid lines,
+				the other is the grid actually containing the classes and their colored
+				rectangles. This is done to achieve the visual effect of the grid lines
+				behind the transparent class boxes.
+				*/}
+				<Grid grid={grid} colCount={colCount} rowCount={rowCount} isSkeleton={false} />
+				<Grid grid={grid} colCount={colCount} rowCount={rowCount} isSkeleton={true} />
+			</div>
+		</div>
+		</>
 	);
 };
 
