@@ -4,6 +4,7 @@ import Grid from "./Grid";
 import Colors from "../constants/Colors";
 import DaysBox from "./DaysBox"
 
+
 const Schedule = ({ colCount, rowCount }) => {
 	const dummyClasses = [
 		{
@@ -118,8 +119,8 @@ const Schedule = ({ colCount, rowCount }) => {
 				rectangles. This is done to achieve the visual effect of the grid lines
 				behind the transparent class boxes.
 				*/}
-				<Grid grid={grid} colCount={colCount} rowCount={rowCount} isSkeleton={false} />
-				<Grid grid={grid} colCount={colCount} rowCount={rowCount} isSkeleton={true} />
+				<Grid key={"skeletonGrid"} grid={grid} colCount={colCount} rowCount={rowCount} isSkeleton={false} />
+				<Grid key={"coloredGrid"} grid={grid} colCount={colCount} rowCount={rowCount} isSkeleton={true} />
 			</div>
 		</div>
 		</>
