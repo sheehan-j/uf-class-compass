@@ -14,7 +14,7 @@ const Schedule = ({ colCount, maxRowCount }) => {
 			meetings: [
 				{
 					col: Days.Monday,
-					row: 3, //TODO figure out if we want to zero index?
+					row: 1, //TODO figure out if we want to zero index?
 					length: 1,
 					location: "FLG 0260"
 				},
@@ -62,7 +62,7 @@ const Schedule = ({ colCount, maxRowCount }) => {
 				},
 				{
 					col: Days.Wednesday,
-					row: 6,
+					row: 5,
 					length: 1,
 					location: "Online"
 				},
@@ -131,14 +131,14 @@ const Schedule = ({ colCount, maxRowCount }) => {
 
 	return (
 		<>
-		<div className="relative" style={{height: "100%", marginRight:"2%", width: "10%"}}>
-			<div className="font-medium" style={{ height: "5%", marginBottom: "3%"}}>
-				<p style={{whiteSpace: "nowrap"}}>CREDITS: {credits}</p>
+		<div style={{gap:"3%", display: "flex", flexDirection:"column", height: "100%", marginRight:"2%", width: "10%"}}>
+			<div className="font-medium" style={{ height:"5%", whiteSpace: "nowrap",  marginBottom: "5%", display: "flex", justifyContent: "center",alignItems: "center"}}>
+				CREDITS: {credits}
 			</div>
-			<div className="grid relative" style={{height: "95%"}}>
+			<div className="h-full" style={{display:"flex", flexDirection:"column"}}>
 				{grid.map((row) => (
 					<div className="relative" style={{display: 'flex', alignItems: "center",height: '100%' }}>
-						<div className="left-5 top-0 italic absolute" style={{ whiteSpace: "nowrap", width: "30%", fontSize: "0.9em" }}>
+						<div className="left-5 top-0 italic absolute" style={{ whiteSpace: "nowrap", fontSize: "0.9em", height:"100%"}}>
 							{getPeriodTimes(row[0].row).start}
 						</div>
 						<div style={{flex: "1", display: 'flex', justifyContent: 'right', alignItems: 'center', height: '100%'}}>
@@ -148,8 +148,9 @@ const Schedule = ({ colCount, maxRowCount }) => {
 				))}
 			</div>
 		</div>
+
 		<div style={{ height: "100%", display: "flex", flexDirection: "column", width: "100%"}}>
-			<div className="grid w-full h-full relative" style={{ marginBottom: "3%", height: "5%", gridTemplateColumns: `repeat(${colCount}, minmax(0, 1fr))`, gridTemplateRows: `repeat(${1}, minmax(0, 1fr))`}}>
+			<div className="grid w-full relative" style={{ marginBottom: "3%", height: "5%", gridTemplateColumns: `repeat(${colCount}, minmax(0, 1fr))`, gridTemplateRows: `repeat(${1}, minmax(0, 1fr))`}}>
 				<DaysBox/>
 			</div>
 
