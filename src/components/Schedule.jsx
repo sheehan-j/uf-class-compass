@@ -68,7 +68,7 @@ const Schedule = ({ colCount, maxRowCount }) => {
 				},
 				{
 					col: Days.Friday,
-					row: 5,
+					row: 6,
 					length: 1,
 					location: "Online"
 				},
@@ -171,7 +171,7 @@ const Schedule = ({ colCount, maxRowCount }) => {
 
 Schedule.propTypes = {
 	colCount: PropTypes.number.isRequired,
-	rowCount: PropTypes.number.isRequired,
+	maxRowCount: PropTypes.number.isRequired,
 };
 
 export default Schedule;

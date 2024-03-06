@@ -2,7 +2,8 @@ import PropTypes from "prop-types";
 import "../styles/ClassCell.css"
 import { getPeriodTimes } from "../constants/BlockTimes";
 
-const ClassCell = ({ cell }) => {
+const ClassCell = ({cell}) => {
+	console.log(cell)
 	const { color, code, instructor, location, length, row } = cell;
 	return (
 		<div
@@ -27,12 +28,12 @@ const ClassCell = ({ cell }) => {
 
 ClassCell.propTypes = {
 	cell: PropTypes.shape({
-        color: PropTypes.string.isRequired,
-        code: PropTypes.string.isRequired,
-        instructor: PropTypes.string.isRequired,
-        location: PropTypes.string.isRequired,
-		length: PropTypes.number.isRequired,
-		row: PropTypes.number.isRequired,
+        color: PropTypes.string,
+        code: PropTypes.string,
+        instructor: PropTypes.string,
+        location: PropTypes.string,
+		length: PropTypes.number,
+		row: PropTypes.number,
     }).isRequired,
 };
 

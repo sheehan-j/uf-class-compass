@@ -35,7 +35,7 @@ Grid.propTypes = {
 	colCount: PropTypes.number.isRequired,
 	rowCount: PropTypes.number.isRequired,
 	grid: PropTypes.array.isRequired,
-	isSkeleton: PropTypes.bool.isRe,
+	isSkeleton: PropTypes.bool.isRequired,
 };
 
 export default Grid;
