@@ -102,6 +102,7 @@ const Schedule = ({ colCount, maxRowCount }) => {
 					color: Colors.classColors[colorIndex],
 					code: classItem.code,
 					location: meetingItem.location,
+					length: meetingItem.length,
 				};
 
 				for (var i = 1; i < meetingItem.length; i++) {
@@ -131,13 +132,13 @@ const Schedule = ({ colCount, maxRowCount }) => {
 	return (
 		<>
 		<div className="relative" style={{height: "100%", marginRight:"2%", width: "10%"}}>
-			<div style={{ height: "5%", marginBottom: "3%"}}>
-				<p style={{whiteSpace: "nowrap"}}>Credits: {credits}</p>
+			<div className="font-medium" style={{ height: "5%", marginBottom: "3%"}}>
+				<p style={{whiteSpace: "nowrap"}}>CREDITS: {credits}</p>
 			</div>
 			<div className="grid relative" style={{height: "95%"}}>
 				{grid.map((row) => (
 					<div className="relative" style={{display: 'flex', alignItems: "center",height: '100%' }}>
-						<div className="left-0 top-0 italic absolute" style={{ whiteSpace: "nowrap", width: "30%", fontSize: "0.9em" }}>
+						<div className="left-5 top-0 italic absolute" style={{ whiteSpace: "nowrap", width: "30%", fontSize: "0.9em" }}>
 							{getPeriodTimes(row[0].row).start}
 						</div>
 						<div style={{flex: "1", display: 'flex', justifyContent: 'right', alignItems: 'center', height: '100%'}}>

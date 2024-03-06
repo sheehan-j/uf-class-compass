@@ -20,7 +20,7 @@ const Grid = ({ grid, colCount, rowCount, isSkeleton }) => {
 						) : // If this grid is not a skeleton, draw a class cell if this cell is a class.
 						// Otherwise, draw an empty cell without a border to act as a spacer
 						cell.isClass ? (
-							<ClassCell key={rowIndex * colCount + colIndex} color={cell.color} code={cell.code} instructor={cell.instructor} location={cell.location}/>
+							<ClassCell key={rowIndex * colCount + colIndex} cell={cell}/>
 						) : (
 							<EmptyCell key={rowIndex * colCount + colIndex} hasBorder={false} />
 						)
