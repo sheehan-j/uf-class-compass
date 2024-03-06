@@ -1,14 +1,17 @@
 import React from 'react';
-import Days from "../constants/Days";
+import {Days, getDayString} from "../constants/Days";
 
 const DaysBox = () => {
-    const currentDate = new Date().getDay() -  1; //our days start on Monday not sunday so subtract 1 since getDay is enum
-    
+    const currentDate = new Date().getDay() - 1; // Adjusting for Monday start
+
+    // Convert enum to an array of day names
+    const daysArray = Object.keys(Days).map(key => Days[key]);
+
     return (
         <>
-            {Days.map((day, index) => (
-                <div 
-                    key={"dayWrapper" + index} 
+            {daysArray.map((day, index) => (
+                <div
+                    key={"dayWrapper" + index}
                     style={{
                         display: "flex",
                         justifyContent: "center",
@@ -18,10 +21,10 @@ const DaysBox = () => {
                         border: "2px solid gray",
                         borderRadius: "20% / 100%",
                         width: "100%",
-                        height: "100%"
+                        height: "100%",
                     }}
                 >
-                    {day}
+                    {getDayString(day)}
                 </div>
             ))}
         </>

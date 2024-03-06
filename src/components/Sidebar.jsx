@@ -9,7 +9,7 @@ const Sidebar = () => {
     };
 
     return (
-        <div className="w-1/3 sidebarWrapper">
+        <div className="w-1/4 p-8 sidebarWrapper">
 				<div className="LogoWrapper">
 					<img id="logo" src="/CourseCompassLogo.png" alt="Logo" />
 					<div id="logoText"><b>UF CLASS COMPASS</b></div>

@@ -16,11 +16,11 @@ const Grid = ({ grid, colCount, rowCount, isSkeleton }) => {
 					{row.map((cell, colIndex) =>
 						// If this grid is a skeleton, only draw empty cells with borders
 						isSkeleton ? (
-							<EmptyCell key={rowIndex * colCount + colIndex} hasBorder={true} />
+							 <EmptyCell key={rowIndex * colCount + colIndex} hasBorder={true} />
 						) : // If this grid is not a skeleton, draw a class cell if this cell is a class.
 						// Otherwise, draw an empty cell without a border to act as a spacer
 						cell.isClass ? (
-							<ClassCell key={rowIndex * colCount + colIndex} color={cell.color} code={cell.code} />
+							<ClassCell key={rowIndex * colCount + colIndex} color={cell.color} code={cell.code} instructor={cell.instructor} location={cell.location}/>
 						) : (
 							<EmptyCell key={rowIndex * colCount + colIndex} hasBorder={false} />
 						)
