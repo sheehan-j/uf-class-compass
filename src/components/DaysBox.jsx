@@ -1,4 +1,3 @@
-import React from "react";
 import { Days, getDayString } from "../constants/Days";
 
 const DaysBox = () => {
