@@ -1,71 +1,75 @@
-.sidebarWrapper{
-    position: relative;
-    left: 0;
-    background-color: rgba(135, 135, 135, 0.5);
+.sidebarWrapper {
+	position: relative;
+	left: 0;
+	background-color: #f7f7f7;
 }
 
-.LogoWrapper{
-    width: 100%;
-    margin: 4% 0 4%;
-    height: 10%;
-    display: flex;
-    justify-content: center;
+.LogoWrapper {
+	width: 100%;
+	margin-bottom: 1.5rem;
+	height: 10%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
 }
 
-.line{
-    position: absolute;
-    margin: 4% 0 4%;
-    height: 2px;
-    background-color: black;
-    width: 100%;
-    left: 0;
+.line {
+	position: absolute;
+	margin: 4% 0 4%;
+	height: 1px;
+	background-color: #8f8f8f;
+	width: 100%;
+	left: 0;
 }
 
-.sidebarOptionsWrapper{
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
+.sidebarOptionsWrapper {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	text-align: center;
 }
 
-.sidebarOptionButton{
-    margin-bottom: 4%;
-    text-align: left;
-    width: 100%;
-    padding: 4%;
-    border-radius: 15% / 100%;
-    display: flex;
-    justify-content: space-between;
-}
-
-.buttonIconWrapper{
-    position: relative;
-    width: 10%;
+.sidebarOptionButton {
+	margin-bottom: 4%;
+	text-align: left;
+	width: 100%;
+	padding: 0.75rem 1rem;
+	border-radius: 0.75rem;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	font-size: 0.9rem;
+	color: #8f8f8f;
+	font-family: "Inter", sans-serif;
+	font-weight: 400;
 }
 
 .buttonIcon {
-    width: 100%;
-    object-fit: cover;
+	width: 1.8rem;
+	height: 1.8rem;
+	object-fit: cover;
 }
 
-.sidebarOptionButton:hover{
-    background-color: rgb(135, 135, 135);
+.sidebarOptionButton:hover {
+	background-color: #eeeded;
 }
 
-.sidebarOptionButton.selected{
-    background-color: rgb(135, 135, 135);
-    box-shadow: 2px 2px 5px blue;
+.sidebarOptionButton.selected {
+	background-color: #e6e6e6;
+	/* box-shadow: 2px 2px 5px blue; */
 }
 
-#logo{
-    height: 100%;
-    object-fit: cover;
-    margin-right: 4%;
+#logo {
+	height: 100%;
+	object-fit: cover;
+	margin-right: 4%;
 }
 
-#logoText{
-    display: flex;
-    justify-content: center;
-    align-items: center;
+#logoText {
+	font-family: "Inter", sans-serif;
+	font-weight: 700;
+	text-align: start;
+	vertical-align: middle;
+	font-size: 1.3rem;
 }
