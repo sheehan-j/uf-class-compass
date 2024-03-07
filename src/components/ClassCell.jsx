@@ -1,26 +1,28 @@
 import PropTypes from "prop-types";
-import "../styles/ClassCell.css"
+import "../styles/ClassCell.css";
 import { getPeriodTimes } from "../constants/BlockTimes";
 
-const ClassCell = ({cell}) => {
-	console.log(cell)
+const ClassCell = ({ cell }) => {
+	console.log(cell);
 	const { color, code, instructor, location, length, row } = cell;
 	return (
 		<div
-			className="z-10 p-1 flex box-content relative classCellWrapper"
+			className="z-10 p-1.5 flex flex-col justify-between box-content relative classCellWrapper"
 			style={{ backgroundColor: color, borderWidth: "1px", borderColor: color }}
 		>
-			<div className="font-sans w-full">
-				<div className="font-semibold">{code}</div>
-				<div className="text-sm">{instructor}</div>
-				<div className="text-sm absolute bottom-0">
-					{length && (
-						<div>
-							{getPeriodTimes(row).start}-{getPeriodTimes(row+length-1).end}
-						</div>
-					)}
-					<div className="font-semibold">{location}</div>
+			<div>
+				<div className="font-semibold" style={{ fontSize: "1.05rem", lineHeight: "1.1rem" }}>
+					{code}
 				</div>
+				<div style={{ fontSize: "0.9rem" }}>{instructor}</div>
+			</div>
+			<div style={{ fontSize: "0.9rem", lineHeight: "1.2rem" }}>
+				{length && (
+					<div>
+						{getPeriodTimes(row).start}-{getPeriodTimes(row + length - 1).end}
+					</div>
+				)}
+				<div className="font-semibold">{location}</div>
 			</div>
 		</div>
 	);
@@ -28,13 +30,13 @@ const ClassCell = ({cell}) => {
 
 ClassCell.propTypes = {
 	cell: PropTypes.shape({
-        color: PropTypes.string,
-        code: PropTypes.string,
-        instructor: PropTypes.string,
-        location: PropTypes.string,
+		color: PropTypes.string,
+		code: PropTypes.string,
+		instructor: PropTypes.string,
+		location: PropTypes.string,
 		length: PropTypes.number,
 		row: PropTypes.number,
-    }).isRequired,
+	}).isRequired,
 };
 
 export default ClassCell;

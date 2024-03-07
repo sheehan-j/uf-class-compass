@@ -133,23 +133,19 @@ const Schedule = ({ colCount, maxRowCount }) => {
 	}, [colCount, maxRowCount, classes]);
 
 	return (
-		<>
+		<div className="px-10 py-20 w-full min-h-full flex">
 			<div
+				className="flex flex-col mr-3"
 				style={{
-					gap: "3%",
-					display: "flex",
-					flexDirection: "column",
-					height: "100%",
-					marginRight: "2%",
 					width: "10%",
 				}}
 			>
 				<div
 					className="font-medium"
 					style={{
-						height: "5%",
+						minHeight: "2.5rem",
 						whiteSpace: "nowrap",
-						marginBottom: "5%",
+						marginBottom: "2rem",
 						display: "flex",
 						justifyContent: "center",
 						alignItems: "center",
@@ -157,16 +153,12 @@ const Schedule = ({ colCount, maxRowCount }) => {
 				>
 					CREDITS: {credits}
 				</div>
-				<div className="h-full" style={{ display: "flex", flexDirection: "column" }}>
+				<div className="h-full flex flex-col">
 					{grid.map((row, index) => (
-						<div
-							key={index}
-							className="relative"
-							style={{ display: "flex", alignItems: "center", height: "100%" }}
-						>
+						<div key={index} className="relative flex grow items-center justify-end">
 							<div
-								className="left-5 top-0 italic absolute"
-								style={{ whiteSpace: "nowrap", fontSize: "0.9em", height: "100%" }}
+								className="italic absolute"
+								style={{ whiteSpace: "nowrap", fontSize: "0.9rem", top: "-0.45rem", right: "1.5rem" }}
 							>
 								{getPeriodTimes(row[0].row).start}
 							</div>
@@ -176,7 +168,6 @@ const Schedule = ({ colCount, maxRowCount }) => {
 									display: "flex",
 									justifyContent: "right",
 									alignItems: "center",
-									height: "100%",
 								}}
 							>
 								{row[0].row}
@@ -186,20 +177,19 @@ const Schedule = ({ colCount, maxRowCount }) => {
 				</div>
 			</div>
 
-			<div style={{ height: "100%", display: "flex", flexDirection: "column", width: "100%" }}>
+			<div className="flex flex-col w-full grow">
 				<div
 					className="grid w-full relative"
 					style={{
-						marginBottom: "3%",
-						height: "5%",
+						marginBottom: "2rem",
+						height: "2.5rem",
 						gridTemplateColumns: `repeat(${colCount}, minmax(0, 1fr))`,
-						gridTemplateRows: `repeat(${1}, minmax(0, 1fr))`,
 					}}
 				>
 					<DaysBox />
 				</div>
 
-				<div className="w-full h-full border border-slate-300 relative">
+				<div className="w-full grow border border-slate-300 relative">
 					{/* 
 				There are TWO grids, one is a skeleton that creates the grid lines,
 				the other is the grid actually containing the classes and their colored
@@ -222,7 +212,7 @@ const Schedule = ({ colCount, maxRowCount }) => {
 					/>
 				</div>
 			</div>
-		</>
+		</div>
 	);
 };
 
