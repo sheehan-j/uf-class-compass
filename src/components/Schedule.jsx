@@ -158,8 +158,12 @@ const Schedule = ({ colCount, maxRowCount }) => {
 					CREDITS: {credits}
 				</div>
 				<div className="h-full" style={{ display: "flex", flexDirection: "column" }}>
-					{grid.map((row) => (
-						<div className="relative" style={{ display: "flex", alignItems: "center", height: "100%" }}>
+					{grid.map((row, index) => (
+						<div
+							key={index}
+							className="relative"
+							style={{ display: "flex", alignItems: "center", height: "100%" }}
+						>
 							<div
 								className="left-5 top-0 italic absolute"
 								style={{ whiteSpace: "nowrap", fontSize: "0.9em", height: "100%" }}
