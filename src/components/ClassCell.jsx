@@ -1,5 +1,4 @@
 import PropTypes from "prop-types";
-import "../styles/ClassCell.css";
 import { getPeriodTimes } from "../constants/BlockTimes";
 
 const ClassCell = ({ cell }) => {
@@ -8,7 +7,7 @@ const ClassCell = ({ cell }) => {
 	return (
 		<div
 			className="z-10 p-1.5 flex flex-col justify-between box-content relative classCellWrapper"
-			style={{ backgroundColor: color, borderWidth: "1px", borderColor: color }}
+			style={{ backgroundColor: color, borderWidth: "1px", borderColor: color, cursor: "pointer" }}
 		>
 			<div>
 				<div className="font-semibold" style={{ fontSize: "1.05rem", lineHeight: "1.1rem" }}>

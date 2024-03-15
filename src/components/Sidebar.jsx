@@ -1,5 +1,6 @@
 import "../styles/Sidebar.css";
 import { useState } from "react";
+import CourseSectionBox from "./CourseSectionBox";
 
 const Sidebar = () => {
 	const [selectedButton, setSelectedButton] = useState("schedulePlanner");
@@ -39,17 +40,14 @@ const Sidebar = () => {
 				</button>
 			</div>
 			<div className="line"></div>
-
-			<div
-				style={{
-					position: "absolute",
-					bottom: "0.5rem",
-					left: "0.5rem",
-					width: "100%",
-					display: "flex",
-					fontSize: "0.7rem",
-				}}
-			>
+			<div style={{height: "3%"}}/>
+			{/* bad design to compensate for line having to be absolute */}
+		
+			<p>Course Sections</p>
+			<CourseSectionBox name="Class #1234"/>
+			<CourseSectionBox name="Class #2345"/>
+			<CourseSectionBox name="Class #3456"/>
+			<div className="absolute bottom-2 left-2 w-full flex justify-start text-sm">
 				Copyright &copy; 2024 Duck Duck Slow
 			</div>
 		</div>
