@@ -23,6 +23,10 @@ const MySchedules = () => {
             setScheduleNames(prevNames => prevNames.map((name, index) => {
                 return index >= indexToRemove ? `Schedule ${index + 1}` : name;
             }));
+            const scheduleNumber = parseInt(selectedSchedule.split(" ")[1]);
+            if(scheduleNumber > indexToRemove){ //if selected schedule 2 and schedule 1 removed, want selected to shift to s.t. old schedule 2 still selected despite shifting to schedule 1
+                setSelectedSchedule(scheduleNames[Math.max(0, scheduleNumber-2)])
+            }
         }
     };
 
@@ -56,8 +60,8 @@ const MySchedules = () => {
                 </>) :(<button onClick={handleToggleCollapse}><img src="/expand.svg" /></button>)}
                 
             </div>
-            <div className="flex justify-center w-full" >
-                <div className="mb-4 px-16 py-1" style={{border: "1px solid gray", borderRadius: "1000px", width: "80%"}}>{selectedSchedule}</div>
+            <div className="flex justify-center w-full">
+                <div className="flex justify-center mb-4 py-1" style={{border: "1px solid gray", borderRadius: "1000px", width: "80%"}}>{selectedSchedule}</div>
             </div>
         </div>
     );
