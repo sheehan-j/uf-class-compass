@@ -2,6 +2,7 @@ import "../styles/Sidebar.css";
 import { useState } from "react";
 import CourseSectionBox from "./CourseSectionBox";
 import MySchedules from "./MySchedules";
+import CourseCodeButton from "./CourseCodeButton";
 
 const Sidebar = () => {
 	const [selectedButton, setSelectedButton] = useState("schedulePlanner");
@@ -11,7 +12,7 @@ const Sidebar = () => {
 	};
 
 	return (
-		<div className="w-1/4 p-8 sidebarWrapper">
+		<div className="w-1/4 p-5 sidebarWrapper">
 			<div className="LogoWrapper">
 				<img id="logo" src="/CourseCompassLogo.png" alt="Logo" />
 				<div id="logoText">UF Class Compass</div>
@@ -46,6 +47,22 @@ const Sidebar = () => {
 		
 
 			<MySchedules/>
+
+
+			<div className="courseSearchBox relative mb-2">
+				<input
+					className="w-full py-2 px-2 flex align-center bg-white border border-gray-300"
+					placeholder="Course Code Search"
+				/>
+			</div>
+			
+			<div className="grid w-full relative flex flex-wrap justify-start mb-5" style={{gridTemplateColumns: `repeat(2, minmax(0, 1fr))`, gap:"5%"}}>
+				<CourseCodeButton name="CIS4930" />
+				<CourseCodeButton name="CIS4930" />
+				<CourseCodeButton name="CIS4930" />
+			</div>
+
+
 
 	
 			<p>Course Sections</p>
