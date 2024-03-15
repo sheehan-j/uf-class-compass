@@ -1,6 +1,7 @@
 import "../styles/Sidebar.css";
 import { useState } from "react";
 import CourseSectionBox from "./CourseSectionBox";
+import MySchedules from "./MySchedules";
 
 const Sidebar = () => {
 	const [selectedButton, setSelectedButton] = useState("schedulePlanner");
@@ -43,6 +44,10 @@ const Sidebar = () => {
 			<div style={{height: "3%"}}/>
 			{/* bad design to compensate for line having to be absolute */}
 		
+
+			<MySchedules/>
+
+	
 			<p>Course Sections</p>
 			<CourseSectionBox name="Class #1234"/>
 			<CourseSectionBox name="Class #2345"/>

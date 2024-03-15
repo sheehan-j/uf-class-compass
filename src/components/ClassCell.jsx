@@ -2,7 +2,6 @@ import PropTypes from "prop-types";
 import { getPeriodTimes } from "../constants/BlockTimes";
 
 const ClassCell = ({ cell }) => {
-	console.log(cell);
 	const { color, code, instructor, location, length, row } = cell;
 	return (
 		<div
