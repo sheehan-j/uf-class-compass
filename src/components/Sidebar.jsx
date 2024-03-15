@@ -56,7 +56,7 @@ const Sidebar = () => {
 				/>
 			</div>
 			
-			<div className="grid w-full relative flex flex-wrap justify-start mb-5" style={{gridTemplateColumns: `repeat(2, minmax(0, 1fr))`, gap:"5%"}}>
+			<div className="grid w-full relative flex flex-wrap justify-start mb-4" style={{gridTemplateColumns: `repeat(2, minmax(0, 1fr))`, gap:"5%"}}>
 				<CourseCodeButton name="CIS4930" />
 				<CourseCodeButton name="CIS4930" />
 				<CourseCodeButton name="CIS4930" />
@@ -69,9 +69,9 @@ const Sidebar = () => {
 			<CourseSectionBox name="Class #1234"/>
 			<CourseSectionBox name="Class #2345"/>
 			<CourseSectionBox name="Class #3456"/>
-			<div className="absolute bottom-2 left-2 w-full flex justify-start text-sm">
+			{/* <div className="absolute bottom-2 left-2 w-full flex justify-start text-sm">
 				Copyright &copy; 2024 Duck Duck Slow
-			</div>
+			</div> */}
 		</div>
 	);
 };
