@@ -5,8 +5,8 @@ const Home = () => {
 	return (
 		<div className="w-screen h-screen flex">
 			<Sidebar />
-			<div className="w-full h-full flex p-24">
-				<Schedule colCount={5} rowCount={8} />
+			<div className="w-full h-full overflow-y-scroll">
+				<Schedule colCount={5} maxRowCount={11} />
 			</div>
 		</div>
 	);
