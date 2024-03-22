@@ -22,6 +22,7 @@ app.use("/", express.static("dist"));
 
 // Routes
 app.use("/api/health", require("./routes/health"));
+app.use("/api/classes", require("./routes/classes"));
 
 mongoose.connection.once("open", () => {
 	console.log("Connected to MongoDB.");
