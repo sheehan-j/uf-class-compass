@@ -79,7 +79,7 @@ const MySchedules = () => {
 				className="relative pt-3 pb-2 px-4 mb-3"
 				style={{ backgroundColor: "#e6e6e6", borderRadius: "0.75rem" }}
 			>
-				<div className="flex items-center justify-between">
+				<div className="flex items-center justify-between cursor-pointer" onClick={handleToggleCollapse}>
 					<p>My Schedules</p>
 					<img src="/folder.svg" style={{ height: "1.3rem" }} />
 				</div>
@@ -100,14 +100,18 @@ const MySchedules = () => {
 						/>
 					))}
 					<button
-						className="px-4 py-1 my-2 block mx-auto bg-white border border-gray-400"
+						className="px-4 py-1 mt-2 block mx-auto bg-white border border-gray-400"
 						style={{ borderRadius: "1000px" }}
 						onClick={handleNewSchedule}
 					>
 						New Schedule
 					</button>
 				</div>
-				<button className="w-full flex items-center justify-center pt-1 pb-0.5" onClick={handleToggleCollapse}>
+				<button
+					className="w-full flex items-center justify-center py-1.5 mt-2"
+					onClick={handleToggleCollapse}
+					style={{ backgroundColor: "rgb(210, 210, 210)", borderRadius: "0.25rem" }}
+				>
 					{isCollapsed ? (
 						<img src="expand.svg" style={{ height: "0.5rem" }}></img>
 					) : (
