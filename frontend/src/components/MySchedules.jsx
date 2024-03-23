@@ -2,7 +2,7 @@ import { useState, useRef, useEffect } from "react";
 import { SchedulesApi } from "../api/SchedulesApi";
 import MyScheduleBox from "./MyScheduleBox";
 
-const MySchedules = ({ schedules, setSchedules, activeSchedule, setActiveSchedule }) => {
+const MySchedules = ({ schedules, setSchedules, activeSchedule, setActiveSchedule, activeClass, setActiveClass }) => {
 	const [isCollapsed, setIsCollapsed] = useState(false);
 	const schedulesMenuRef = useRef(null);
 
@@ -14,10 +14,14 @@ const MySchedules = ({ schedules, setSchedules, activeSchedule, setActiveSchedul
 	};
 
 	const handleDeleteSchedule = async (id) => {
-		console.log(id);
 		const newSchedules = await SchedulesApi.deleteSchedule(id);
 		setActiveSchedule(newSchedules.length > 0 ? newSchedules[newSchedules.length - 1] : {});
 		setSchedules(newSchedules);
+	};
+
+	const handleSelectSchedule = async (schedule) => {
+		setActiveSchedule(schedule);
+		setActiveClass(schedule.classes.length > 0 ? schedule.classes[0] : {});
 	};
 
 	const handleToggleCollapse = () => {
@@ -68,7 +72,7 @@ const MySchedules = ({ schedules, setSchedules, activeSchedule, setActiveSchedul
 							key={index}
 							schedule={schedule}
 							selected={activeSchedule._id == schedule._id}
-							setActiveSchedule={setActiveSchedule}
+							onSelect={handleSelectSchedule}
 							onDelete={handleDeleteSchedule}
 						/>
 					))}

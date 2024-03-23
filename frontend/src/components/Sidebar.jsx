@@ -53,6 +53,8 @@ const Sidebar = ({ schedules, setSchedules, activeSchedule, setActiveSchedule, a
 						setSchedules={setSchedules}
 						activeSchedule={activeSchedule}
 						setActiveSchedule={setActiveSchedule}
+						activeClass={activeClass}
+						setActiveClass={setActiveClass}
 					/>
 
 					<p className="mb-1">Active Courses</p>
