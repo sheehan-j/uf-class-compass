@@ -8,77 +8,7 @@ import { getPeriodTimes } from "../constants/BlockTimes";
 import { SchedulesApi } from "../api/SchedulesApi";
 
 const Schedule = ({ colCount, maxRowCount, activeSchedule }) => {
-	const dummyClasses = [
-		{
-			instructor: "Albert Ritzhaupt",
-			code: "CIS4930",
-			meetings: [
-				{
-					day: Days.Monday,
-					period: 1, //TODO figure out if we want to zero index?
-					length: 1,
-					location: "FLG 0260",
-				},
-				{
-					day: Days.Wednesday,
-					period: 3,
-					length: 1,
-					location: "FLG 0230",
-				},
-				{
-					day: Days.Friday,
-					period: 3,
-					length: 1,
-					location: "FLG 0260",
-				},
-			],
-		},
-		{
-			instructor: "Alexander Gomes",
-			code: "COP4600",
-			meetings: [
-				{
-					day: Days.Tuesday,
-					period: 4,
-					length: 2,
-					location: "CAR 0100",
-				},
-				{
-					day: Days.Thursday,
-					period: 4,
-					length: 1,
-					location: "CAR 0100",
-				},
-			],
-		},
-		{
-			instructor: "David Wright",
-			code: "PHI3681",
-			meetings: [
-				{
-					day: Days.Monday,
-					period: 5,
-					length: 1,
-					location: "Online",
-				},
-				{
-					day: Days.Wednesday,
-					period: 5,
-					length: 1,
-					location: "Online",
-				},
-				{
-					day: Days.Friday,
-					period: 6,
-					length: 1,
-					location: "Online",
-				},
-			],
-		},
-	];
-
 	const [grid, setGrid] = useState([]);
-	const [classes] = useState(dummyClasses);
 	const [credits, setCredits] = useState(0);
 	const [newRowCount, setRowCount] = useState(maxRowCount);
 
