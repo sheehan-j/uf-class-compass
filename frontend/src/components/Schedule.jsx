@@ -5,28 +5,29 @@ import Colors from "../constants/Colors";
 import DaysBox from "./DaysBox";
 import { Days } from "../constants/Days";
 import { getPeriodTimes } from "../constants/BlockTimes";
+import { SchedulesApi } from "../api/SchedulesApi";
 
-const Schedule = ({ colCount, maxRowCount }) => {
+const Schedule = ({ colCount, maxRowCount, activeSchedule }) => {
 	const dummyClasses = [
 		{
 			instructor: "Albert Ritzhaupt",
 			code: "CIS4930",
 			meetings: [
 				{
-					col: Days.Monday,
-					row: 1, //TODO figure out if we want to zero index?
+					day: Days.Monday,
+					period: 1, //TODO figure out if we want to zero index?
 					length: 1,
 					location: "FLG 0260",
 				},
 				{
-					col: Days.Wednesday,
-					row: 3,
+					day: Days.Wednesday,
+					period: 3,
 					length: 1,
 					location: "FLG 0230",
 				},
 				{
-					col: Days.Friday,
-					row: 3,
+					day: Days.Friday,
+					period: 3,
 					length: 1,
 					location: "FLG 0260",
 				},
@@ -37,14 +38,14 @@ const Schedule = ({ colCount, maxRowCount }) => {
 			code: "COP4600",
 			meetings: [
 				{
-					col: Days.Tuesday,
-					row: 4,
+					day: Days.Tuesday,
+					period: 4,
 					length: 2,
 					location: "CAR 0100",
 				},
 				{
-					col: Days.Thursday,
-					row: 4,
+					day: Days.Thursday,
+					period: 4,
 					length: 1,
 					location: "CAR 0100",
 				},
@@ -55,20 +56,20 @@ const Schedule = ({ colCount, maxRowCount }) => {
 			code: "PHI3681",
 			meetings: [
 				{
-					col: Days.Monday,
-					row: 5,
+					day: Days.Monday,
+					period: 5,
 					length: 1,
 					location: "Online",
 				},
 				{
-					col: Days.Wednesday,
-					row: 5,
+					day: Days.Wednesday,
+					period: 5,
 					length: 1,
 					location: "Online",
 				},
 				{
-					col: Days.Friday,
-					row: 6,
+					day: Days.Friday,
+					period: 6,
 					length: 1,
 					location: "Online",
 				},
@@ -85,52 +86,59 @@ const Schedule = ({ colCount, maxRowCount }) => {
 		const rows = [];
 		for (var i = 0; i < maxRowCount; i++) {
 			const row = [];
-			for (var j = 0; j < colCount; j++) row.push({ isClass: false, row: i + 1 });
+			for (var j = 0; j < colCount; j++) row.push({ isClass: false, period: i + 1 });
 			rows.push(row);
-		}
-
-		var colorIndex = 0;
-		let totalCredits = 0;
-		classes.forEach((classItem) => {
-			classItem.meetings.forEach((meetingItem) => {
-				totalCredits += meetingItem.length;
-				rows[meetingItem.row][meetingItem.col] = {
-					row: meetingItem.row + 1,
-					instructor: classItem.instructor,
-					isClass: true,
-					color: Colors.classColors[colorIndex],
-					code: classItem.code,
-					location: meetingItem.location,
-					length: meetingItem.length,
-				};
-
-				for (var i = 1; i < meetingItem.length; i++) {
-					rows[meetingItem.row + i][meetingItem.col] = {
-						row: meetingItem.row + 1,
-						isClass: true,
-						color: Colors.classColors[colorIndex],
-					};
-				}
-			});
-			colorIndex++;
-		});
-
-		while (rows.length > 1 && !rows[0].some((cell) => cell.isClass) && !rows[1].some((cell) => cell.isClass)) {
-			rows.shift();
-		}
-
-		while (
-			rows.length > 1 &&
-			!rows[rows.length - 1].some((cell) => cell.isClass) &&
-			!rows[rows.length - 2].some((cell) => cell.isClass)
-		) {
-			rows.pop();
 		}
 
 		setRowCount(rows.length);
 		setGrid(rows);
-		setCredits(totalCredits);
-	}, [colCount, maxRowCount, classes]);
+
+		var colorIndex = 0;
+		let totalCredits = 0;
+		if (activeSchedule.classes && activeSchedule.classes.length > 0) {
+			activeSchedule.classes.forEach((classItem) => {
+				totalCredits += classItem.credits;
+
+				classItem.meetings.forEach((meetingItem) => {
+					rows[meetingItem.period - 1][meetingItem.day] = {
+						// ** Subtract 1 from the period to zero it (all periods stored for classes are 1-based)
+						period: meetingItem.period,
+						instructor: classItem.instructor,
+						isClass: true,
+						color: Colors.classColors[colorIndex],
+						code: classItem.code,
+						location: `${meetingItem.building} ${meetingItem.room}`,
+						length: meetingItem.length,
+					};
+
+					for (var i = 1; i < meetingItem.length; i++) {
+						rows[meetingItem.period - 1 + i][meetingItem.day] = {
+							period: meetingItem.period,
+							isClass: true,
+							color: Colors.classColors[colorIndex],
+						};
+					}
+				});
+				colorIndex++;
+			});
+
+			while (rows.length > 1 && !rows[0].some((cell) => cell.isClass) && !rows[1].some((cell) => cell.isClass)) {
+				rows.shift();
+			}
+
+			while (
+				rows.length > 1 &&
+				!rows[rows.length - 1].some((cell) => cell.isClass) &&
+				!rows[rows.length - 2].some((cell) => cell.isClass)
+			) {
+				rows.pop();
+			}
+
+			setRowCount(rows.length);
+			setGrid(rows);
+			setCredits(totalCredits);
+		}
+	}, [colCount, maxRowCount, activeSchedule]);
 
 	return (
 		<div className="px-10 py-20 w-full min-h-full flex">
@@ -160,7 +168,7 @@ const Schedule = ({ colCount, maxRowCount }) => {
 								className="italic absolute"
 								style={{ whiteSpace: "nowrap", fontSize: "0.9rem", top: "-0.45rem", right: "1.5rem" }}
 							>
-								{getPeriodTimes(row[0].row).start}
+								{getPeriodTimes(row[0].period).start}
 							</div>
 							<div
 								style={{
@@ -170,7 +178,7 @@ const Schedule = ({ colCount, maxRowCount }) => {
 									alignItems: "center",
 								}}
 							>
-								{row[0].row}
+								{row[0].period}
 							</div>
 						</div>
 					))}

@@ -1,15 +1,11 @@
 import { useState, useRef, useEffect } from "react";
 import MyScheduleBox from "./MyScheduleBox";
 
-const MySchedules = () => {
+const MySchedules = ({ schedules, setSchedule, activeSchedule, setActiveSchedule }) => {
 	const [selectedSchedule, setSelectedSchedule] = useState("Schedule 1");
 	const [scheduleNames, setScheduleNames] = useState(["Schedule 1", "Schedule 2"]);
 	const [isCollapsed, setIsCollapsed] = useState(false);
 	const schedulesMenuRef = useRef(null);
-
-	const handleScheduleSelect = (name) => {
-		setSelectedSchedule(name);
-	};
 
 	const handleNewSchedule = () => {
 		const nextSchedule = `Schedule ${scheduleNames.length + 1}`;
@@ -41,7 +37,7 @@ const MySchedules = () => {
 	// Update the maxHeight of the schedule menu
 	useEffect(() => {
 		updateMenuHeight();
-	}, [isCollapsed, scheduleNames]);
+	}, [isCollapsed, schedules]);
 
 	const updateMenuHeight = () => {
 		if (isCollapsed) {
@@ -60,25 +56,9 @@ const MySchedules = () => {
 		}
 	};
 
-	const computeMenuHeight = () => {
-		const children = schedulesMenuRef.current.children;
-		let totalHeight = 0;
-		for (let i = 0; i < children.length; i++) {
-			const child = children[i];
-			const computedStyle = window.getComputedStyle(child);
-			const marginTop = parseInt(computedStyle.marginTop);
-			const marginBottom = parseInt(computedStyle.marginBottom);
-			totalHeight += child.offsetHeight + marginTop + marginBottom;
-		}
-		return totalHeight;
-	};
-
 	return (
 		<div className="w-full">
-			<div
-				className="relative pt-3 pb-2 px-4 mb-3"
-				style={{ backgroundColor: "#e6e6e6", borderRadius: "0.75rem" }}
-			>
+			<div className="relative py-3 px-4 mb-3" style={{ backgroundColor: "#e6e6e6", borderRadius: "0.75rem" }}>
 				<div className="flex items-center justify-between cursor-pointer" onClick={handleToggleCollapse}>
 					<p>My Schedules</p>
 					<img src="/folder.svg" style={{ height: "1.3rem" }} />
@@ -90,12 +70,21 @@ const MySchedules = () => {
 						transition: "all 0.1s linear",
 					}}
 				>
-					{scheduleNames.map((name, index) => (
+					{/* {scheduleNames.map((name, index) => (
 						<MyScheduleBox
 							key={index}
 							name={name}
 							onSelect={handleScheduleSelect}
 							selected={selectedSchedule === name}
+							onRemove={handleRemoveSchedule}
+						/>
+					))} */}
+					{schedules.map((schedule, index) => (
+						<MyScheduleBox
+							key={index}
+							schedule={schedule}
+							selected={activeSchedule._id == schedule._id}
+							setActiveSchedule={setActiveSchedule}
 							onRemove={handleRemoveSchedule}
 						/>
 					))}
@@ -110,7 +99,7 @@ const MySchedules = () => {
 				<button
 					className="w-full flex items-center justify-center py-1.5 mt-2"
 					onClick={handleToggleCollapse}
-					style={{ backgroundColor: "rgb(210, 210, 210)", borderRadius: "0.25rem" }}
+					style={{ backgroundColor: "rgb(220, 220, 220)", borderRadius: "0.2rem" }}
 				>
 					{isCollapsed ? (
 						<img src="expand.svg" style={{ height: "0.5rem" }}></img>
@@ -151,7 +140,7 @@ const MySchedules = () => {
 					className="flex justify-center mb-4 py-1"
 					style={{ border: "1px solid gray", borderRadius: "1000px", width: "80%" }}
 				>
-					{selectedSchedule}
+					{activeSchedule.name}
 				</div>
 			</div>
 		</div>

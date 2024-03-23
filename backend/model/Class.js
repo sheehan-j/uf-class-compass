@@ -2,6 +2,7 @@ const mongoose = require("mongoose");
 
 const Schema = new mongoose.Schema({
 	code: String,
+	credits: Number,
 	number: Number,
 	title: String,
 	instructor: { type: mongoose.Schema.Types.ObjectId, ref: "Instructor" },

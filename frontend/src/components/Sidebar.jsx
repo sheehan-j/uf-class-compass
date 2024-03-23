@@ -4,7 +4,7 @@ import CourseSectionBox from "./CourseSectionBox";
 import MySchedules from "./MySchedules";
 import CourseCodeButton from "./CourseCodeButton";
 
-const Sidebar = () => {
+const Sidebar = ({ schedules, setSchedules, activeSchedule, setActiveSchedule }) => {
 	const [selectedButton, setSelectedButton] = useState("schedulePlanner");
 
 	const handleButtonClick = (button) => {
@@ -33,13 +33,13 @@ const Sidebar = () => {
 					<div>Full Course Search</div>
 					<img className="buttonIcon" id="defaultProfile" src="/search_icon.svg" />
 				</button>
-				<button
+				{/* <button
 					className={`sidebarOptionButton ${selectedButton === "profile" ? "selected" : ""}`}
 					onClick={() => handleButtonClick("profile")}
 				>
 					<div>Profile</div>
 					<img className="buttonIcon" id="defaultProfile" src="/profile_icon.svg" />
-				</button>
+				</button> */}
 			</div>
 			<div className="line"></div>
 			<div style={{ height: "3%" }} />
@@ -47,7 +47,12 @@ const Sidebar = () => {
 
 			{selectedButton === "schedulePlanner" && (
 				<>
-					<MySchedules />
+					<MySchedules
+						schedules={schedules}
+						setSchedules={setSchedules}
+						activeSchedule={activeSchedule}
+						setActiveSchedule={setActiveSchedule}
+					/>
 
 					<div className="courseSearchBox relative mb-2">
 						<input
