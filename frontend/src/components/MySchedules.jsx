@@ -3,36 +3,23 @@ import { SchedulesApi } from "../api/SchedulesApi";
 import MyScheduleBox from "./MyScheduleBox";
 
 const MySchedules = ({ schedules, setSchedules, activeSchedule, setActiveSchedule }) => {
-	const [selectedSchedule, setSelectedSchedule] = useState("Schedule 1");
-	const [scheduleNames, setScheduleNames] = useState(["Schedule 1", "Schedule 2"]);
+	// const [selectedSchedule, setSelectedSchedule] = useState("Schedule 1");
+	// const [scheduleNames, setScheduleNames] = useState(["Schedule 1", "Schedule 2"]);
 	const [isCollapsed, setIsCollapsed] = useState(false);
 	const schedulesMenuRef = useRef(null);
 
 	const handleNewSchedule = async () => {
-		// const nextSchedule = `Schedule ${scheduleNames.length + 1}`;
-		// setSelectedSchedule(nextSchedule);
-		// setScheduleNames([...scheduleNames, nextSchedule]);
 		const newScheduleNumber = schedules.length + 1;
 		const newSchedules = await SchedulesApi.createSchedule(`Schedule ${newScheduleNumber}`);
 		if (newSchedules.length == schedules.length + 1) setActiveSchedule(newSchedules[newSchedules.length - 1]);
 		setSchedules(newSchedules);
 	};
 
-	const handleRemoveSchedule = (nameToRemove) => {
-		const indexToRemove = scheduleNames.indexOf(nameToRemove);
-		if (indexToRemove !== -1 && scheduleNames.length !== 1) {
-			setScheduleNames((prevNames) => prevNames.filter((name) => name !== nameToRemove));
-			setScheduleNames((prevNames) =>
-				prevNames.map((name, index) => {
-					return index >= indexToRemove ? `Schedule ${index + 1}` : name;
-				})
-			);
-			const scheduleNumber = parseInt(selectedSchedule.split(" ")[1]);
-			if (scheduleNumber > indexToRemove) {
-				//if selected schedule 2 and schedule 1 removed, want selected to shift to s.t. old schedule 2 still selected despite shifting to schedule 1
-				setSelectedSchedule(scheduleNames[Math.max(0, scheduleNumber - 2)]);
-			}
-		}
+	const handleDeleteSchedule = async (id) => {
+		console.log(id);
+		const newSchedules = await SchedulesApi.deleteSchedule(id);
+		setActiveSchedule(newSchedules.length > 0 ? newSchedules[newSchedules.length - 1] : {});
+		setSchedules(newSchedules);
 	};
 
 	const handleToggleCollapse = () => {
@@ -90,7 +77,7 @@ const MySchedules = ({ schedules, setSchedules, activeSchedule, setActiveSchedul
 							schedule={schedule}
 							selected={activeSchedule._id == schedule._id}
 							setActiveSchedule={setActiveSchedule}
-							onRemove={handleRemoveSchedule}
+							onDelete={handleDeleteSchedule}
 						/>
 					))}
 					<button

@@ -25,7 +25,22 @@ const createSchedule = async (name) => {
 	return result;
 };
 
+const deleteSchedule = async (id) => {
+	const response = await fetch(config.API_BASE_URL + "/schedules", {
+		method: "DELETE",
+		headers: {
+			"Content-Type": "application/json",
+		},
+		body: JSON.stringify({
+			id,
+		}),
+	});
+	const result = await response.json();
+	return result;
+};
+
 export const SchedulesApi = {
 	getAllSchedules,
 	createSchedule,
+	deleteSchedule,
 };

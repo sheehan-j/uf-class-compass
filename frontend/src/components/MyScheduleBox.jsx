@@ -1,10 +1,10 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-const MyScheduleBox = ({ schedule, selected, setActiveSchedule, onRemove }) => {
-	const handleRemove = (event) => {
+const MyScheduleBox = ({ schedule, selected, setActiveSchedule, onDelete }) => {
+	const handleDelete = (event) => {
 		event.stopPropagation();
-		onRemove(name);
+		onDelete(schedule._id);
 	};
 
 	return (
@@ -15,7 +15,7 @@ const MyScheduleBox = ({ schedule, selected, setActiveSchedule, onRemove }) => {
 			onClick={() => setActiveSchedule(schedule)}
 		>
 			<p className="ml-2 text-gray-500">{schedule.name}</p>
-			<button className="removeScheduleButton" onClick={handleRemove}>
+			<button className="removeScheduleButton" onClick={handleDelete}>
 				<img src="/minus.svg" />
 			</button>
 		</div>
@@ -26,7 +26,7 @@ MyScheduleBox.propTypes = {
 	schedule: PropTypes.object.isRequired,
 	selected: PropTypes.bool.isRequired,
 	setActiveSchedule: PropTypes.func.isRequired,
-	onRemove: PropTypes.func.isRequired,
+	onDelete: PropTypes.func.isRequired,
 };
 
 export default MyScheduleBox;
