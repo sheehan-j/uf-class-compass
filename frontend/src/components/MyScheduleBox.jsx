@@ -10,11 +10,11 @@ const MyScheduleBox = ({ schedule, selected, setActiveSchedule, onDelete }) => {
 	return (
 		<div
 			className={`w-full h-auto relative cursor-pointer border border-gray-400 flex items-center justify-between my-2 p-1 ${
-				selected ? "bg-gray-300" : "bg-white"
+				selected ? "bg-gray-200" : "bg-white"
 			}`}
 			onClick={() => setActiveSchedule(schedule)}
 		>
-			<p className="ml-2 text-gray-500">{schedule.name}</p>
+			<p className="ml-2">{schedule.name}</p>
 			<button className="removeScheduleButton" onClick={handleDelete}>
 				<img src="/minus.svg" />
 			</button>

@@ -48,7 +48,10 @@ const MySchedules = ({ schedules, setSchedules, activeSchedule, setActiveSchedul
 
 	return (
 		<div className="w-full">
-			<div className="relative py-3 px-4 mb-3" style={{ backgroundColor: "#e6e6e6", borderRadius: "0.75rem" }}>
+			<div
+				className="relative py-3 px-4 mb-3"
+				style={{ backgroundColor: "rgba(235, 235, 235, 1)", borderRadius: "0.75rem" }}
+			>
 				<div className="flex items-center justify-between cursor-pointer" onClick={handleToggleCollapse}>
 					<p>My Schedules</p>
 					<img src="/folder.svg" style={{ height: "1.3rem" }} />
@@ -91,7 +94,7 @@ const MySchedules = ({ schedules, setSchedules, activeSchedule, setActiveSchedul
 			</div>
 			<div className="flex justify-center w-full">
 				<div
-					className="flex justify-center mb-4 py-1"
+					className="flex justify-center mb-4 py-1 bg-white"
 					style={{ border: "1px solid gray", borderRadius: "1000px", width: "80%" }}
 				>
 					{activeSchedule?.name ? activeSchedule.name : "No Schedule Selected"}

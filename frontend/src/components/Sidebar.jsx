@@ -1,11 +1,12 @@
 import "../styles/Sidebar.css";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import CourseSectionBox from "./CourseSectionBox";
 import MySchedules from "./MySchedules";
 import CourseCodeButton from "./CourseCodeButton";
 
-const Sidebar = ({ schedules, setSchedules, activeSchedule, setActiveSchedule }) => {
+const Sidebar = ({ schedules, setSchedules, activeSchedule, setActiveSchedule, activeClass, setActiveClass }) => {
 	const [selectedButton, setSelectedButton] = useState("schedulePlanner");
+	const [classResults, setClassResults] = useState([]);
 
 	const handleButtonClick = (button) => {
 		setSelectedButton(button);
@@ -54,23 +55,27 @@ const Sidebar = ({ schedules, setSchedules, activeSchedule, setActiveSchedule })
 						setActiveSchedule={setActiveSchedule}
 					/>
 
-					<div className="courseSearchBox relative mb-2">
+					<p className="mb-1">Active Courses</p>
+					<div className="mb-4">
+						{activeSchedule?.classes?.map((classItem) => (
+							<CourseCodeButton
+								key={classItem.code}
+								classItem={classItem}
+								active={activeClass?.code == classItem.code}
+								setActiveClass={setActiveClass}
+							/>
+						))}
+					</div>
+
+					<p className="mb-1">Course Code Search</p>
+					<div className="courseSearchBox relative mb-4">
 						<input
 							className="w-full py-2 px-2 flex align-center bg-white border border-gray-300"
-							placeholder="Course Code Search"
+							placeholder="Enter course code (e.g. CIS4930)"
 						/>
 					</div>
 
-					<div
-						className="grid w-full relative flex flex-wrap justify-start mb-4"
-						style={{ gridTemplateColumns: `repeat(2, minmax(0, 1fr))`, gap: "5%" }}
-					>
-						<CourseCodeButton name="CIS4930" />
-						<CourseCodeButton name="CIS4930" />
-						<CourseCodeButton name="CIS4930" />
-					</div>
-
-					<p>Course Sections</p>
+					<p className="mb-1">Course Sections &#40;{activeClass.code}&#41;</p>
 					<CourseSectionBox name="Class #1234" />
 					<CourseSectionBox name="Class #2345" />
 					<CourseSectionBox name="Class #3456" />
