@@ -96,10 +96,10 @@ const Schedule = ({ colCount, maxRowCount, activeSchedule }) => {
 		var colorIndex = 0;
 		let totalCredits = 0;
 		if (activeSchedule.classes && activeSchedule.classes.length > 0) {
-			activeSchedule.classes.forEach((classItem) => {
-				totalCredits += classItem.credits;
+			activeSchedule?.classes?.forEach((classItem) => {
+				totalCredits += classItem?.credits;
 
-				classItem.meetings.forEach((meetingItem) => {
+				classItem?.meetings?.forEach((meetingItem) => {
 					rows[meetingItem.period - 1][meetingItem.day] = {
 						// ** Subtract 1 from the period to zero it (all periods stored for classes are 1-based)
 						period: meetingItem.period,

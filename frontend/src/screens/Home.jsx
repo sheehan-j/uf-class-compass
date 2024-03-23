@@ -11,8 +11,7 @@ const Home = () => {
 		const loadSchedules = async () => {
 			const data = await SchedulesApi.getAllSchedules();
 			setSchedules(data);
-			setActiveSchedule(data[0]);
-			console.log(JSON.stringify(data[0]));
+			setActiveSchedule(data.length > 0 ? data[0] : {});
 		};
 
 		loadSchedules();

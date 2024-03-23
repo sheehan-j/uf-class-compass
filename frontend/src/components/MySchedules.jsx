@@ -1,16 +1,21 @@
 import { useState, useRef, useEffect } from "react";
+import { SchedulesApi } from "../api/SchedulesApi";
 import MyScheduleBox from "./MyScheduleBox";
 
-const MySchedules = ({ schedules, setSchedule, activeSchedule, setActiveSchedule }) => {
+const MySchedules = ({ schedules, setSchedules, activeSchedule, setActiveSchedule }) => {
 	const [selectedSchedule, setSelectedSchedule] = useState("Schedule 1");
 	const [scheduleNames, setScheduleNames] = useState(["Schedule 1", "Schedule 2"]);
 	const [isCollapsed, setIsCollapsed] = useState(false);
 	const schedulesMenuRef = useRef(null);
 
-	const handleNewSchedule = () => {
-		const nextSchedule = `Schedule ${scheduleNames.length + 1}`;
-		setSelectedSchedule(nextSchedule);
-		setScheduleNames([...scheduleNames, nextSchedule]);
+	const handleNewSchedule = async () => {
+		// const nextSchedule = `Schedule ${scheduleNames.length + 1}`;
+		// setSelectedSchedule(nextSchedule);
+		// setScheduleNames([...scheduleNames, nextSchedule]);
+		const newScheduleNumber = schedules.length + 1;
+		const newSchedules = await SchedulesApi.createSchedule(`Schedule ${newScheduleNumber}`);
+		if (newSchedules.length == schedules.length + 1) setActiveSchedule(newSchedules[newSchedules.length - 1]);
+		setSchedules(newSchedules);
 	};
 
 	const handleRemoveSchedule = (nameToRemove) => {
@@ -140,7 +145,7 @@ const MySchedules = ({ schedules, setSchedule, activeSchedule, setActiveSchedule
 					className="flex justify-center mb-4 py-1"
 					style={{ border: "1px solid gray", borderRadius: "1000px", width: "80%" }}
 				>
-					{activeSchedule.name}
+					{activeSchedule?.name ? activeSchedule.name : "No Schedule Selected"}
 				</div>
 			</div>
 		</div>
