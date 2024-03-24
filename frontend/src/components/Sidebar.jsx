@@ -97,6 +97,7 @@ const Sidebar = ({
 
 	useEffect(() => {
 		setSearchError("");
+		setActiveClass({});
 	}, [activeSchedule]);
 
 	return (
