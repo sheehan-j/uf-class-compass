@@ -47,6 +47,12 @@ const Sidebar = ({
 			}
 		} else {
 			setSearchError("");
+			setPreviewSchedule({});
+
+			if (searchTerm == "") {
+				setClassResults([]);
+				setActiveClass({});
+			}
 		}
 	};
 
@@ -98,6 +104,7 @@ const Sidebar = ({
 	useEffect(() => {
 		setSearchError("");
 		setActiveClass({});
+		setSearchTerm("");
 	}, [activeSchedule]);
 
 	return (
