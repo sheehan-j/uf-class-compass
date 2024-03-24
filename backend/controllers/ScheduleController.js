@@ -40,3 +40,31 @@ exports.deleteSchedule = async (req, res) => {
 		return res.status(500).json({ message: "Server error" });
 	}
 };
+
+exports.addClassToSchedule = async (req, res) => {
+	try {
+		await Schedule.updateOne(
+			{ _id: req.query.schedule }, // Filter criteria to find the record to update
+			{ $push: { classes: req.query.class } } // Update to push the new object ID to the list field
+		);
+
+		const result = await DataAccessUtil.getAllSchedules();
+		return res.status(200).json(result);
+	} catch (error) {
+		return res.status(500).json({ message: "Internal server error" });
+	}
+};
+
+exports.deleteClassFromSchedule = async (req, res) => {
+	try {
+		await Schedule.updateOne(
+			{ _id: req.query.schedule }, // Filter criteria to find the record to update
+			{ $pull: { classes: req.query.class } } // Update to pull the new object ID to the list field
+		);
+
+		const result = await DataAccessUtil.getAllSchedules();
+		return res.status(200).json(result);
+	} catch (error) {
+		return res.status(500).json({ message: "Internal server error" });
+	}
+};

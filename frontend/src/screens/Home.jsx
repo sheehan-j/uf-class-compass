@@ -7,6 +7,7 @@ const Home = () => {
 	const [schedules, setSchedules] = useState([]);
 	const [activeSchedule, setActiveSchedule] = useState({});
 	const [activeClass, setActiveClass] = useState({});
+	const [previewSchedule, setPreviewSchedule] = useState({});
 
 	useEffect(() => {
 		const loadSchedules = async () => {
@@ -29,9 +30,16 @@ const Home = () => {
 				setActiveSchedule={setActiveSchedule}
 				activeClass={activeClass}
 				setActiveClass={setActiveClass}
+				previewSchedule={previewSchedule}
+				setPreviewSchedule={setPreviewSchedule}
 			/>
 			<div className="w-full h-full overflow-y-scroll">
-				<Schedule colCount={5} maxRowCount={11} activeSchedule={activeSchedule} />
+				<Schedule
+					colCount={5}
+					maxRowCount={11}
+					activeSchedule={activeSchedule}
+					previewSchedule={previewSchedule}
+				/>
 			</div>
 		</div>
 	);

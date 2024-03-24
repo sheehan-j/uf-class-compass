@@ -7,7 +7,10 @@ const getClassesByCode = async (code) => {
 			"Content-Type": "application/json",
 		},
 	});
-	const result = await response.json();
+	let result = null;
+	if (response.status == 200) {
+		result = response.json();
+	}
 	return result;
 };
 

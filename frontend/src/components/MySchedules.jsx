@@ -3,7 +3,7 @@ import { SchedulesApi } from "../api/SchedulesApi";
 import MyScheduleBox from "./MyScheduleBox";
 
 const MySchedules = ({ schedules, setSchedules, activeSchedule, setActiveSchedule, activeClass, setActiveClass }) => {
-	const [isCollapsed, setIsCollapsed] = useState(false);
+	const [isCollapsed, setIsCollapsed] = useState(true);
 	const schedulesMenuRef = useRef(null);
 
 	const handleNewSchedule = async () => {
@@ -22,10 +22,6 @@ const MySchedules = ({ schedules, setSchedules, activeSchedule, setActiveSchedul
 	const handleSelectSchedule = async (schedule) => {
 		setActiveSchedule(schedule);
 		setActiveClass(schedule.classes.length > 0 ? schedule.classes[0] : {});
-	};
-
-	const handleToggleCollapse = () => {
-		setIsCollapsed(!isCollapsed);
 	};
 
 	// Update the maxHeight of the schedule menu
@@ -56,7 +52,10 @@ const MySchedules = ({ schedules, setSchedules, activeSchedule, setActiveSchedul
 				className="relative py-3 px-4 mb-3"
 				style={{ backgroundColor: "rgba(235, 235, 235, 1)", borderRadius: "0.75rem" }}
 			>
-				<div className="flex items-center justify-between cursor-pointer" onClick={handleToggleCollapse}>
+				<div
+					className="flex items-center justify-between cursor-pointer"
+					onClick={() => setIsCollapsed(!isCollapsed)}
+				>
 					<p>My Schedules</p>
 					<img src="/folder.svg" style={{ height: "1.3rem" }} />
 				</div>
@@ -86,7 +85,7 @@ const MySchedules = ({ schedules, setSchedules, activeSchedule, setActiveSchedul
 				</div>
 				<button
 					className="w-full flex items-center justify-center py-1.5 mt-2"
-					onClick={handleToggleCollapse}
+					onClick={() => setIsCollapsed(!isCollapsed)}
 					style={{ backgroundColor: "rgb(220, 220, 220)", borderRadius: "0.2rem" }}
 				>
 					{isCollapsed ? (

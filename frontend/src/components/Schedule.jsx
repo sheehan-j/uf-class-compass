@@ -7,7 +7,7 @@ import { Days } from "../constants/Days";
 import { getPeriodTimes } from "../constants/BlockTimes";
 import { SchedulesApi } from "../api/SchedulesApi";
 
-const Schedule = ({ colCount, maxRowCount, activeSchedule }) => {
+const Schedule = ({ colCount, maxRowCount, activeSchedule, previewSchedule }) => {
 	const [grid, setGrid] = useState([]);
 	const [credits, setCredits] = useState(0);
 	const [newRowCount, setRowCount] = useState(maxRowCount);
@@ -25,8 +25,12 @@ const Schedule = ({ colCount, maxRowCount, activeSchedule }) => {
 
 		var colorIndex = 0;
 		let totalCredits = 0;
-		if (activeSchedule.classes && activeSchedule.classes.length > 0) {
-			activeSchedule?.classes?.forEach((classItem) => {
+		let classes = null;
+		if (previewSchedule?.classes?.length > 0) classes = previewSchedule.classes;
+		else if (activeSchedule?.classes?.length > 0) classes = activeSchedule.classes;
+
+		if (classes) {
+			classes.forEach((classItem) => {
 				totalCredits += classItem?.credits;
 
 				classItem?.meetings?.forEach((meetingItem) => {
@@ -68,7 +72,7 @@ const Schedule = ({ colCount, maxRowCount, activeSchedule }) => {
 			setGrid(rows);
 			setCredits(totalCredits);
 		}
-	}, [colCount, maxRowCount, activeSchedule]);
+	}, [colCount, maxRowCount, activeSchedule, previewSchedule]);
 
 	return (
 		<div className="px-10 py-20 w-full min-h-full flex">
@@ -157,6 +161,8 @@ const Schedule = ({ colCount, maxRowCount, activeSchedule }) => {
 Schedule.propTypes = {
 	colCount: PropTypes.number.isRequired,
 	maxRowCount: PropTypes.number.isRequired,
+	activeSchedule: PropTypes.object.isRequired,
+	previewSchedule: PropTypes.object.isRequired,
 };
 
 export default Schedule;
