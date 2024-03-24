@@ -20,7 +20,7 @@ const CourseSectionBox = ({
 		>
 			<p className="text-sm">{`Class #${classItem.number}`}</p>
 			<button style={{ width: "1.1rem" }} onClick={addClass}>
-				{activeSchedule.classes.some(
+				{activeSchedule?.classes?.some(
 					(activeScheduleClass) =>
 						activeScheduleClass._id == classItem._id && activeScheduleClass?.muteInActiveCourses != true
 				) ? (

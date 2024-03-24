@@ -164,17 +164,23 @@ const Sidebar = ({
 						</>
 					)}
 
-					<p className="mb-1">Course Code Search</p>
-					<div className={`courseSearchBox relative ${searchError == "" ? "mb-4" : "mb-1"}`}>
-						<input
-							className="w-full py-2 px-2 flex align-center bg-white border border-gray-300"
-							placeholder="Enter class code (e.g. CIS4930)"
-							value={searchTerm}
-							onChange={(e) => setSearchTerm(e.target.value)}
-							onKeyUp={handleSearchInputKeyUp}
-						/>
-					</div>
+					<p className={`mb-1 ${activeSchedule?.classes ? "" : "opacity-40"}`}>Course Code Search</p>
+					<input
+						className={`w-full py-2 px-2 flex align-center bg-white border border-gray-300 ${
+							searchError == "" && activeSchedule?.classes ? "mb-4" : "mb-1"
+						} ${activeSchedule?.classes ? "" : "opacity-60 line-through"}`}
+						placeholder="Enter class code (e.g. CIS4930)"
+						value={searchTerm}
+						onChange={(e) => setSearchTerm(e.target.value)}
+						onKeyUp={handleSearchInputKeyUp}
+						disabled={!activeSchedule?.classes}
+					/>
 					{searchError != "" && <p className="text-red-400 text-sm mb-4">{searchError}</p>}
+					{!activeSchedule?.classes && (
+						<p className="italic text-sm mb-4">
+							Select or create a schedule to start searching for classes.
+						</p>
+					)}
 
 					{activeClass.code && (
 						<>
