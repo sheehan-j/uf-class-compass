@@ -3,6 +3,30 @@ const Class = require("../model/Class");
 const Building = require("../model/Building");
 const Instructor = require("../model/Instructor");
 
+exports.mapClassResults = (classes) => {
+	return classes.map((classObj) => {
+		return {
+			...classObj.toObject(),
+			instructor: classObj.instructor.name,
+			meetings: classObj.meetings.map((meeting) => {
+				return {
+					...meeting.toObject(),
+					building: meeting.building.code,
+				};
+			}),
+		};
+	});
+};
+
+exports.mapScheduleResults = (schedules) => {
+	return schedules.map((schedule) => {
+		return {
+			...schedule.toObject(),
+			classes: this.mapClassResults(schedule.classes),
+		};
+	});
+};
+
 exports.getAllSchedules = async (req, res) => {
 	let result = await Schedule.find({})
 		.populate({
@@ -19,23 +43,5 @@ exports.getAllSchedules = async (req, res) => {
 			},
 		});
 
-	result = result.map((schedule) => {
-		return {
-			...schedule.toObject(),
-			classes: schedule.classes.map((classObj) => {
-				return {
-					...classObj.toObject(),
-					instructor: classObj.instructor.name,
-					meetings: classObj.meetings.map((meeting) => {
-						return {
-							...meeting.toObject(),
-							building: meeting.building.code,
-						};
-					}),
-				};
-			}),
-		};
-	});
-
-	return result;
+	return this.mapScheduleResults(result);
 };

@@ -1,15 +1,19 @@
 import PropTypes from "prop-types";
 
-const CourseSectionBox = ({name})  => {
-    return (
-        <div className="courseSectionBox w-full h-10 relative border border-gray-300 flex items-center mb-2 bg-white">
-            <p className="ml-2 text-gray-500">{name}</p>
-            <button className="addSectionButton absolute right-0 w-6 h-full hover:bg-gray-400"><img src="/add.svg"/></button>
-        </div>
-    )
-}
+const CourseSectionBox = ({ classItem }) => {
+	return (
+		<div
+			className={`relative border border-gray-300 py-2 px-3 mb-1 flex items-center justify-between cursor-pointer bg-white`}
+		>
+			<p className="text-sm">{`Class #${classItem.number}`}</p>
+			<button style={{ width: "1.1rem" }}>
+				<img src="/add.svg" />
+			</button>
+		</div>
+	);
+};
 CourseSectionBox.propType = {
-    name: PropTypes.string.isRequired,
-}
+	classItem: PropTypes.object.isRequired,
+};
 
 export default CourseSectionBox;

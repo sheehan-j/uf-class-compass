@@ -2,10 +2,10 @@ const Schedule = require("../model/Schedule");
 const Class = require("../model/Class");
 const Building = require("../model/Building");
 const Instructor = require("../model/Instructor");
-const DAOUtil = require("../util/DataAccessUtil");
+const DataAccessUtil = require("../util/DataAccessUtil");
 
 exports.getAllSchedules = async (req, res) => {
-	const schedules = await DAOUtil.getAllSchedules();
+	const schedules = await DataAccessUtil.getAllSchedules();
 	if (!schedules) return res.status(204).json({ message: "No schedules found." });
 	return res.status(200).json(schedules);
 };
@@ -13,12 +13,12 @@ exports.getAllSchedules = async (req, res) => {
 exports.createSchedule = async (req, res) => {
 	try {
 		await Schedule.create({
-			name: req.body.name,
+			name: req.query.name,
 			classes: [],
 		});
 
 		// TODO: Update this to return all of the schedule for the user
-		const result = await DAOUtil.getAllSchedules();
+		const result = await DataAccessUtil.getAllSchedules();
 		return res.status(201).json(result);
 	} catch (err) {
 		console.error(err);
@@ -28,8 +28,8 @@ exports.createSchedule = async (req, res) => {
 
 exports.deleteSchedule = async (req, res) => {
 	try {
-		const deleteResult = await Schedule.deleteOne({ _id: req.body.id });
-		const result = await DAOUtil.getAllSchedules();
+		const deleteResult = await Schedule.deleteOne({ _id: req.query.id });
+		const result = await DataAccessUtil.getAllSchedules();
 		if (deleteResult.deletedCount == 1) {
 			return res.status(200).json(result);
 		} else {

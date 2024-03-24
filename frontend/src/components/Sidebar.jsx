@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import CourseSectionBox from "./CourseSectionBox";
 import MySchedules from "./MySchedules";
 import CourseCodeButton from "./CourseCodeButton";
+import { ClassesApi } from "../api/ClassesApi";
 
 const Sidebar = ({ schedules, setSchedules, activeSchedule, setActiveSchedule, activeClass, setActiveClass }) => {
 	const [selectedButton, setSelectedButton] = useState("schedulePlanner");
@@ -11,6 +12,19 @@ const Sidebar = ({ schedules, setSchedules, activeSchedule, setActiveSchedule, a
 	const handleButtonClick = (button) => {
 		setSelectedButton(button);
 	};
+
+	// Fetch class sections corresponding to the active classs
+	useEffect(() => {
+		const updateClassResults = async () => {
+			const result = await ClassesApi.getClassesByCode(activeClass.code);
+			console.log(result.length);
+			setClassResults(result);
+		};
+
+		if (activeClass.code) {
+			updateClassResults();
+		}
+	}, [activeClass]);
 
 	return (
 		<div className="w-1/4 p-5 sidebarWrapper">
@@ -77,10 +91,14 @@ const Sidebar = ({ schedules, setSchedules, activeSchedule, setActiveSchedule, a
 						/>
 					</div>
 
-					<p className="mb-1">Course Sections &#40;{activeClass.code}&#41;</p>
-					<CourseSectionBox name="Class #1234" />
-					<CourseSectionBox name="Class #2345" />
-					<CourseSectionBox name="Class #3456" />
+					{activeClass && (
+						<>
+							<p className="mb-1">Course Sections &#40;{activeClass.code}&#41;</p>
+							{classResults.map((classItem) => (
+								<CourseSectionBox key={classItem.number} classItem={classItem} />
+							))}
+						</>
+					)}
 				</>
 			)}
 

@@ -12,28 +12,22 @@ const getAllSchedules = async () => {
 };
 
 const createSchedule = async (name) => {
-	const response = await fetch(config.API_BASE_URL + "/schedules", {
+	const response = await fetch(config.API_BASE_URL + `/schedules?name=${name}`, {
 		method: "POST",
 		headers: {
 			"Content-Type": "application/json",
 		},
-		body: JSON.stringify({
-			name,
-		}),
 	});
 	const result = await response.json();
 	return result;
 };
 
 const deleteSchedule = async (id) => {
-	const response = await fetch(config.API_BASE_URL + "/schedules", {
+	const response = await fetch(config.API_BASE_URL + `/schedules?id=${id}`, {
 		method: "DELETE",
 		headers: {
 			"Content-Type": "application/json",
 		},
-		body: JSON.stringify({
-			id,
-		}),
 	});
 	const result = await response.json();
 	return result;
