@@ -20,7 +20,6 @@ const Sidebar = ({
 	const [classResults, setClassResults] = useState([]);
 	const [searchTerm, setSearchTerm] = useState("");
 	const [searchError, setSearchError] = useState("");
-	const [hoveringClass, setHoveringClass] = useState(false);
 
 	// Fetch class sections corresponding to the active classs
 	useEffect(() => {
@@ -84,6 +83,12 @@ const Sidebar = ({
 		setSchedules(result);
 		const updatedActiveSchedule = result.filter((schedule) => schedule._id == activeSchedule._id)[0];
 		setActiveSchedule(updatedActiveSchedule);
+
+		// Clear out the class results and active class unless the course is already in the search term
+		if (searchTerm.toUpperCase() !== classItem.code) {
+			setActiveClass({});
+			setClassResults([]);
+		}
 	};
 
 	const handleHoverClassStart = (classItem) => {
@@ -97,17 +102,20 @@ const Sidebar = ({
 		}
 	};
 
-	const handleHoverClassEnd = (classItem) => {
+	const handleHoverClassEnd = () => {
 		if (previewSchedule.classes) {
-			setHoveringClass(false);
 			setPreviewSchedule({});
 		}
 	};
 
 	useEffect(() => {
 		setSearchError("");
-		setActiveClass({});
-		setSearchTerm("");
+
+		if (!activeSchedule?.classes) {
+			setActiveClass({});
+			setClassResults([]);
+			setSearchTerm("");
+		}
 	}, [activeSchedule]);
 
 	return (
@@ -153,6 +161,8 @@ const Sidebar = ({
 						setActiveSchedule={setActiveSchedule}
 						activeClass={activeClass}
 						setActiveClass={setActiveClass}
+						classResults={classResults}
+						setClassResults={setClassResults}
 					/>
 
 					{activeSchedule?.classes?.length > 0 && (

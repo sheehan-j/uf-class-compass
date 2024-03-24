@@ -2,7 +2,16 @@ import { useState, useRef, useEffect } from "react";
 import { SchedulesApi } from "../api/SchedulesApi";
 import MyScheduleBox from "./MyScheduleBox";
 
-const MySchedules = ({ schedules, setSchedules, activeSchedule, setActiveSchedule, activeClass, setActiveClass }) => {
+const MySchedules = ({
+	schedules,
+	setSchedules,
+	activeSchedule,
+	setActiveSchedule,
+	activeClass,
+	setActiveClass,
+	classResults,
+	setClassResults,
+}) => {
 	const [isCollapsed, setIsCollapsed] = useState(true);
 	const schedulesMenuRef = useRef(null);
 
@@ -11,6 +20,8 @@ const MySchedules = ({ schedules, setSchedules, activeSchedule, setActiveSchedul
 		const newSchedules = await SchedulesApi.createSchedule(`Schedule ${newScheduleNumber}`);
 		if (newSchedules.length == schedules.length + 1) setActiveSchedule(newSchedules[newSchedules.length - 1]);
 		setSchedules(newSchedules);
+		setActiveClass({});
+		setClassResults([]);
 	};
 
 	const handleDeleteSchedule = async (id) => {

@@ -19,7 +19,7 @@ const CourseSectionBox = ({
 		<div
 			className="pb-1"
 			onMouseEnter={() => handleHoverClassStart(classItem)}
-			onMouseLeave={() => handleHoverClassEnd(classItem)}
+			onMouseLeave={() => handleHoverClassEnd()}
 		>
 			<div
 				className={`relative border border-gray-300 py-2 px-3 flex items-center justify-between cursor-pointer bg-white`}
