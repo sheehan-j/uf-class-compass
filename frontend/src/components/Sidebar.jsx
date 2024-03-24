@@ -89,6 +89,9 @@ const Sidebar = ({
 	const handleHoverClassStart = (classItem) => {
 		if (!activeSchedule.classes.some((activeScheduleClass) => activeScheduleClass._id == classItem._id)) {
 			const updatedActiveSchedule = structuredClone(activeSchedule);
+			updatedActiveSchedule.classes = updatedActiveSchedule.classes.filter(
+				(activeScheduleClass) => activeScheduleClass.code != classItem.code
+			);
 			updatedActiveSchedule.classes.push({ ...classItem, muteInActiveCourses: true });
 			setPreviewSchedule(updatedActiveSchedule);
 		}
