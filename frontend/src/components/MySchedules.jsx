@@ -62,7 +62,7 @@ const MySchedules = () => {
                 
             </div>
             <div className="flex justify-center w-full">
-                <div className="flex justify-center mb-4 py-1" style={{border: "1px solid white", borderRadius: "1000px", width: "80%"}}>{selectedSchedule}</div>
+                <div className="flex justify-center mb-4 py-1 text-white" style={{border: "1px solid white", backgroundColor: StyleColors.blue, borderRadius: "1000px", width: "80%"}}>{selectedSchedule}</div>
             </div>
         </div>
     );
