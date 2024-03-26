@@ -19,7 +19,7 @@ const SlidingSidebar = ({ isClassClicked, setIsClassClicked,  cell }) => {
             }}
             className="z-50 top-0 w-full h-full p-5 text-black absolute right-0 overflow-y-auto"
         >
-            <div className="absolute right-0" onClick={handleMinimize}>
+            <div className="absolute right-5" onClick={handleMinimize}>
                 <img src="/remove.svg" />
             </div>
              <div className="flex justify-center">
