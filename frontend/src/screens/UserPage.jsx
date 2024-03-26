@@ -41,8 +41,8 @@ const UserPage = () => {
 	return (
         <>
         <Navbar />
-		<div className="w-full h-screen flex pt-10">
-			<div className="w-full h-auto flex justify-center ">
+		<div className="w-full h-full flex pt-10">
+			<div className="w-full flex justify-center ">
                 <div className="w-1/2 h-fit pb-10 rounded-lg shadow dark:border loginWrapper">
                     <div className="p-6 space-y-4 md:space-y-6 sm:p-8 text-white">
                         <div className="signInButtons flex justify-center">

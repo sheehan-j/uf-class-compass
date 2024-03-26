@@ -6,9 +6,9 @@ const SchedulePage = () => {
 	return (
 		<>
 		<Navbar />
-		<div className="w-full h-screen flex">
+		<div className="w-full h-full flex">
 			<Sidebar />
-			<div className="w-full h-full overflow-y-scroll">
+			<div className="w-full h-full">
 				<Schedule colCount={5} maxRowCount={11} />
 			</div>
 		</div>
