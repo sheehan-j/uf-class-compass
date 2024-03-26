@@ -1,0 +1,14 @@
+.loginWrapper{
+    background-color: #002657;
+    color: white;
+}
+
+#active {
+    background-color: #FA4616;
+    /* background-color: rgb(49, 151, 149); */
+    color: white;
+}
+
+.submitButtons button{
+    background-color: #FA4616;
+}
