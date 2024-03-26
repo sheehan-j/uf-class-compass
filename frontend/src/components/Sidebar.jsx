@@ -35,15 +35,7 @@ const Sidebar = ({
 
 	const handleSearchInputKeyUp = async (e) => {
 		if (e.key == "Enter") {
-			const result = await ClassesApi.getClassesByCode(searchTerm.toUpperCase());
-			if (result) {
-				setClassResults(result);
-				setActiveClass({ code: searchTerm.toUpperCase() });
-			} else {
-				setClassResults([]);
-				setActiveClass({});
-				setSearchError("Error: Class not found.");
-			}
+			handleSearch();
 		} else {
 			setSearchError("");
 			setPreviewSchedule({});
@@ -52,6 +44,18 @@ const Sidebar = ({
 				setClassResults([]);
 				setActiveClass({});
 			}
+		}
+	};
+
+	const handleSearch = async () => {
+		const result = await ClassesApi.getClassesByCode(searchTerm.toUpperCase());
+		if (result) {
+			setClassResults(result);
+			setActiveClass({ code: searchTerm.toUpperCase() });
+		} else {
+			setClassResults([]);
+			setActiveClass({});
+			setSearchError("Error: Class not found.");
 		}
 	};
 
@@ -186,15 +190,23 @@ const Sidebar = ({
 
 					<p className={`mb-1 ${activeSchedule?.classes ? "" : "opacity-40"}`}>Course Code Search</p>
 					<input
-						className={`w-full py-2 px-2 flex align-center bg-white border border-gray-300 ${
-							searchError == "" && activeSchedule?.classes ? "mb-4" : "mb-1"
-						} ${activeSchedule?.classes ? "" : "opacity-60 line-through"}`}
+						className={`w-full py-2 px-2 flex align-center bg-white border border-gray-300 mb-3 ${
+							activeSchedule?.classes ? "" : "opacity-60 line-through"
+						}`}
 						placeholder="Enter class code (e.g. CIS4930)"
 						value={searchTerm}
 						onChange={(e) => setSearchTerm(e.target.value)}
 						onKeyUp={handleSearchInputKeyUp}
 						disabled={!activeSchedule?.classes}
 					/>
+					<button
+						className={`w-full text-white bg-blue-600 hover:bg-blue-700 py-2 rounded-lg ${
+							searchError == "" && activeSchedule?.classes ? "mb-4" : "mb-1"
+						} ${activeSchedule?.classes ? "" : "opacity-60"}`}
+						onClick={handleSearch}
+					>
+						Search
+					</button>
 					{searchError != "" && <p className="text-red-400 text-sm mb-4">{searchError}</p>}
 					{!activeSchedule?.classes && (
 						<p className="italic text-sm mb-4">
