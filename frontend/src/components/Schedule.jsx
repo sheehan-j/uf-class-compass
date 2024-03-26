@@ -5,8 +5,9 @@ import Colors from "../constants/Colors";
 import DaysBox from "./DaysBox";
 import { Days } from "../constants/Days";
 import { getPeriodTimes } from "../constants/BlockTimes";
+import SlidingSidebar from "../components/SlidingSidebar"
 
-const Schedule = ({ colCount, maxRowCount }) => {
+const Schedule = ({ colCount, maxRowCount}) => {
 	const dummyClasses = [
 		{
 			instructor: "Albert Ritzhaupt",
@@ -80,6 +81,8 @@ const Schedule = ({ colCount, maxRowCount }) => {
 	const [classes] = useState(dummyClasses);
 	const [credits, setCredits] = useState(0);
 	const [newRowCount, setRowCount] = useState(maxRowCount);
+	const [isClassClicked, setIsClassClicked] = useState(false);
+	const [cell, setCell] = useState();
 
 	useEffect(() => {
 		const rows = [];
@@ -133,7 +136,7 @@ const Schedule = ({ colCount, maxRowCount }) => {
 	}, [colCount, maxRowCount, classes]);
 
 	return (
-		<div className="px-10 py-20 w-full min-h-full flex">
+		<div className="px-10 py-20 w-full min-h-full flex relative">
 			<div
 				className="flex flex-col mr-3"
 				style={{
@@ -202,6 +205,9 @@ const Schedule = ({ colCount, maxRowCount }) => {
 						colCount={colCount}
 						rowCount={newRowCount}
 						isSkeleton={false}
+						isClassClicked={isClassClicked}
+						setIsClassClicked={setIsClassClicked}
+						setCell={setCell}
 					/>
 					<Grid
 						key={"coloredGrid"}
@@ -209,9 +215,13 @@ const Schedule = ({ colCount, maxRowCount }) => {
 						colCount={colCount}
 						rowCount={newRowCount}
 						isSkeleton={true}
+						isClassClicked={isClassClicked}
+						setIsClassClicked={setIsClassClicked}
+						setCell={setCell}
 					/>
 				</div>
 			</div>
+			<SlidingSidebar isClassClicked={isClassClicked} setIsClassClicked={setIsClassClicked} cell={cell}/>
 		</div>
 	);
 };
