@@ -14,8 +14,9 @@ const Home = () => {
 			const data = await SchedulesApi.getAllSchedules();
 			setSchedules(data);
 			setActiveSchedule(data.length > 0 ? data[0] : {});
+			// TODO: Along with handleSelectSchedule in MySchedules.jsx, decide if we want to auto select an active class or no
 			// This is little wack but it's just checking if there are any schedules and then if the first schedule has any classes
-			setActiveClass(data.length > 0 ? (data[0].classes.length > 0 ? data[0].classes[0] : {}) : {});
+			// setActiveClass(data.length > 0 ? (data[0].classes.length > 0 ? data[0].classes[0] : {}) : {});
 		};
 
 		loadSchedules();

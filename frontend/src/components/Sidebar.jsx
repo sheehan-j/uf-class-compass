@@ -5,6 +5,7 @@ import MySchedules from "./MySchedules";
 import CourseCodeButton from "./CourseCodeButton";
 import { ClassesApi } from "../api/ClassesApi";
 import { SchedulesApi } from "../api/SchedulesApi";
+import { ConflictsUtil } from "../../util/ConflictsUtil";
 
 const Sidebar = ({
 	schedules,
@@ -21,17 +22,34 @@ const Sidebar = ({
 	const [searchTerm, setSearchTerm] = useState("");
 	const [searchError, setSearchError] = useState("");
 
-	// Fetch class sections corresponding to the active classs
-	useEffect(() => {
-		const updateClassResults = async () => {
-			const result = await ClassesApi.getClassesByCode(activeClass.code);
-			setClassResults(result);
-		};
+	// const updateClassResults = async () => {
+	// 	result = await ClassesApi.getClassesByCode(classItem.code);
+	// 	result = result.map((classItem) => {
+	// 		const conflicts = ConflictsUtil.checkConflict(activeSchedule, classItem);
+	// 		return {
+	// 			...classItem,
+	// 			conflicts,
+	// 		};
+	// 	});
 
-		if (activeClass.number) {
-			updateClassResults();
-		}
-	}, [activeClass]);
+	// 	setClassResults(result);
+	// };
+
+	// Fetch class sections corresponding to the active classs
+	// useEffect(() => {
+
+	// 	if (activeClass.number) {
+	// 		updateClassResults();
+	// 	}
+	// }, [activeClass]);
+
+	const handleClassSelected = async (classItem) => {
+		let result = await ClassesApi.getClassesByCode(classItem.code);
+		result = await ConflictsUtil.updateClassListWithConflicts(activeSchedule, result);
+
+		setActiveClass(classItem);
+		setClassResults(result);
+	};
 
 	const handleSearchInputKeyUp = async (e) => {
 		if (e.key == "Enter") {
@@ -48,8 +66,9 @@ const Sidebar = ({
 	};
 
 	const handleSearch = async () => {
-		const result = await ClassesApi.getClassesByCode(searchTerm.toUpperCase());
+		let result = await ClassesApi.getClassesByCode(searchTerm.toUpperCase());
 		if (result) {
+			result = await ConflictsUtil.updateClassListWithConflicts(activeSchedule, result);
 			setClassResults(result);
 			setActiveClass({ code: searchTerm.toUpperCase() });
 		} else {
@@ -180,7 +199,7 @@ const Sidebar = ({
 											key={classItem.number}
 											classItem={classItem}
 											active={activeClass?.number == classItem.number}
-											setActiveClass={setActiveClass}
+											handleClassSelected={handleClassSelected}
 											handleDeleteClass={handleDeleteClass}
 										/>
 									))}
@@ -217,16 +236,17 @@ const Sidebar = ({
 					{activeClass.code && (
 						<>
 							<p className="mb-1">Course Sections &#40;{activeClass.code}&#41;</p>
-							{classResults.map((classItem) => (
-								<CourseSectionBox
-									key={classItem.number}
-									classItem={classItem}
-									handleAddClass={handleAddClass}
-									activeSchedule={activeSchedule}
-									handleHoverClassStart={handleHoverClassStart}
-									handleHoverClassEnd={handleHoverClassEnd}
-								/>
-							))}
+							{classResults?.length > 0 &&
+								classResults?.map((classItem) => (
+									<CourseSectionBox
+										key={classItem.number}
+										classItem={classItem}
+										handleAddClass={handleAddClass}
+										activeSchedule={activeSchedule}
+										handleHoverClassStart={handleHoverClassStart}
+										handleHoverClassEnd={handleHoverClassEnd}
+									/>
+								))}
 						</>
 					)}
 				</>
