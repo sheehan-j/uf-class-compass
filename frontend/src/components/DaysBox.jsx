@@ -1,4 +1,5 @@
 import { Days, getDayString } from "../constants/Days";
+import StyleColors from "../constants/StyleColors";
 
 const DaysBox = () => {
 	const currentDate = new Date().getDay() - 1; // Adjusting for Monday start
@@ -15,7 +16,7 @@ const DaysBox = () => {
 						display: "flex",
 						justifyContent: "center",
 						alignItems: "center",
-						backgroundColor: index === currentDate ? "rgb(30,144,255)" : "rgb(235, 235, 235)",
+						backgroundColor: index === currentDate ? `${StyleColors.blue}` : `${StyleColors.gray}`,
 						color: index === currentDate ? "white" : "#8F8F8F",
 						border: index === currentDate ? "none" : "2px solid #DEDEDE",
 						borderRadius: "1000px",

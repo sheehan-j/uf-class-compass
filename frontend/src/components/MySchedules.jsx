@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import StyleColors from "../constants/StyleColors";
 import MyScheduleBox from "./MyScheduleBox";
 
 const MySchedules = () => {
@@ -38,11 +39,11 @@ const MySchedules = () => {
 
     return (
         <div className="w-full">
-            <div className="relative">
+            <div className="relative pb-3">
                 <p>My Schedules</p>
                 <img className="absolute right-0 top-0" src="/folder.svg"/>
             </div>
-            <div className="bg-gray-200 w-full p-2 flex items-center justify-center flex-col mb-2">
+            <div className="bg-white w-full p-2 flex items-center justify-center flex-col mb-2">
                 {!isCollapsed ? (
                     <>{scheduleNames.map((name) => (
                     <MyScheduleBox
@@ -54,14 +55,14 @@ const MySchedules = () => {
                     />
                 ))}
                 <div className="relative w-full flex items-center justify-center">
-                    <button className="bg-white px-3 py-1" onClick={handleNewSchedule}>New Schedule</button>
+                    <button style={{backgroundColor: StyleColors.gray, borderRadius: "5px"}}  className="px-3 py-1 text-black" onClick={handleNewSchedule}>New Schedule</button>
                     <button className="absolute bottom-0 right-0" onClick={handleToggleCollapse}><img src="/collapse_vertical.svg" /></button>
                 </div>
                 </>) :(<button onClick={handleToggleCollapse}><img src="/expand.svg" /></button>)}
                 
             </div>
             <div className="flex justify-center w-full">
-                <div className="flex justify-center mb-4 py-1" style={{border: "1px solid gray", borderRadius: "1000px", width: "80%"}}>{selectedSchedule}</div>
+                <div className="flex justify-center mb-4 py-1" style={{border: "1px solid white", borderRadius: "1000px", width: "80%"}}>{selectedSchedule}</div>
             </div>
         </div>
     );
