@@ -8,12 +8,6 @@ exports.mapClassResults = (classes) => {
 		return {
 			...classObj.toObject(),
 			instructor: classObj.instructor.name,
-			meetings: classObj.meetings.map((meeting) => {
-				return {
-					...meeting.toObject(),
-					building: meeting.building.code,
-				};
-			}),
 		};
 	});
 };
