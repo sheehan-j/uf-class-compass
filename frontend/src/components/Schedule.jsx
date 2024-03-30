@@ -41,7 +41,7 @@ const Schedule = ({ colCount, maxRowCount, activeSchedule, previewSchedule }) =>
 						isClass: true,
 						color: Colors.classColors[colorIndex],
 						code: classItem.code,
-						location: `${meetingItem.building} ${meetingItem.room}`,
+						location: `${meetingItem.building.code} ${meetingItem.room}`,
 						length: meetingItem.length,
 					};
 
