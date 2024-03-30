@@ -5,79 +5,10 @@ import Colors from "../constants/Colors";
 import DaysBox from "./DaysBox";
 import { Days } from "../constants/Days";
 import { getPeriodTimes } from "../constants/BlockTimes";
+import { SchedulesApi } from "../api/SchedulesApi";
 
-const Schedule = ({ colCount, maxRowCount }) => {
-	const dummyClasses = [
-		{
-			instructor: "Albert Ritzhaupt",
-			code: "CIS4930",
-			meetings: [
-				{
-					col: Days.Monday,
-					row: 1, //TODO figure out if we want to zero index?
-					length: 1,
-					location: "FLG 0260",
-				},
-				{
-					col: Days.Wednesday,
-					row: 3,
-					length: 1,
-					location: "FLG 0230",
-				},
-				{
-					col: Days.Friday,
-					row: 3,
-					length: 1,
-					location: "FLG 0260",
-				},
-			],
-		},
-		{
-			instructor: "Alexander Gomes",
-			code: "COP4600",
-			meetings: [
-				{
-					col: Days.Tuesday,
-					row: 4,
-					length: 2,
-					location: "CAR 0100",
-				},
-				{
-					col: Days.Thursday,
-					row: 4,
-					length: 1,
-					location: "CAR 0100",
-				},
-			],
-		},
-		{
-			instructor: "David Wright",
-			code: "PHI3681",
-			meetings: [
-				{
-					col: Days.Monday,
-					row: 5,
-					length: 1,
-					location: "Online",
-				},
-				{
-					col: Days.Wednesday,
-					row: 5,
-					length: 1,
-					location: "Online",
-				},
-				{
-					col: Days.Friday,
-					row: 6,
-					length: 1,
-					location: "Online",
-				},
-			],
-		},
-	];
-
+const Schedule = ({ colCount, maxRowCount, activeSchedule, previewSchedule }) => {
 	const [grid, setGrid] = useState([]);
-	const [classes] = useState(dummyClasses);
 	const [credits, setCredits] = useState(0);
 	const [newRowCount, setRowCount] = useState(maxRowCount);
 
@@ -85,52 +16,63 @@ const Schedule = ({ colCount, maxRowCount }) => {
 		const rows = [];
 		for (var i = 0; i < maxRowCount; i++) {
 			const row = [];
-			for (var j = 0; j < colCount; j++) row.push({ isClass: false, row: i + 1 });
+			for (var j = 0; j < colCount; j++) row.push({ isClass: false, period: i + 1 });
 			rows.push(row);
-		}
-
-		var colorIndex = 0;
-		let totalCredits = 0;
-		classes.forEach((classItem) => {
-			classItem.meetings.forEach((meetingItem) => {
-				totalCredits += meetingItem.length;
-				rows[meetingItem.row][meetingItem.col] = {
-					row: meetingItem.row + 1,
-					instructor: classItem.instructor,
-					isClass: true,
-					color: Colors.classColors[colorIndex],
-					code: classItem.code,
-					location: meetingItem.location,
-					length: meetingItem.length,
-				};
-
-				for (var i = 1; i < meetingItem.length; i++) {
-					rows[meetingItem.row + i][meetingItem.col] = {
-						row: meetingItem.row + 1,
-						isClass: true,
-						color: Colors.classColors[colorIndex],
-					};
-				}
-			});
-			colorIndex++;
-		});
-
-		while (rows.length > 1 && !rows[0].some((cell) => cell.isClass) && !rows[1].some((cell) => cell.isClass)) {
-			rows.shift();
-		}
-
-		while (
-			rows.length > 1 &&
-			!rows[rows.length - 1].some((cell) => cell.isClass) &&
-			!rows[rows.length - 2].some((cell) => cell.isClass)
-		) {
-			rows.pop();
 		}
 
 		setRowCount(rows.length);
 		setGrid(rows);
-		setCredits(totalCredits);
-	}, [colCount, maxRowCount, classes]);
+
+		var colorIndex = 0;
+		let totalCredits = 0;
+		let classes = null;
+		if (previewSchedule?.classes?.length > 0) classes = previewSchedule.classes;
+		else if (activeSchedule?.classes?.length > 0) classes = activeSchedule.classes;
+
+		if (classes) {
+			classes.forEach((classItem) => {
+				totalCredits += classItem?.credits;
+
+				classItem?.meetings?.forEach((meetingItem) => {
+					rows[meetingItem.period - 1][meetingItem.day] = {
+						// ** Subtract 1 from the period to zero it (all periods stored for classes are 1-based)
+						period: meetingItem.period,
+						instructor: classItem.instructor,
+						isClass: true,
+						color: Colors.classColors[colorIndex],
+						code: classItem.code,
+						location: `${meetingItem.building} ${meetingItem.room}`,
+						length: meetingItem.length,
+					};
+
+					for (var i = 1; i < meetingItem.length; i++) {
+						rows[meetingItem.period - 1 + i][meetingItem.day] = {
+							period: meetingItem.period,
+							isClass: true,
+							color: Colors.classColors[colorIndex],
+						};
+					}
+				});
+				colorIndex++;
+			});
+
+			while (rows.length > 1 && !rows[0].some((cell) => cell.isClass) && !rows[1].some((cell) => cell.isClass)) {
+				rows.shift();
+			}
+
+			while (
+				rows.length > 1 &&
+				!rows[rows.length - 1].some((cell) => cell.isClass) &&
+				!rows[rows.length - 2].some((cell) => cell.isClass)
+			) {
+				rows.pop();
+			}
+
+			setRowCount(rows.length);
+			setGrid(rows);
+			setCredits(totalCredits);
+		}
+	}, [colCount, maxRowCount, activeSchedule, previewSchedule]);
 
 	return (
 		<div className="px-10 py-20 w-full min-h-full flex">
@@ -160,7 +102,7 @@ const Schedule = ({ colCount, maxRowCount }) => {
 								className="italic absolute"
 								style={{ whiteSpace: "nowrap", fontSize: "0.9rem", top: "-0.45rem", right: "1.5rem" }}
 							>
-								{getPeriodTimes(row[0].row).start}
+								{getPeriodTimes(row[0].period).start}
 							</div>
 							<div
 								style={{
@@ -170,7 +112,7 @@ const Schedule = ({ colCount, maxRowCount }) => {
 									alignItems: "center",
 								}}
 							>
-								{row[0].row}
+								{row[0].period}
 							</div>
 						</div>
 					))}
@@ -219,6 +161,8 @@ const Schedule = ({ colCount, maxRowCount }) => {
 Schedule.propTypes = {
 	colCount: PropTypes.number.isRequired,
 	maxRowCount: PropTypes.number.isRequired,
+	activeSchedule: PropTypes.object.isRequired,
+	previewSchedule: PropTypes.object.isRequired,
 };
 
 export default Schedule;

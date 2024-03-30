@@ -2,7 +2,7 @@ import PropTypes from "prop-types";
 import { getPeriodTimes } from "../constants/BlockTimes";
 
 const ClassCell = ({ cell }) => {
-	const { color, code, instructor, location, length, row } = cell;
+	const { color, code, instructor, location, length, period } = cell;
 	return (
 		<div
 			className="z-10 p-1.5 flex flex-col justify-between box-content relative classCellWrapper"
@@ -17,7 +17,7 @@ const ClassCell = ({ cell }) => {
 			<div style={{ fontSize: "0.9rem", lineHeight: "1.2rem" }}>
 				{length && (
 					<div>
-						{getPeriodTimes(row).start}-{getPeriodTimes(row + length - 1).end}
+						{getPeriodTimes(period).start}-{getPeriodTimes(period + length - 1).end}
 					</div>
 				)}
 				<div className="font-semibold">{location}</div>

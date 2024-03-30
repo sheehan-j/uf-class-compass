@@ -1,15 +1,145 @@
 import "../styles/Sidebar.css";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import CourseSectionBox from "./CourseSectionBox";
 import MySchedules from "./MySchedules";
 import CourseCodeButton from "./CourseCodeButton";
+import { ClassesApi } from "../api/ClassesApi";
+import { SchedulesApi } from "../api/SchedulesApi";
+import { ConflictsUtil } from "../../util/ConflictsUtil";
 
-const Sidebar = () => {
+const Sidebar = ({
+	schedules,
+	setSchedules,
+	activeSchedule,
+	setActiveSchedule,
+	activeClass,
+	setActiveClass,
+	previewSchedule,
+	setPreviewSchedule,
+}) => {
 	const [selectedButton, setSelectedButton] = useState("schedulePlanner");
+	const [classResults, setClassResults] = useState([]);
+	const [searchTerm, setSearchTerm] = useState("");
+	const [searchError, setSearchError] = useState("");
 
-	const handleButtonClick = (button) => {
-		setSelectedButton(button);
+	// const updateClassResults = async () => {
+	// 	result = await ClassesApi.getClassesByCode(classItem.code);
+	// 	result = result.map((classItem) => {
+	// 		const conflicts = ConflictsUtil.checkConflict(activeSchedule, classItem);
+	// 		return {
+	// 			...classItem,
+	// 			conflicts,
+	// 		};
+	// 	});
+
+	// 	setClassResults(result);
+	// };
+
+	// Fetch class sections corresponding to the active classs
+	// useEffect(() => {
+
+	// 	if (activeClass.number) {
+	// 		updateClassResults();
+	// 	}
+	// }, [activeClass]);
+
+	const handleClassSelected = async (classItem) => {
+		let result = await ClassesApi.getClassesByCode(classItem.code);
+		result = await ConflictsUtil.updateClassListWithConflicts(activeSchedule, result);
+
+		setActiveClass(classItem);
+		setClassResults(result);
 	};
+
+	const handleSearchInputKeyUp = async (e) => {
+		if (e.key == "Enter") {
+			handleSearch();
+		} else {
+			setSearchError("");
+			setPreviewSchedule({});
+
+			if (searchTerm == "") {
+				setClassResults([]);
+				setActiveClass({});
+			}
+		}
+	};
+
+	const handleSearch = async () => {
+		let result = await ClassesApi.getClassesByCode(searchTerm.toUpperCase());
+		if (result) {
+			result = await ConflictsUtil.updateClassListWithConflicts(activeSchedule, result);
+			setClassResults(result);
+			setActiveClass({ code: searchTerm.toUpperCase() });
+		} else {
+			setClassResults([]);
+			setActiveClass({});
+			setSearchError("Error: Class not found.");
+		}
+	};
+
+	const handleAddClass = async (classItem) => {
+		// First, check that the class being clicked is not already in the schedule
+		if (!activeSchedule.classes.some((activeScheduleClass) => activeScheduleClass._id == classItem._id)) {
+			// Check if there is a different section of the class being added already on the schedule
+			const activeClassesWithSameCode = activeSchedule.classes.filter(
+				(activeScheduleClass) => activeScheduleClass.code == classItem.code
+			);
+
+			// Remove it from the schedule if its found
+			if (activeClassesWithSameCode.length > 0) {
+				await SchedulesApi.deleteClassFromSchedule(activeSchedule._id, activeClassesWithSameCode[0]._id);
+			}
+
+			const result = await SchedulesApi.addClassToSchedule(activeSchedule._id, classItem._id);
+			setActiveClass(classItem);
+			setSchedules(result);
+			setActiveSchedule(result.filter((schedule) => schedule._id == activeSchedule._id)[0]);
+
+			// Clear any hovering-related info
+			setPreviewSchedule({});
+		}
+	};
+
+	const handleDeleteClass = async (classItem) => {
+		const result = await SchedulesApi.deleteClassFromSchedule(activeSchedule._id, classItem._id);
+		setSchedules(result);
+		const updatedActiveSchedule = result.filter((schedule) => schedule._id == activeSchedule._id)[0];
+		setActiveSchedule(updatedActiveSchedule);
+
+		// Clear out the class results and active class unless the course is already in the search term
+		if (searchTerm.toUpperCase() !== classItem.code) {
+			setActiveClass({});
+			setClassResults([]);
+		}
+	};
+
+	const handleHoverClassStart = (classItem) => {
+		if (!activeSchedule.classes.some((activeScheduleClass) => activeScheduleClass._id == classItem._id)) {
+			const updatedActiveSchedule = structuredClone(activeSchedule);
+			updatedActiveSchedule.classes = updatedActiveSchedule.classes.filter(
+				(activeScheduleClass) => activeScheduleClass.code != classItem.code
+			);
+			updatedActiveSchedule.classes.push({ ...classItem, muteInActiveCourses: true });
+			setPreviewSchedule(updatedActiveSchedule);
+		}
+	};
+
+	const handleHoverClassEnd = () => {
+		if (previewSchedule.classes) {
+			setPreviewSchedule({});
+		}
+	};
+
+	useEffect(() => {
+		setSearchError("");
+
+		if (!activeSchedule?.classes) {
+			setActiveClass({});
+			setClassResults([]);
+			setSearchTerm("");
+		}
+	}, [activeSchedule]);
 
 	return (
 		<div className="w-1/4 p-5 sidebarWrapper">
@@ -21,54 +151,107 @@ const Sidebar = () => {
 			<div className="sidebarOptionsWrapper" style={{ width: "100%" }}>
 				<button
 					className={`sidebarOptionButton ${selectedButton === "schedulePlanner" ? "selected" : ""}`}
-					onClick={() => handleButtonClick("schedulePlanner")}
+					onClick={() => setSelectedButton("schedulePlanner")}
 				>
 					<div>Schedule Planner</div>
 					<img className="buttonIcon" id="defaultProfile" src="/schedule_icon.svg" />
 				</button>
 				<button
 					className={`sidebarOptionButton ${selectedButton === "fullCourseSearch" ? "selected" : ""}`}
-					onClick={() => handleButtonClick("fullCourseSearch")}
+					onClick={() => setSelectedButton("fullCourseSearch")}
 				>
 					<div>Full Course Search</div>
 					<img className="buttonIcon" id="defaultProfile" src="/search_icon.svg" />
 				</button>
-				<button
+				{/* <button
 					className={`sidebarOptionButton ${selectedButton === "profile" ? "selected" : ""}`}
-					onClick={() => handleButtonClick("profile")}
+					onClick={() => setSelectedButton("profile")}
 				>
 					<div>Profile</div>
 					<img className="buttonIcon" id="defaultProfile" src="/profile_icon.svg" />
-				</button>
+				</button> */}
 			</div>
 			<div className="line"></div>
-			<div style={{height: "3%"}}/>
+			<div style={{ height: "3%" }} />
 			{/* bad design to compensate for line having to be absolute */}
-		
+
 			{selectedButton === "schedulePlanner" && (
 				<>
-				<MySchedules/>
-
-				<div className="courseSearchBox relative mb-2">
-					<input
-						className="w-full py-2 px-2 flex align-center bg-white border border-gray-300"
-						placeholder="Course Code Search"
+					<MySchedules
+						schedules={schedules}
+						setSchedules={setSchedules}
+						activeSchedule={activeSchedule}
+						setActiveSchedule={setActiveSchedule}
+						activeClass={activeClass}
+						setActiveClass={setActiveClass}
+						classResults={classResults}
+						setClassResults={setClassResults}
 					/>
-				</div>
-				
-				<div className="grid w-full relative flex flex-wrap justify-start mb-4" style={{gridTemplateColumns: `repeat(2, minmax(0, 1fr))`, gap:"5%"}}>
-					<CourseCodeButton name="CIS4930" />
-					<CourseCodeButton name="CIS4930" />
-					<CourseCodeButton name="CIS4930" />
-				</div>
 
-				<p>Course Sections</p>
-				<CourseSectionBox name="Class #1234"/>
-				<CourseSectionBox name="Class #2345"/>
-				<CourseSectionBox name="Class #3456"/>
+					{activeSchedule?.classes?.length > 0 && (
+						<>
+							<p className="mb-1">Active Courses</p>
+							<div className="mb-4">
+								{activeSchedule?.classes
+									?.filter((classItem) => classItem?.muteInActiveCourses != true)
+									?.map((classItem) => (
+										<CourseCodeButton
+											key={classItem.number}
+											classItem={classItem}
+											active={activeClass?.number == classItem.number}
+											handleClassSelected={handleClassSelected}
+											handleDeleteClass={handleDeleteClass}
+										/>
+									))}
+							</div>
+						</>
+					)}
+
+					<p className={`mb-1 ${activeSchedule?.classes ? "" : "opacity-40"}`}>Course Code Search</p>
+					<input
+						className={`w-full py-2 px-2 flex align-center bg-white border border-gray-300 mb-3 ${
+							activeSchedule?.classes ? "" : "opacity-60 line-through"
+						}`}
+						placeholder="Enter class code (e.g. CIS4930)"
+						value={searchTerm}
+						onChange={(e) => setSearchTerm(e.target.value)}
+						onKeyUp={handleSearchInputKeyUp}
+						disabled={!activeSchedule?.classes}
+					/>
+					<button
+						className={`w-full text-white bg-blue-600 hover:bg-blue-700 py-2 rounded-lg ${
+							searchError == "" && activeSchedule?.classes ? "mb-4" : "mb-1"
+						} ${activeSchedule?.classes ? "" : "opacity-60"}`}
+						onClick={handleSearch}
+					>
+						Search
+					</button>
+					{searchError != "" && <p className="text-red-400 text-sm mb-4">{searchError}</p>}
+					{!activeSchedule?.classes && (
+						<p className="italic text-sm mb-4">
+							Select or create a schedule to start searching for classes.
+						</p>
+					)}
+
+					{activeClass.code && (
+						<>
+							<p className="mb-1">Course Sections &#40;{activeClass.code}&#41;</p>
+							{classResults?.length > 0 &&
+								classResults?.map((classItem) => (
+									<CourseSectionBox
+										key={classItem.number}
+										classItem={classItem}
+										handleAddClass={handleAddClass}
+										activeSchedule={activeSchedule}
+										handleHoverClassStart={handleHoverClassStart}
+										handleHoverClassEnd={handleHoverClassEnd}
+									/>
+								))}
+						</>
+					)}
 				</>
 			)}
-			
+
 			{/* <div className="absolute bottom-2 left-2 w-full flex justify-start text-sm">
 				Copyright &copy; 2024 Duck Duck Slow
 			</div> */}

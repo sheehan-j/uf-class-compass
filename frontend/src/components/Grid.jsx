@@ -1,6 +1,7 @@
 import PropTypes from "prop-types";
 import EmptyCell from "./EmptyCell";
 import ClassCell from "./ClassCell";
+import { Fragment } from "react";
 
 const Grid = ({ grid, colCount, rowCount, isSkeleton }) => {
 	return (
@@ -15,7 +16,7 @@ const Grid = ({ grid, colCount, rowCount, isSkeleton }) => {
 			}}
 		>
 			{grid.map((row, rowIndex) => (
-				<>
+				<Fragment key={rowIndex}>
 					{row.map((cell, colIndex) =>
 						// If this grid is a skeleton, only draw empty cells with borders
 						isSkeleton ? (
@@ -28,7 +29,7 @@ const Grid = ({ grid, colCount, rowCount, isSkeleton }) => {
 							<EmptyCell key={rowIndex * colCount + colIndex} hasBorder={false} />
 						)
 					)}
-				</>
+				</Fragment>
 			))}
 		</div>
 	);
