@@ -7,7 +7,7 @@ const Home = () => {
             <Navbar />
             <div className="border-b flex justify-center items-center p-10">
                 <div className="p-5" style={{width: "60%"}}>
-                    <h1 className="text-5xl font-bold pb-10">UF Class Campus</h1>
+                    <h1 className="text-5xl font-bold pb-10">UF Class Compass</h1>
                     <h3 className="text-xl pb-10">Plan your schedule with ease</h3>
                     <Link className="link-item" to="/">
                         <button className="py-2.5 px-5 rounded-lg text-white text-xl" style={{backgroundColor: StyleColors.orange}}>Start Building Your Schedule Now</button>
