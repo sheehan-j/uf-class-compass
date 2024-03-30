@@ -1,12 +1,21 @@
 import PropTypes from "prop-types";
 import { getPeriodTimes } from "../constants/BlockTimes";
+import { useRef } from "react";
 
-const ClassCell = ({ cell }) => {
+const ClassCell = ({ cell, onCellClick }) => {
 	const { color, code, instructor, location, length, row } = cell;
+	const cellRef = useRef(null);
+
+	const clickClass = () => {
+        onCellClick();
+    };
+
 	return (
 		<div
+			ref={cellRef}
 			className="z-10 p-1.5 flex flex-col justify-between box-content relative classCellWrapper"
 			style={{ backgroundColor: color, borderWidth: "1px", borderColor: color, cursor: "pointer" }}
+			onClick={clickClass}
 		>
 			<div>
 				<div className="font-semibold" style={{ fontSize: "1.05rem", lineHeight: "1.1rem" }}>
@@ -35,6 +44,7 @@ ClassCell.propTypes = {
 		length: PropTypes.number,
 		row: PropTypes.number,
 	}).isRequired,
+	onCellClick: PropTypes.func.isRequired, 
 };
 
 export default ClassCell;

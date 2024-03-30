@@ -1,5 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
+import StyleColors from "../constants/StyleColors";
 
 const MyScheduleBox = ({ name, onSelect, selected, onRemove }) => {
     const handleClick = () => {
@@ -13,12 +14,16 @@ const MyScheduleBox = ({ name, onSelect, selected, onRemove }) => {
 
     return (
         <div
-            className={`courseSectionBox w-full h-9 relative cursor-pointer border border-gray-400 flex items-center mb-2 ${selected ? "bg-gray-300" : "bg-white"}`}
+            style={{backgroundColor: selected ? StyleColors.blue : "white", color: selected ? "white" : "black"}}
+            className={`courseSectionBox w-full h-9 relative cursor-pointer border border-gray-400 flex items-center mb-2 `}
             onClick={handleClick}
         >
-            <p className="ml-2 text-gray-500">{name}</p>
+            <p className="ml-2">{name}</p>
             <button className="removeScheduleButton absolute right-0 w-6 h-full hover:bg-gray-400" onClick={handleRemove}>
-                <img src="/minus.svg" />
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="12" cy="12" r="9" stroke={selected ? "white" : `${StyleColors.blue}`} strokeOpacity="0.25" strokeWidth="1.2"/>
+                <path d="M7.5 12H16.5" stroke={selected ? "white" : `${StyleColors.blue}`} strokeWidth="1.2"/>
+            </svg>
             </button>
         </div>
     );
