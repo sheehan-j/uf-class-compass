@@ -6,6 +6,7 @@ import CourseCodeButton from "./CourseCodeButton";
 import { ClassesApi } from "../api/ClassesApi";
 import { SchedulesApi } from "../api/SchedulesApi";
 import { ConflictsUtil } from "../../util/ConflictsUtil";
+import { DistanceUtil } from "../../util/DistanceUtil";
 
 const Sidebar = ({
 	schedules,
@@ -21,27 +22,6 @@ const Sidebar = ({
 	const [classResults, setClassResults] = useState([]);
 	const [searchTerm, setSearchTerm] = useState("");
 	const [searchError, setSearchError] = useState("");
-
-	// const updateClassResults = async () => {
-	// 	result = await ClassesApi.getClassesByCode(classItem.code);
-	// 	result = result.map((classItem) => {
-	// 		const conflicts = ConflictsUtil.checkConflict(activeSchedule, classItem);
-	// 		return {
-	// 			...classItem,
-	// 			conflicts,
-	// 		};
-	// 	});
-
-	// 	setClassResults(result);
-	// };
-
-	// Fetch class sections corresponding to the active classs
-	// useEffect(() => {
-
-	// 	if (activeClass.number) {
-	// 		updateClassResults();
-	// 	}
-	// }, [activeClass]);
 
 	const handleClassSelected = async (classItem) => {
 		let result = await ClassesApi.getClassesByCode(classItem.code);
@@ -94,7 +74,10 @@ const Sidebar = ({
 			const result = await SchedulesApi.addClassToSchedule(activeSchedule._id, classItem._id);
 			setActiveClass(classItem);
 			setSchedules(result);
-			setActiveSchedule(result.filter((schedule) => schedule._id == activeSchedule._id)[0]);
+			const newActiveSchedule = await DistanceUtil.updateScheduleWithDistances(
+				result.filter((schedule) => schedule._id == activeSchedule._id)[0]
+			);
+			setActiveSchedule(newActiveSchedule);
 
 			// Clear any hovering-related info
 			setPreviewSchedule({});
@@ -104,8 +87,10 @@ const Sidebar = ({
 	const handleDeleteClass = async (classItem) => {
 		const result = await SchedulesApi.deleteClassFromSchedule(activeSchedule._id, classItem._id);
 		setSchedules(result);
-		const updatedActiveSchedule = result.filter((schedule) => schedule._id == activeSchedule._id)[0];
-		setActiveSchedule(updatedActiveSchedule);
+		const newActiveSchedule = await DistanceUtil.updateScheduleWithDistances(
+			result.filter((schedule) => schedule._id == activeSchedule._id)[0]
+		);
+		setActiveSchedule(newActiveSchedule);
 
 		// Clear out the class results and active class unless the course is already in the search term
 		if (searchTerm.toUpperCase() !== classItem.code) {
@@ -196,9 +181,9 @@ const Sidebar = ({
 									?.filter((classItem) => classItem?.muteInActiveCourses != true)
 									?.map((classItem) => (
 										<CourseCodeButton
-											key={classItem.number}
+											key={classItem?.number}
 											classItem={classItem}
-											active={activeClass?.number == classItem.number}
+											active={activeClass?.number == classItem?.number}
 											handleClassSelected={handleClassSelected}
 											handleDeleteClass={handleDeleteClass}
 										/>

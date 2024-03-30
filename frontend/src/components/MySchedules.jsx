@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from "react";
 import { SchedulesApi } from "../api/SchedulesApi";
 import MyScheduleBox from "./MyScheduleBox";
+import { DistanceUtil } from "../../util/DistanceUtil";
 
 const MySchedules = ({
 	schedules,
@@ -33,7 +34,8 @@ const MySchedules = ({
 	};
 
 	const handleSelectSchedule = async (schedule) => {
-		setActiveSchedule(schedule);
+		const newActiveSchedule = await DistanceUtil.updateScheduleWithDistances(schedule);
+		setActiveSchedule(newActiveSchedule);
 		// TODO: Decide whether to automatically select an active class or set it to none
 		// setActiveClass(schedule.classes.length > 0 ? schedule.classes[0] : {});
 		setActiveClass({});
