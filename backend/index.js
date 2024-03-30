@@ -28,6 +28,7 @@ app.use("/api/classes", require("./routes/classes"));
 app.use("/api/schedules", require("./routes/schedules"));
 app.use('/api/auth', require('./routes/auth'));
 app.use('/api/user', require('./routes/user'));
+app.use("/api/distance", require("./routes/distance"));
 
 if (process.env.NODE_ENV !== "production") {
   // Log routes for testing purposes
