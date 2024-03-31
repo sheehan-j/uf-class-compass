@@ -43,6 +43,7 @@ const Schedule = ({ colCount, maxRowCount, activeSchedule, previewSchedule }) =>
 						code: classItem.code,
 						location: `${meetingItem.building.code} ${meetingItem.room}`,
 						length: meetingItem.length,
+						distance: meetingItem?.distance ? meetingItem.distance : null,
 					};
 
 					for (var i = 1; i < meetingItem.length; i++) {
