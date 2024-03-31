@@ -7,28 +7,28 @@ const updateScheduleWithDistances = async (schedule) => {
 			// Go through each meeting
 			originClass.meetings = await Promise.all(
 				originClass.meetings.map(async (originMeeting) => {
-					// Check this meeting against every other meeting
+					// Check this meeting against every other meeting for back-to-back relationship
 					for (const potentialDestClass of schedule.classes) {
 						if (originClass._id !== potentialDestClass._id) {
-							potentialDestClass.meetings = await Promise.all(
-								potentialDestClass.meetings.map(async (potentialDestMeeting) => {
-									if (
-										originMeeting.period + originMeeting.length === potentialDestMeeting.period &&
-										originMeeting.day === potentialDestMeeting.day
-									) {
-										const distance = await calculateDistance(
-											originMeeting.building.pid,
-											potentialDestMeeting.building.pid
-										);
-										return {
-											...potentialDestMeeting,
-											distance: distance,
-										};
-									} else {
-										return potentialDestMeeting;
-									}
-								})
-							);
+							for (const potentialDestMeeting of potentialDestClass.meetings) {
+								if (
+									originMeeting.period + originMeeting.length === potentialDestMeeting.period &&
+									originMeeting.day === potentialDestMeeting.day
+								) {
+									const distance = await calculateDistance(
+										originMeeting.building.pid,
+										potentialDestMeeting.building.pid
+									);
+
+									return {
+										...originMeeting,
+										distance: {
+											time: distance,
+											class: potentialDestClass.code,
+										},
+									};
+								}
+							}
 						}
 					}
 					return originMeeting;
@@ -50,9 +50,8 @@ const calculateDistance = async (originPID, destinationPID) => {
 		},
 	});
 	const result = await response.json();
-	console.log(result);
 
-	return 0;
+	return result.distance;
 };
 
 export const DistanceUtil = {
