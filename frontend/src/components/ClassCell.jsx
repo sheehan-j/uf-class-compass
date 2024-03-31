@@ -1,11 +1,29 @@
 import PropTypes from "prop-types";
 import { getPeriodTimes } from "../constants/BlockTimes";
+import { useRef, useState, useEffect } from "react";
 
 const ClassCell = ({ cell }) => {
-	const { color, code, instructor, location, length, period } = cell;
+	const distanceTooltipRef = useRef(null);
+	const [distanceHovered, setDistanceHovered] = useState(false);
+	const { color, code, instructor, location, length, period, distance } = cell;
+
+	useEffect(() => {
+		if (distanceTooltipRef?.current) {
+			if (distanceHovered) {
+				distanceTooltipRef.current.style.top = "-0.4rem";
+				distanceTooltipRef.current.style.opacity = "1";
+			} else {
+				distanceTooltipRef.current.style.top = "0.7rem";
+				distanceTooltipRef.current.style.opacity = "0";
+			}
+		}
+	}, [distanceHovered]);
+
 	return (
 		<div
-			className="z-10 p-1.5 flex flex-col justify-between box-content relative classCellWrapper"
+			className={`z-10 p-1.5 flex flex-col justify-between box-content relative classCellWrapper ${
+				distance ? "z-20" : "z-10"
+			}`}
 			style={{ backgroundColor: color, borderWidth: "1px", borderColor: color, cursor: "pointer" }}
 		>
 			<div>
@@ -14,13 +32,52 @@ const ClassCell = ({ cell }) => {
 				</div>
 				<div style={{ fontSize: "0.9rem" }}>{instructor}</div>
 			</div>
-			<div style={{ fontSize: "0.9rem", lineHeight: "1.2rem" }}>
-				{length && (
-					<div>
-						{getPeriodTimes(period).start}-{getPeriodTimes(period + length - 1).end}
+			<div className="flex justify-between items-end" style={{ fontSize: "0.9rem", lineHeight: "1.2rem" }}>
+				<div>
+					{length && (
+						<div>
+							{getPeriodTimes(period).start}-{getPeriodTimes(period + length - 1).end}
+						</div>
+					)}
+					<div className="font-semibold">{location}</div>
+				</div>
+				{distance && (
+					<div
+						className="relative block pb-1.5"
+						onMouseEnter={() => setDistanceHovered(true)}
+						onMouseLeave={() => setDistanceHovered(false)}
+					>
+						<p
+							ref={distanceTooltipRef}
+							className="absolute text-sm text-nowrap bg-white py-0.5 px-2 rounded border-gray-300 border"
+							style={{
+								left: "50%",
+								width: "auto",
+								top: "0.7rem", // Animates to -0.3rem
+								transform: "translateX(-50%) translateY(-100%)",
+								transition: "all 0.15s linear",
+								opacity: "0",
+							}}
+						>
+							<span
+								className={`font-bold ${
+									parseInt(distance.time.substring(0, distance.time.indexOf(" "))) >= 16
+										? "text-red-800"
+										: "text-lime-600"
+								}`}
+							>
+								{distance.time.substring(0, distance.time.length - 1)}
+							</span>{" "}
+							walk to {distance.class}
+						</p>
+						<img src="./walking.svg" className="w-7 h-7" />
+						<img
+							src="./arrow.svg"
+							className="absolute h-8 z-20"
+							style={{ left: "50%", bottom: "0.1rem", transform: "translateX(-50%) translateY(100%)" }}
+						/>
 					</div>
 				)}
-				<div className="font-semibold">{location}</div>
 			</div>
 		</div>
 	);
