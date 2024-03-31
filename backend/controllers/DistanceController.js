@@ -2,7 +2,6 @@ const { Client } = require("@googlemaps/google-maps-services-js");
 
 exports.getDistance = async (req, res) => {
 	const client = new Client({});
-	console.log(process.env.GOOGLE_MAPS_API_KEY);
 
 	client
 		.distancematrix({
@@ -15,7 +14,6 @@ exports.getDistance = async (req, res) => {
 			timeout: 1000, // milliseconds
 		})
 		.then((r) => {
-			console.log(JSON.stringify(r.data.rows[0].elements[0].duration.text));
 			return res.status(200).json({
 				distance: r.data.rows[0].elements[0].duration.text,
 			});
