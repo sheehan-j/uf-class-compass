@@ -13,7 +13,7 @@ const Sidebar = () => {
 	};
 
 	return (
-		<div style={{backgroundColor: StyleColors.gray}} className="w-1/4 p-5 text-black relative sidebarWrapper left-0 overflow-y-auto">
+		<div style={{backgroundColor: StyleColors.gray}} className="hidden w-1/4 p-5 text-black relative lg:block left-0 overflow-y-auto">
 			<div className="LogoWrapper">
 				<img id="logo" src="/CourseCompassLogo.png" alt="Logo" />
 				<div id="logoText">UF Class Compass</div>

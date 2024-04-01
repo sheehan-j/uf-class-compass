@@ -44,7 +44,7 @@ const UserPage = () => {
         <Navbar />
 		<div className="w-full h-full flex pt-10">
 			<div className="w-full flex justify-center">
-                <div className="w-1/2 h-fit pb-10 rounded-lg shadow dark:border text-white" style={{backgroundColor : StyleColors.blue}}>
+                <div className="w-full sm:w-3/4 lg:w-4/6 h-fit pb-10 rounded-lg shadow dark:border text-white" style={{backgroundColor : StyleColors.blue}}>
                     <div className="p-6 space-y-4 md:space-y-6 sm:p-8 text-white">
                         <div className="signInButtons flex justify-center">
                             <button style={{ backgroundColor: isSignIn ? StyleColors.orange : "white", color: isSignIn ? "white" : "black" }} className="rounded-l-lg p-3 text-xl font-bold leading-tight tracking-tight md:text-2xl dark:text-black" onClick={() => setSignIn(true)} id={isSignIn ? "active" : ""}>

@@ -6,6 +6,7 @@ import DaysBox from "./DaysBox";
 import { Days } from "../constants/Days";
 import { getPeriodTimes } from "../constants/BlockTimes";
 import SlidingSidebar from "../components/SlidingSidebar"
+import StyleColors from "../constants/StyleColors";
 
 const Schedule = ({ colCount, maxRowCount}) => {
 	const dummyClasses = [
@@ -136,12 +137,11 @@ const Schedule = ({ colCount, maxRowCount}) => {
 	}, [colCount, maxRowCount, classes]);
 
 	return (
-		<div className="px-10 py-20 w-full min-h-full flex relative">
+		<div className="px-0 sm:px-10 py-20 w-full min-h-full flex relative">
+			<div className="absolute top-5 right-5 font-bold sm:hidden p-2">CREDITS: {credits}</div>
+			<div className="absolute top-5 rounded-lg text-white left-5 font-bold sm:hidden p-2" style={{backgroundColor: StyleColors.orange}}>View Schedules</div>
 			<div
-				className="flex flex-col mr-3"
-				style={{
-					width: "10%",
-				}}
+				className="flex flex-col sm:mr-3 w-4 sm:w-1/12"
 			>
 				<div
 					className="font-medium"
@@ -154,7 +154,7 @@ const Schedule = ({ colCount, maxRowCount}) => {
 						alignItems: "center",
 					}}
 				>
-					CREDITS: {credits}
+					<span className="hidden sm:block">CREDITS: {credits}</span>
 				</div>
 				<div className="h-full flex flex-col">
 					{grid.map((row, index) => (
@@ -163,7 +163,7 @@ const Schedule = ({ colCount, maxRowCount}) => {
 								className="italic absolute"
 								style={{ whiteSpace: "nowrap", fontSize: "0.9rem", top: "-0.45rem", right: "1.5rem" }}
 							>
-								{getPeriodTimes(row[0].row).start}
+								<span className="hidden sm:block">{getPeriodTimes(row[0].row).start}</span>
 							</div>
 							<div
 								style={{

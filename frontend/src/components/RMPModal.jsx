@@ -14,15 +14,16 @@ const RMPModal = () => {
         if (hasHalfStar) {
             stars.push(<img key="half-star" src="/halfStar.svg" alt="Half Star" />);
         }
-        return (<span style={{ display: 'flex' }}>{stars}</span>);
+        return (<span className="flex">{stars}</span>);
     };
 
     return(
         <div className="w-full flex justify-between gap-5">
-            <div className="w-fit rounded-lg border-2 justify-center align-center py-1 px-12 text-center bg-white" style={{borderColor: StyleColors.blue}}>
-                <div>{renderStars()}</div>
+            <div className="w-fit rounded-lg border-2  align-start sm:align-center py-1 px-2 md:px-12 text-start sm:text-center bg-white" style={{borderColor: StyleColors.blue}}>
+                <div className="hidden sm:relative">{renderStars()}</div>
                 <div className="relative">
-                    <span className="font-black text-3xl">4.3</span>
+                    <img key={"star"} src="/star.svg" alt="Star" className="inline-block sm:hidden"/>
+                    <span className="font-black text-sm md:text-3xl">4.3</span>
                     <span className="text-sm absolute top-0 text-gray-400">/5</span>
                 </div>
                 <div className="underline text-blue-600 text-sm hover:text-blue-800 visited:text-purple-600">Go to RMP</div>
