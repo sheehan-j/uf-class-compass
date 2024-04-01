@@ -10,7 +10,7 @@ const Navbar = () => {
 
 
   return (
-    <header className="w-full text-white" style={{ backgroundColor: StyleColors.blue }}>
+    <header className="w-full text-white relative" style={{ backgroundColor: StyleColors.blue }}>
     <nav className="w-full relative" style={{ borderBottom: "1px solid rgba(235,235,235, 0.5)" }}>
       <div className="flex flex-col sm:flex-row justify-between items-center px-10 py-5">
         <div className="block w-full h-10 sm:hidden">

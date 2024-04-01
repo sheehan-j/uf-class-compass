@@ -8,7 +8,7 @@ import { getPeriodTimes } from "../constants/BlockTimes";
 import SlidingSidebar from "../components/SlidingSidebar"
 import StyleColors from "../constants/StyleColors";
 
-const Schedule = ({ colCount, maxRowCount}) => {
+const Schedule = ({ colCount, maxRowCount, handleToggleSidebar}) => {
 	const dummyClasses = [
 		{
 			instructor: "Albert Ritzhaupt",
@@ -138,8 +138,8 @@ const Schedule = ({ colCount, maxRowCount}) => {
 
 	return (
 		<div className="px-0 sm:px-10 py-20 w-full min-h-full flex relative">
-			<div className="absolute top-5 right-5 font-bold sm:hidden p-2">CREDITS: {credits}</div>
-			<div className="absolute top-5 rounded-lg text-white left-5 font-bold sm:hidden p-2" style={{backgroundColor: StyleColors.orange}}>View Schedules</div>
+			<div className="absolute top-5 right-5 font-bold p-2">CREDITS: {credits}</div>
+			<div className="absolute top-5 rounded-lg text-white left-5 font-bold md:hidden p-2" onClick={handleToggleSidebar} style={{backgroundColor: StyleColors.orange}}>View Schedules</div>
 			<div
 				className="flex flex-col sm:mr-3 w-4 sm:w-1/12"
 			>
@@ -154,7 +154,6 @@ const Schedule = ({ colCount, maxRowCount}) => {
 						alignItems: "center",
 					}}
 				>
-					<span className="hidden sm:block">CREDITS: {credits}</span>
 				</div>
 				<div className="h-full flex flex-col">
 					{grid.map((row, index) => (
