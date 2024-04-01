@@ -20,7 +20,7 @@ const RMPModal = () => {
     return(
         <div className="w-full flex justify-between gap-5">
             <div className="w-fit rounded-lg border-2  align-start sm:align-center py-1 px-2 md:px-12 text-start sm:text-center bg-white" style={{borderColor: StyleColors.blue}}>
-                <div className="hidden sm:relative">{renderStars()}</div>
+                <div className="hidden sm:relative sm:block">{renderStars()}</div>
                 <div className="relative">
                     <img key={"star"} src="/star.svg" alt="Star" className="inline-block sm:hidden"/>
                     <span className="font-black text-sm md:text-3xl">4.3</span>
