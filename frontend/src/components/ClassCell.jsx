@@ -3,14 +3,13 @@ import { getPeriodTimes } from "../constants/BlockTimes";
 import { useRef, useState } from "react";
 
 const ClassCell = ({ cell, onCellClick }) => {
-	const { color, code, instructor, location, length, row } = cell;
+	const { color, code, instructor, location, length, period } = cell;
 
 	const cellRef = useRef(null);
 
 	const clickClass = () => {
         onCellClick();
     };
-
 	return (
 		<div
 			ref={cellRef}
@@ -25,10 +24,10 @@ const ClassCell = ({ cell, onCellClick }) => {
 				<div className="hidden sm:block" style={{ fontSize: "0.9rem" }}>{instructor}</div>
 			</div>
 			<div className="whitespace-normal break-words" style={{ fontSize: "0.9rem", lineHeight: "1.2rem" }}>
-			{length && (
+			{length  &&(
 				<div >
-					<span className="block sm:hidden">{getPeriodTimes(row).start}</span>
-					<span className="hidden sm:block">{getPeriodTimes(row).start} - {getPeriodTimes((row + length - 1)).end}</span>
+					<span className="block sm:hidden">{getPeriodTimes(period).start}</span>
+					<span className="hidden sm:block">{getPeriodTimes(period).start} - {getPeriodTimes((period + length - 1)).end}</span>
 				</div>
 				
 			)}

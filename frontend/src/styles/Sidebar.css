@@ -1,0 +1,76 @@
+.sidebarWrapper {
+	position: relative;
+	left: 0;
+	background-color: #f7f7f7;
+	overflow-y: auto;
+}
+
+.LogoWrapper {
+	width: 100%;
+	margin-bottom: 1.5rem;
+	height: 10%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.line {
+	position: absolute;
+	margin: 4% 0 4%;
+	height: 1px;
+	background-color: #8f8f8f;
+	width: 100%;
+	left: 0;
+}
+
+.sidebarOptionsWrapper {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	text-align: center;
+}
+
+.sidebarOptionButton {
+	margin-bottom: 4%;
+	text-align: left;
+	width: 100%;
+	padding: 0.6rem 1rem;
+	border-radius: 0.75rem;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	font-size: 1rem;
+	/* color: #8f8f8f; */
+	font-family: "Inter", sans-serif;
+	font-weight: 400;
+}
+
+.buttonIcon {
+	width: 1.8rem;
+	height: 1.8rem;
+	object-fit: cover;
+}
+
+.sidebarOptionButton:hover {
+	background-color: #eeeded;
+}
+
+.sidebarOptionButton.selected {
+	background-color: #e6e6e6;
+	/* box-shadow: 2px 2px 5px blue; */
+}
+
+#logo {
+	height: 100%;
+	object-fit: cover;
+	margin-right: 4%;
+}
+
+#logoText {
+	font-family: "Inter", sans-serif;
+	font-weight: 700;
+	text-align: start;
+	vertical-align: middle;
+	font-size: 1.3rem;
+}
