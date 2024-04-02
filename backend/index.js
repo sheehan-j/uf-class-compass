@@ -1,5 +1,6 @@
 const express = require("express");
 const app = express();
+const path = require("path");
 const router = express.Router();
 const mongoose = require("mongoose");
 const connectToDB = require("./config/dbConfig");
@@ -41,6 +42,15 @@ if (process.env.NODE_ENV !== "production") {
 		}
 	});
 }
+
+// Catch-all route
+app.get("/*", function (req, res) {
+	res.sendFile(path.join(__dirname, "dist/index.html"), function (err) {
+		if (err) {
+			res.status(500).send(err);
+		}
+	});
+});
 
 mongoose.connection.once("open", () => {
 	console.log("Connected to MongoDB.");
