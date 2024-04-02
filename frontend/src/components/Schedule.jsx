@@ -6,11 +6,15 @@ import DaysBox from "./DaysBox";
 import { Days } from "../constants/Days";
 import { getPeriodTimes } from "../constants/BlockTimes";
 import { SchedulesApi } from "../api/SchedulesApi";
+import StyleColors from "../constants/StyleColors";
+import SlidingSidebar from "./SlidingSidebar"
 
-const Schedule = ({ colCount, maxRowCount, activeSchedule, previewSchedule }) => {
+const Schedule = ({ colCount, maxRowCount, activeSchedule, previewSchedule, handleToggleSidebar }) => {
 	const [grid, setGrid] = useState([]);
 	const [credits, setCredits] = useState(0);
 	const [newRowCount, setRowCount] = useState(maxRowCount);
+	const [isClassClicked, setIsClassClicked] = useState(false);
+	const [cell, setCell] = useState();
 
 	useEffect(() => {
 		const rows = [];
@@ -75,12 +79,11 @@ const Schedule = ({ colCount, maxRowCount, activeSchedule, previewSchedule }) =>
 	}, [colCount, maxRowCount, activeSchedule, previewSchedule]);
 
 	return (
-		<div className="px-10 py-20 w-full min-h-full flex">
+		<div className="px-0 sm:px-10 py-20 w-full min-h-full flex relative">
+			<div className="absolute top-5 right-5 font-bold p-2">CREDITS: {credits}</div>
+			<div className="absolute top-5 rounded-lg text-white left-5 font-bold md:hidden p-2" onClick={handleToggleSidebar} style={{backgroundColor: StyleColors.orange}}>View Schedules</div>
 			<div
-				className="flex flex-col mr-3"
-				style={{
-					width: "10%",
-				}}
+				className="flex flex-col sm:mr-3 w-4 sm:w-1/12"
 			>
 				<div
 					className="font-medium"
@@ -93,7 +96,6 @@ const Schedule = ({ colCount, maxRowCount, activeSchedule, previewSchedule }) =>
 						alignItems: "center",
 					}}
 				>
-					CREDITS: {credits}
 				</div>
 				<div className="h-full flex flex-col">
 					{grid.map((row, index) => (
@@ -102,7 +104,7 @@ const Schedule = ({ colCount, maxRowCount, activeSchedule, previewSchedule }) =>
 								className="italic absolute"
 								style={{ whiteSpace: "nowrap", fontSize: "0.9rem", top: "-0.45rem", right: "1.5rem" }}
 							>
-								{getPeriodTimes(row[0].period).start}
+								<span className="hidden sm:block">{getPeriodTimes(row[0].period).start}</span>
 							</div>
 							<div
 								style={{
@@ -144,6 +146,9 @@ const Schedule = ({ colCount, maxRowCount, activeSchedule, previewSchedule }) =>
 						colCount={colCount}
 						rowCount={newRowCount}
 						isSkeleton={false}
+						isClassClicked={isClassClicked}
+						setIsClassClicked={setIsClassClicked}
+						setCell={setCell}
 					/>
 					<Grid
 						key={"coloredGrid"}
@@ -151,9 +156,13 @@ const Schedule = ({ colCount, maxRowCount, activeSchedule, previewSchedule }) =>
 						colCount={colCount}
 						rowCount={newRowCount}
 						isSkeleton={true}
+						isClassClicked={isClassClicked}
+						setIsClassClicked={setIsClassClicked}
+						setCell={setCell}
 					/>
 				</div>
 			</div>
+			<SlidingSidebar isClassClicked={isClassClicked} setIsClassClicked={setIsClassClicked} cell={cell}/>
 		</div>
 	);
 };
@@ -163,6 +172,7 @@ Schedule.propTypes = {
 	maxRowCount: PropTypes.number.isRequired,
 	activeSchedule: PropTypes.object.isRequired,
 	previewSchedule: PropTypes.object.isRequired,
+	handleToggleSidebar: PropTypes.func.isRequired,
 };
 
 export default Schedule;

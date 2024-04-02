@@ -1,4 +1,3 @@
-import "../styles/Sidebar.css";
 import { useState, useEffect } from "react";
 import CourseSectionBox from "./CourseSectionBox";
 import MySchedules from "./MySchedules";
@@ -6,6 +5,8 @@ import CourseCodeButton from "./CourseCodeButton";
 import { ClassesApi } from "../api/ClassesApi";
 import { SchedulesApi } from "../api/SchedulesApi";
 import { ConflictsUtil } from "../../util/ConflictsUtil";
+import PropTypes from "prop-types"
+import StyleColors from "../constants/StyleColors";
 
 const Sidebar = ({
 	schedules,
@@ -16,6 +17,7 @@ const Sidebar = ({
 	setActiveClass,
 	previewSchedule,
 	setPreviewSchedule,
+	handleToggleSidebar
 }) => {
 	const [selectedButton, setSelectedButton] = useState("schedulePlanner");
 	const [classResults, setClassResults] = useState([]);
@@ -142,121 +144,93 @@ const Sidebar = ({
 	}, [activeSchedule]);
 
 	return (
-		<div className="w-1/4 p-5 sidebarWrapper">
-			<div className="LogoWrapper">
-				<img id="logo" src="/CourseCompassLogo.png" alt="Logo" />
-				<div id="logoText">UF Class Compass</div>
+		<div style={{backgroundColor: StyleColors.gray}} className="min-h-full top-0 left-0 w-1/2 p-5 text-black absolute md:w-5/12 lg:w-1/4 md:sticky overflow-y-auto z-50 border-r border-black md:border-none">
+			 <div className="md:hidden w-full flex justify-end">
+					<button onClick={handleToggleSidebar}><img src="/remove.svg"/></button>
 			</div>
-
-			<div className="sidebarOptionsWrapper" style={{ width: "100%" }}>
-				<button
-					className={`sidebarOptionButton ${selectedButton === "schedulePlanner" ? "selected" : ""}`}
-					onClick={() => setSelectedButton("schedulePlanner")}
-				>
-					<div>Schedule Planner</div>
-					<img className="buttonIcon" id="defaultProfile" src="/schedule_icon.svg" />
-				</button>
-				<button
-					className={`sidebarOptionButton ${selectedButton === "fullCourseSearch" ? "selected" : ""}`}
-					onClick={() => setSelectedButton("fullCourseSearch")}
-				>
-					<div>Full Course Search</div>
-					<img className="buttonIcon" id="defaultProfile" src="/search_icon.svg" />
-				</button>
-				{/* <button
-					className={`sidebarOptionButton ${selectedButton === "profile" ? "selected" : ""}`}
-					onClick={() => setSelectedButton("profile")}
-				>
-					<div>Profile</div>
-					<img className="buttonIcon" id="defaultProfile" src="/profile_icon.svg" />
-				</button> */}
+			<div className="w-full h-1/12 flex mb-5 justify-center items-center">
+				<img className="w-1/2 px-5 object-scale-down" id="logo" src="/CourseCompassLogo.png" alt="Logo" />
+				<div className="w-1/2 font-bold text-start md:text-l lg:text-2xl">UF Class Compass</div>
 			</div>
-			<div className="line"></div>
-			<div style={{ height: "3%" }} />
-			{/* bad design to compensate for line having to be absolute */}
+			<MySchedules
+				schedules={schedules}
+				setSchedules={setSchedules}
+				activeSchedule={activeSchedule}
+				setActiveSchedule={setActiveSchedule}
+				activeClass={activeClass}
+				setActiveClass={setActiveClass}
+				classResults={classResults}
+				setClassResults={setClassResults}
+			/>
 
-			{selectedButton === "schedulePlanner" && (
+			{activeSchedule?.classes?.length > 0 && (
 				<>
-					<MySchedules
-						schedules={schedules}
-						setSchedules={setSchedules}
-						activeSchedule={activeSchedule}
-						setActiveSchedule={setActiveSchedule}
-						activeClass={activeClass}
-						setActiveClass={setActiveClass}
-						classResults={classResults}
-						setClassResults={setClassResults}
-					/>
-
-					{activeSchedule?.classes?.length > 0 && (
-						<>
-							<p className="mb-1">Active Courses</p>
-							<div className="mb-4">
-								{activeSchedule?.classes
-									?.filter((classItem) => classItem?.muteInActiveCourses != true)
-									?.map((classItem) => (
-										<CourseCodeButton
-											key={classItem.number}
-											classItem={classItem}
-											active={activeClass?.number == classItem.number}
-											handleClassSelected={handleClassSelected}
-											handleDeleteClass={handleDeleteClass}
-										/>
-									))}
-							</div>
-						</>
-					)}
-
-					<p className={`mb-1 ${activeSchedule?.classes ? "" : "opacity-40"}`}>Course Code Search</p>
-					<input
-						className={`w-full py-2 px-2 flex align-center bg-white border border-gray-300 mb-3 ${
-							activeSchedule?.classes ? "" : "opacity-60 line-through"
-						}`}
-						placeholder="Enter class code (e.g. CIS4930)"
-						value={searchTerm}
-						onChange={(e) => setSearchTerm(e.target.value)}
-						onKeyUp={handleSearchInputKeyUp}
-						disabled={!activeSchedule?.classes}
-					/>
-					<button
-						className={`w-full text-white bg-blue-600 hover:bg-blue-700 py-2 rounded-lg ${
-							searchError == "" && activeSchedule?.classes ? "mb-4" : "mb-1"
-						} ${activeSchedule?.classes ? "" : "opacity-60"}`}
-						onClick={handleSearch}
-					>
-						Search
-					</button>
-					{searchError != "" && <p className="text-red-400 text-sm mb-4">{searchError}</p>}
-					{!activeSchedule?.classes && (
-						<p className="italic text-sm mb-4">
-							Select or create a schedule to start searching for classes.
-						</p>
-					)}
-
-					{activeClass.code && (
-						<>
-							<p className="mb-1">Course Sections &#40;{activeClass.code}&#41;</p>
-							{classResults?.length > 0 &&
-								classResults?.map((classItem) => (
-									<CourseSectionBox
-										key={classItem.number}
-										classItem={classItem}
-										handleAddClass={handleAddClass}
-										activeSchedule={activeSchedule}
-										handleHoverClassStart={handleHoverClassStart}
-										handleHoverClassEnd={handleHoverClassEnd}
-									/>
-								))}
-						</>
-					)}
+					<p className="mb-1">Active Courses</p>
+					<div className="mb-4">
+						{activeSchedule?.classes
+							?.filter((classItem) => classItem?.muteInActiveCourses != true)
+							?.map((classItem) => (
+								<CourseCodeButton
+									key={classItem.number}
+									classItem={classItem}
+									active={activeClass?.number == classItem.number}
+									handleClassSelected={handleClassSelected}
+									handleDeleteClass={handleDeleteClass}
+								/>
+							))}
+					</div>
 				</>
 			)}
 
-			{/* <div className="absolute bottom-2 left-2 w-full flex justify-start text-sm">
-				Copyright &copy; 2024 Duck Duck Slow
-			</div> */}
+			<p className={`mb-1 ${activeSchedule?.classes ? "" : "opacity-40"}`}>Course Code Search</p>
+			<input
+				className={`w-full py-2 px-2 flex align-center bg-white border border-gray-300 mb-3 ${
+					activeSchedule?.classes ? "" : "opacity-60 line-through"
+				}`}
+				placeholder="Enter class code (e.g. CIS4930)"
+				value={searchTerm}
+				onChange={(e) => setSearchTerm(e.target.value)}
+				onKeyUp={handleSearchInputKeyUp}
+				disabled={!activeSchedule?.classes}
+			/>
+			<button
+				className={`w-full text-white bg-blue-600 hover:bg-blue-700 py-2 rounded-lg ${
+					searchError == "" && activeSchedule?.classes ? "mb-4" : "mb-1"
+				} ${activeSchedule?.classes ? "" : "opacity-60"}`}
+				onClick={handleSearch}
+			>
+				Search
+			</button>
+			{searchError != "" && <p className="text-red-400 text-sm mb-4">{searchError}</p>}
+			{!activeSchedule?.classes && (
+				<p className="italic text-sm mb-4">
+					Select or create a schedule to start searching for classes.
+				</p>
+			)}
+
+			{activeClass.code && (
+				<>
+					<p className="mb-1">Course Sections &#40;{activeClass.code}&#41;</p>
+					{classResults?.length > 0 &&
+						classResults?.map((classItem) => (
+							<CourseSectionBox
+								key={classItem.number}
+								classItem={classItem}
+								handleAddClass={handleAddClass}
+								activeSchedule={activeSchedule}
+								handleHoverClassStart={handleHoverClassStart}
+								handleHoverClassEnd={handleHoverClassEnd}
+							/>
+						))}
+				</>
+			)}
 		</div>
 	);
+};
+
+
+Sidebar.propTypes = {
+	handleToggleSidebar: PropTypes.func.isRequired,
 };
 
 export default Sidebar;

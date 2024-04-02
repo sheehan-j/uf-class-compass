@@ -1,5 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
+import StyleColors from "../constants/StyleColors";
 
 const MyScheduleBox = ({ schedule, selected, onSelect, onDelete }) => {
 	const handleDelete = (event) => {

@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from "react";
 import { SchedulesApi } from "../api/SchedulesApi";
 import MyScheduleBox from "./MyScheduleBox";
+import StyleColors from "../constants/StyleColors";
 
 const MySchedules = ({
 	schedules,
@@ -65,8 +66,7 @@ const MySchedules = ({
 	return (
 		<div className="w-full">
 			<div
-				className="relative py-3 px-4 mb-3"
-				style={{ backgroundColor: "rgba(235, 235, 235, 1)", borderRadius: "0.75rem" }}
+				className="relative py-3 px-4 mb-3 bg-white border-gray-300 border"
 			>
 				<div
 					className="flex items-center justify-between cursor-pointer"
