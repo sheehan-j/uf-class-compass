@@ -12,7 +12,6 @@ const DataEntry = () => {
 		number: "",
 		title: "",
 		instructor: "",
-		title: "",
 		credits: "",
 	});
 	const [instructor, setInstructor] = useState({ name: "" });
