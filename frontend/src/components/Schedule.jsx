@@ -45,8 +45,9 @@ const Schedule = ({ colCount, maxRowCount, activeSchedule, previewSchedule, hand
 						isClass: true,
 						color: Colors.classColors[colorIndex],
 						code: classItem.code,
-						location: `${meetingItem.building} ${meetingItem.room}`,
+						location: `${meetingItem.building.code} ${meetingItem.room}`,
 						length: meetingItem.length,
+						distance: meetingItem?.distance ? meetingItem.distance : null,
 					};
 
 					for (var i = 1; i < meetingItem.length; i++) {

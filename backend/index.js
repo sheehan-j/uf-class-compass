@@ -27,6 +27,7 @@ app.use("/", express.static("dist"));
 app.use("/api/health", require("./routes/health"));
 app.use("/api/classes", require("./routes/classes"));
 app.use("/api/schedules", require("./routes/schedules"));
+app.use("/api/distance", require("./routes/distance"));
 app.use("/api/auth", require("./routes/auth"));
 app.use("/api/user", require("./routes/user"));
 app.use("/api/instructors", require("./routes/instructors"));
