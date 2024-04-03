@@ -1,0 +1,14 @@
+.content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 70%;
+}
+
+.campus {
+    width: 70%;
+}
+
+.logo {
+    width: 30%;
+}
