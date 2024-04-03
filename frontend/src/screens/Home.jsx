@@ -21,7 +21,7 @@ const Home = () => {
                 <h1 className="text-center w-full text-3xl font-bold pb-5" style={{color: StyleColors.orange}}>What is UF Class Compass?</h1>
                 <div className="flex-row md:flex md:justify-center md:gap-10">
                     <div className="w-full md:w-2/5 md:item-center">
-                        <img className='h-full object-scale-down' src="/homeExample.png"/>
+                        <img className='w-full object-scale-down' src="/homeExample.png"/>
                     </div>
                     <div className="w-full pt-4 md:pt-0 md:w-2/5 space-y-5">
                         <div>
