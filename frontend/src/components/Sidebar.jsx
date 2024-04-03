@@ -6,7 +6,7 @@ import { ClassesApi } from "../api/ClassesApi";
 import { SchedulesApi } from "../api/SchedulesApi";
 import { ConflictsUtil } from "../../util/ConflictsUtil";
 import { DistanceUtil } from "../../util/DistanceUtil";
-import PropTypes from "prop-types"
+import PropTypes from "prop-types";
 import StyleColors from "../constants/StyleColors";
 
 const Sidebar = ({
@@ -18,7 +18,7 @@ const Sidebar = ({
 	setActiveClass,
 	previewSchedule,
 	setPreviewSchedule,
-	handleToggleSidebar
+	handleToggleSidebar,
 }) => {
 	const [selectedButton, setSelectedButton] = useState("schedulePlanner");
 	const [classResults, setClassResults] = useState([]);
@@ -129,9 +129,14 @@ const Sidebar = ({
 	}, [activeSchedule]);
 
 	return (
-		<div style={{backgroundColor: StyleColors.gray}} className="min-h-full top-0 left-0 w-1/2 p-5 text-black absolute md:w-5/12 lg:w-1/4 md:sticky overflow-y-auto z-50 border-r border-black md:border-none">
-			 <div className="md:hidden w-full flex justify-end">
-					<button onClick={handleToggleSidebar}><img src="/remove.svg"/></button>
+		<div
+			style={{ backgroundColor: StyleColors.gray }}
+			className="min-h-full top-0 left-0 w-1/2 p-5 text-black absolute md:w-5/12 lg:w-1/4 md:sticky overflow-y-auto z-50 border-r border-black md:border-none"
+		>
+			<div className="md:hidden w-full flex justify-end">
+				<button onClick={handleToggleSidebar}>
+					<img src="/remove.svg" />
+				</button>
 			</div>
 			<div className="w-full h-1/12 flex mb-5 justify-center items-center">
 				<img className="w-1/2 px-5 object-scale-down" id="logo" src="/CourseCompassLogo.png" alt="Logo" />
@@ -150,35 +155,22 @@ const Sidebar = ({
 
 			{activeSchedule?.classes?.length > 0 && (
 				<>
-          <MySchedules
-            schedules={schedules}
-						setSchedules={setSchedules}
-						activeSchedule={activeSchedule}
-						setActiveSchedule={setActiveSchedule}
-						activeClass={activeClass}
-						setActiveClass={setActiveClass}
-						classResults={classResults}
-						setClassResults={setClassResults}
-					/>
-
-					{activeSchedule?.classes?.length > 0 && (
-						<>
-							<p className="mb-1">Active Courses</p>
-							<div className="mb-4">
-								{activeSchedule?.classes
-									?.filter((classItem) => classItem?.muteInActiveCourses != true)
-									?.map((classItem) => (
-										<CourseCodeButton
-											key={classItem?.number}
-											classItem={classItem}
-											active={activeClass?.number == classItem?.number}
-											handleClassSelected={handleClassSelected}
-											handleDeleteClass={handleDeleteClass}
-										/>
-									))}
-							</div>
-						</>
-        )}
+					<p className="mb-1">Active Courses</p>
+					<div className="mb-4">
+						{activeSchedule?.classes
+							?.filter((classItem) => classItem?.muteInActiveCourses != true)
+							?.map((classItem) => (
+								<CourseCodeButton
+									key={classItem?.number}
+									classItem={classItem}
+									active={activeClass?.number == classItem?.number}
+									handleClassSelected={handleClassSelected}
+									handleDeleteClass={handleDeleteClass}
+								/>
+							))}
+					</div>
+				</>
+			)}
 
 			<p className={`mb-1 ${activeSchedule?.classes ? "" : "opacity-40"}`}>Course Code Search</p>
 			<input
@@ -201,9 +193,7 @@ const Sidebar = ({
 			</button>
 			{searchError != "" && <p className="text-red-400 text-sm mb-4">{searchError}</p>}
 			{!activeSchedule?.classes && (
-				<p className="italic text-sm mb-4">
-					Select or create a schedule to start searching for classes.
-				</p>
+				<p className="italic text-sm mb-4">Select or create a schedule to start searching for classes.</p>
 			)}
 
 			{activeClass.code && (
@@ -225,7 +215,6 @@ const Sidebar = ({
 		</div>
 	);
 };
-
 
 Sidebar.propTypes = {
 	handleToggleSidebar: PropTypes.func.isRequired,
