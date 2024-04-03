@@ -7,6 +7,20 @@ const ClassCell = ({ cell, onCellClick }) => {
 	const cellRef = useRef(null);
 	const [distanceHovered, setDistanceHovered] = useState(false);
 	const { color, code, instructor, location, length, period, distance } = cell;
+	const [screenWidth, setScreenWidth] = useState(window.innerWidth);
+
+	useEffect(() => {
+		const handleResize = () => {
+			setScreenWidth(window.innerWidth);
+		};
+
+		window.addEventListener("resize", handleResize);
+
+		// Cleanup function to remove the event listener when the component unmounts
+		return () => {
+			window.removeEventListener("resize", handleResize);
+		};
+	}, []);
 
 	useEffect(() => {
 		if (distanceTooltipRef?.current) {
@@ -55,7 +69,7 @@ const ClassCell = ({ cell, onCellClick }) => {
 					)}
 					<div className="font-semibold">{location}</div>
 				</div>
-				{distance && (
+				{distance && screenWidth >= 640 && (
 					<div
 						className="relative block pb-1.5"
 						onMouseEnter={() => setDistanceHovered(true)}
