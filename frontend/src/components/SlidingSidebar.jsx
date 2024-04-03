@@ -16,7 +16,7 @@ const SlidingSidebar = ({ isClassClicked, setIsClassClicked,  cell }) => {
                 transition: "right 0.3s ease",
                 right: isClassClicked ? "0" : "-100%",
             }}
-            className="max-w-sm sm:max-w-xs z-40 top-0 w-full h-full p-5 text-black absolute right-0 overflow-y-auto"
+            className="z-40 top-0 w-full sm:w-1/2 md:w-1/2 lg:w-5/12 h-full p-5 text-black absolute right-0 overflow-y-auto"
         >
             <div className="absolute right-5" onClick={handleMinimize}>
                 <img src="/remove.svg" />

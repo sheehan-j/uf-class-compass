@@ -144,7 +144,7 @@ const Sidebar = ({
 	}, [activeSchedule]);
 
 	return (
-		<div style={{backgroundColor: StyleColors.gray}} className="min-h-full top-0 left-0 w-1/2 p-5 text-black absolute md:w-5/12 lg:w-1/4 md:sticky overflow-y-auto z-50 border-r border-black md:border-none">
+		<div style={{backgroundColor: StyleColors.gray}} className="min-h-full top-0 left-0 w-full sm:w-5/12 p-5 text-black absolute md:w-5/12 lg:w-1/4 md:sticky overflow-y-auto z-50 border-r border-black md:border-none">
 			 <div className="md:hidden w-full flex justify-end">
 					<button onClick={handleToggleSidebar}><img src="/remove.svg"/></button>
 			</div>
