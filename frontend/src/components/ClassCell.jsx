@@ -2,7 +2,7 @@ import PropTypes from "prop-types";
 import { getPeriodTimes } from "../constants/BlockTimes";
 import { useRef, useState, useEffect } from "react";
 
-const ClassCell = ({ cell }) => {
+const ClassCell = ({ cell, onCellClick }) => {
 	const distanceTooltipRef = useRef(null);
 	const cellRef = useRef(null);
 	const [distanceHovered, setDistanceHovered] = useState(false);
