@@ -19,7 +19,7 @@ const SchedulePage = () => {
 
 	useEffect(() => {
 		const loadSchedules = async () => {
-			const data = await SchedulesApi.getAllSchedules();
+			const data = await SchedulesApi.getSchedulesByUser(auth.user._id);
 			setSchedules(data);
 
 			if (data.length > 0) {
