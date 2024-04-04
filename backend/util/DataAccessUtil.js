@@ -21,8 +21,8 @@ exports.mapScheduleResults = (schedules) => {
 	});
 };
 
-exports.getAllSchedules = async (req, res) => {
-	let result = await Schedule.find({})
+exports.getSchedules = async (params) => {
+	let result = await Schedule.find(params)
 		.populate({
 			path: "classes",
 			populate: { path: "instructor" },

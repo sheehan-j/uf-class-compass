@@ -1,13 +1,14 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import StyleColors from "../constants/StyleColors";
+import { useAuth } from "../hooks/AuthProvider";
 
 const Navbar = () => {
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const toggleMobileMenu = () => {
-    setIsMobileMenuOpen((prev) => !prev);
-  };
-
+	const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+	const toggleMobileMenu = () => {
+		setIsMobileMenuOpen((prev) => !prev);
+	};
+	const auth = useAuth();
 
   return (
     <header className="w-full text-white relative" style={{ backgroundColor: StyleColors.blue }}>

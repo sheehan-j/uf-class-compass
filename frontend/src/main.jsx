@@ -4,20 +4,26 @@ import Home from "./screens/Home";
 import SchedulePage from "./screens/SchedulePage";
 import UserPage from "./screens/UserPage";
 import CourseSearch from "./screens/CourseSearch";
+import DataEntry from "./screens/DataEntry";
+import AuthProvider from "./hooks/AuthProvider";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import "./index.css";
-import DataEntry from "./screens/DataEntry";
+import PrivateRoute from "./router/PrivateRoute";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
 	<React.StrictMode>
 		<Router>
-			<Routes>
-				<Route path="/*" element={<Home />} />
-				<Route path="/SchedulePage" element={<SchedulePage />} />
-				<Route path="/UserPage" element={<UserPage />} />
-				<Route path="/CourseSearch" element={<CourseSearch />} />
-				<Route path="/DataEntry" element={<DataEntry />} />
-			</Routes>
+			<AuthProvider>
+				<Routes>
+					<Route path="/*" element={<Home />} />
+					<Route element={<PrivateRoute />}>
+						<Route path="/schedule" element={<SchedulePage />} />
+					</Route>
+					<Route path="/login" element={<UserPage />} />
+					<Route path="/search" element={<CourseSearch />} />
+					<Route path="/DataEntry" element={<DataEntry />} />
+				</Routes>
+			</AuthProvider>
 		</Router>
 	</React.StrictMode>
 );

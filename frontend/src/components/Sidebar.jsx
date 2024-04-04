@@ -138,6 +138,7 @@ const Sidebar = ({
 					<img src="/remove.svg" />
 				</button>
 			</div>
+
 			<MySchedules
 				schedules={schedules}
 				setSchedules={setSchedules}

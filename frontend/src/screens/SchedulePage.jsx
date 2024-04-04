@@ -4,21 +4,22 @@ import Navbar from "../components/Navbar";
 import { useEffect, useState } from "react";
 import { SchedulesApi } from "../api/SchedulesApi";
 import { DistanceUtil } from "../../util/DistanceUtil";
+import { useAuth } from "../hooks/AuthProvider";
 
 const SchedulePage = () => {
 	const [sidebarVisible, setSidebarVisible] = useState(true);
 	const toggleSidebar = () => {
 		setSidebarVisible(!sidebarVisible);
 	};
-
 	const [schedules, setSchedules] = useState([]);
 	const [activeSchedule, setActiveSchedule] = useState({});
 	const [activeClass, setActiveClass] = useState({});
 	const [previewSchedule, setPreviewSchedule] = useState({});
+	const auth = useAuth();
 
 	useEffect(() => {
 		const loadSchedules = async () => {
-			const data = await SchedulesApi.getAllSchedules();
+			const data = await SchedulesApi.getSchedulesByUser(auth.user._id);
 			setSchedules(data);
 
 			if (data.length > 0) {
@@ -30,6 +31,10 @@ const SchedulePage = () => {
 			// setActiveClass(data.length > 0 ? (data[0].classes.length > 0 ? data[0].classes[0] : {}) : {});
 		};
 
+		if (auth.user) {
+			loadSchedules();
+		}
+
 		const handleResize = () => {
 			if (!window.matchMedia("(max-width: 768px)").matches) {
 				setSidebarVisible(true);
@@ -38,12 +43,10 @@ const SchedulePage = () => {
 
 		window.addEventListener("resize", handleResize);
 
-		loadSchedules();
-
 		return () => {
 			window.removeEventListener("resize", handleResize);
 		};
-	}, []);
+	}, [auth]);
 
 	return (
 		<div className="w-screen h-screen flex flex-col">
