@@ -3,10 +3,10 @@
 //grab all instructors in seperate data structure
 //run add instructor api until all instructors
 //store all the buildings codes into a data structure
-
-async function searchPlaces(query, apiKey) {
+const API_KEY = require('./key.js');
+async function searchPlaces(query) {
   // Constructing the API URL with the provided query and API key
-  const apiUrl = `https://maps.googleapis.com/maps/api/place/textsearch/json?query=${query}&key=${apiKey}`;
+  const apiUrl = `https://maps.googleapis.com/maps/api/place/textsearch/json?query=${query}&key=${API_KEY}`;
   // Making the API request
   console.log(apiUrl);
   return await fetch(apiUrl)
@@ -103,14 +103,15 @@ async function searchBuildings() {
   }
 // Example usage
 const query = "Florida Gymnasium"; // Replace with your query
-const apiKey = "AIzaSyAHGX8-vJMT4VnCvP-wkPEtH0wScGBL9h0"; // Replace with your API key
-//searchPlaces(query, apiKey);
+
+
 
 
 (async () => {
     try {
-        const buildings = await searchBuildings();
-        console.log(buildings[0]);
+        const place = await searchPlaces(query);
+        //const buildings = await searchBuildings();
+        console.log(place);
     } catch (error) {
         console.error("Error occurred:", error);
     }
