@@ -3,6 +3,7 @@ import { SchedulesApi } from "../api/SchedulesApi";
 import MyScheduleBox from "./MyScheduleBox";
 import { DistanceUtil } from "../../util/DistanceUtil";
 import StyleColors from "../constants/StyleColors";
+import { useAuth } from "../hooks/AuthProvider";
 
 const MySchedules = ({
 	schedules,
@@ -16,10 +17,11 @@ const MySchedules = ({
 }) => {
 	const [isCollapsed, setIsCollapsed] = useState(true);
 	const schedulesMenuRef = useRef(null);
+	const auth = useAuth();
 
 	const handleNewSchedule = async () => {
 		const newScheduleNumber = schedules.length + 1;
-		const newSchedules = await SchedulesApi.createSchedule(`Schedule ${newScheduleNumber}`);
+		const newSchedules = await SchedulesApi.createSchedule(`Schedule ${newScheduleNumber}`, auth.user._id);
 		if (newSchedules.length == schedules.length + 1) setActiveSchedule(newSchedules[newSchedules.length - 1]);
 		setSchedules(newSchedules);
 		setActiveClass({});
@@ -67,9 +69,7 @@ const MySchedules = ({
 
 	return (
 		<div className="w-full">
-			<div
-				className="relative py-3 px-4 mb-3 bg-white border-gray-300 border"
-			>
+			<div className="relative py-3 px-4 mb-3 bg-white border-gray-300 border">
 				<div
 					className="flex items-center justify-between cursor-pointer"
 					onClick={() => setIsCollapsed(!isCollapsed)}
@@ -84,15 +84,16 @@ const MySchedules = ({
 						transition: "all 0.1s linear",
 					}}
 				>
-					{schedules.map((schedule, index) => (
-						<MyScheduleBox
-							key={index}
-							schedule={schedule}
-							selected={activeSchedule._id == schedule._id}
-							onSelect={handleSelectSchedule}
-							onDelete={handleDeleteSchedule}
-						/>
-					))}
+					{schedules.length > 0 &&
+						schedules.map((schedule, index) => (
+							<MyScheduleBox
+								key={index}
+								schedule={schedule}
+								selected={activeSchedule._id == schedule._id}
+								onSelect={handleSelectSchedule}
+								onDelete={handleDeleteSchedule}
+							/>
+						))}
 					<button
 						className="px-4 py-1 mt-2 block mx-auto bg-white border border-gray-400"
 						style={{ borderRadius: "1000px" }}
