@@ -138,10 +138,6 @@ const Sidebar = ({
 					<img src="/remove.svg" />
 				</button>
 			</div>
-			<div className="w-full h-1/12 flex mb-5 justify-center items-center">
-				<img className="w-1/2 px-5 object-scale-down" id="logo" src="/CourseCompassLogo.png" alt="Logo" />
-				<div className="w-1/2 font-bold text-start md:text-l lg:text-2xl">UF Class Compass</div>
-			</div>
 			<MySchedules
 				schedules={schedules}
 				setSchedules={setSchedules}
