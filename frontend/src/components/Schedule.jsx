@@ -7,7 +7,7 @@ import { Days } from "../constants/Days";
 import { getPeriodTimes } from "../constants/BlockTimes";
 import { SchedulesApi } from "../api/SchedulesApi";
 import StyleColors from "../constants/StyleColors";
-import SlidingSidebar from "./SlidingSidebar"
+import SlidingSidebar from "./SlidingSidebar";
 
 const Schedule = ({ colCount, maxRowCount, activeSchedule, previewSchedule, handleToggleSidebar }) => {
 	const [grid, setGrid] = useState([]);
@@ -80,12 +80,16 @@ const Schedule = ({ colCount, maxRowCount, activeSchedule, previewSchedule, hand
 	}, [colCount, maxRowCount, activeSchedule, previewSchedule]);
 
 	return (
-		<div className="px-0 sm:px-10 py-20 w-full min-h-full flex relative">
+		<div className="px-0 sm:px-10 py-20 w-full min-h-full flex relative overflow-x-hidden">
 			<div className="absolute top-5 right-5 font-bold p-2">CREDITS: {credits}</div>
-			<div className="absolute top-5 rounded-lg text-white left-5 font-bold md:hidden p-2" onClick={handleToggleSidebar} style={{backgroundColor: StyleColors.orange}}>View Schedules</div>
 			<div
-				className="flex flex-col sm:mr-3 w-4 sm:w-1/12"
+				className="absolute top-5 rounded-lg text-white left-5 font-bold md:hidden p-2"
+				onClick={handleToggleSidebar}
+				style={{ backgroundColor: StyleColors.orange }}
 			>
+				View Schedules
+			</div>
+			<div className="flex flex-col sm:mr-3 w-4 sm:w-1/12">
 				<div
 					className="font-medium"
 					style={{
@@ -96,8 +100,7 @@ const Schedule = ({ colCount, maxRowCount, activeSchedule, previewSchedule, hand
 						justifyContent: "center",
 						alignItems: "center",
 					}}
-				>
-				</div>
+				></div>
 				<div className="h-full flex flex-col">
 					{grid.map((row, index) => (
 						<div key={index} className="relative flex grow items-center justify-end">
@@ -163,7 +166,7 @@ const Schedule = ({ colCount, maxRowCount, activeSchedule, previewSchedule, hand
 					/>
 				</div>
 			</div>
-			<SlidingSidebar isClassClicked={isClassClicked} setIsClassClicked={setIsClassClicked} cell={cell}/>
+			<SlidingSidebar isClassClicked={isClassClicked} setIsClassClicked={setIsClassClicked} cell={cell} />
 		</div>
 	);
 };
