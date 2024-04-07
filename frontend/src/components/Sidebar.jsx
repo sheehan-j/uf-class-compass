@@ -5,7 +5,8 @@ import CourseCodeButton from "./CourseCodeButton";
 import { ClassesApi } from "../api/ClassesApi";
 import { SchedulesApi } from "../api/SchedulesApi";
 import { ConflictsUtil } from "../../util/ConflictsUtil";
-import PropTypes from "prop-types"
+import { DistanceUtil } from "../../util/DistanceUtil";
+import PropTypes from "prop-types";
 import StyleColors from "../constants/StyleColors";
 
 const Sidebar = ({
@@ -17,33 +18,12 @@ const Sidebar = ({
 	setActiveClass,
 	previewSchedule,
 	setPreviewSchedule,
-	handleToggleSidebar
+	handleToggleSidebar,
 }) => {
 	const [selectedButton, setSelectedButton] = useState("schedulePlanner");
 	const [classResults, setClassResults] = useState([]);
 	const [searchTerm, setSearchTerm] = useState("");
 	const [searchError, setSearchError] = useState("");
-
-	// const updateClassResults = async () => {
-	// 	result = await ClassesApi.getClassesByCode(classItem.code);
-	// 	result = result.map((classItem) => {
-	// 		const conflicts = ConflictsUtil.checkConflict(activeSchedule, classItem);
-	// 		return {
-	// 			...classItem,
-	// 			conflicts,
-	// 		};
-	// 	});
-
-	// 	setClassResults(result);
-	// };
-
-	// Fetch class sections corresponding to the active classs
-	// useEffect(() => {
-
-	// 	if (activeClass.number) {
-	// 		updateClassResults();
-	// 	}
-	// }, [activeClass]);
 
 	const handleClassSelected = async (classItem) => {
 		let result = await ClassesApi.getClassesByCode(classItem.code);
@@ -96,7 +76,10 @@ const Sidebar = ({
 			const result = await SchedulesApi.addClassToSchedule(activeSchedule._id, classItem._id);
 			setActiveClass(classItem);
 			setSchedules(result);
-			setActiveSchedule(result.filter((schedule) => schedule._id == activeSchedule._id)[0]);
+			const newActiveSchedule = await DistanceUtil.updateScheduleWithDistances(
+				result.filter((schedule) => schedule._id == activeSchedule._id)[0]
+			);
+			setActiveSchedule(newActiveSchedule);
 
 			// Clear any hovering-related info
 			setPreviewSchedule({});
@@ -106,8 +89,10 @@ const Sidebar = ({
 	const handleDeleteClass = async (classItem) => {
 		const result = await SchedulesApi.deleteClassFromSchedule(activeSchedule._id, classItem._id);
 		setSchedules(result);
-		const updatedActiveSchedule = result.filter((schedule) => schedule._id == activeSchedule._id)[0];
-		setActiveSchedule(updatedActiveSchedule);
+		const newActiveSchedule = await DistanceUtil.updateScheduleWithDistances(
+			result.filter((schedule) => schedule._id == activeSchedule._id)[0]
+		);
+		setActiveSchedule(newActiveSchedule);
 
 		// Clear out the class results and active class unless the course is already in the search term
 		if (searchTerm.toUpperCase() !== classItem.code) {
@@ -152,6 +137,7 @@ const Sidebar = ({
 				<img className="w-1/2 px-5 object-scale-down" id="logo" src="/CourseCompassLogo.png" alt="Logo" />
 				<div className="w-1/2 font-bold text-start md:text-l lg:text-2xl">UF Class Compass</div>
 			</div>
+
 			<MySchedules
 				schedules={schedules}
 				setSchedules={setSchedules}
@@ -171,9 +157,9 @@ const Sidebar = ({
 							?.filter((classItem) => classItem?.muteInActiveCourses != true)
 							?.map((classItem) => (
 								<CourseCodeButton
-									key={classItem.number}
+									key={classItem?.number}
 									classItem={classItem}
-									active={activeClass?.number == classItem.number}
+									active={activeClass?.number == classItem?.number}
 									handleClassSelected={handleClassSelected}
 									handleDeleteClass={handleDeleteClass}
 								/>
@@ -203,9 +189,7 @@ const Sidebar = ({
 			</button>
 			{searchError != "" && <p className="text-red-400 text-sm mb-4">{searchError}</p>}
 			{!activeSchedule?.classes && (
-				<p className="italic text-sm mb-4">
-					Select or create a schedule to start searching for classes.
-				</p>
+				<p className="italic text-sm mb-4">Select or create a schedule to start searching for classes.</p>
 			)}
 
 			{activeClass.code && (
@@ -227,7 +211,6 @@ const Sidebar = ({
 		</div>
 	);
 };
-
 
 Sidebar.propTypes = {
 	handleToggleSidebar: PropTypes.func.isRequired,

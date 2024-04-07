@@ -14,7 +14,7 @@ const CourseCodeButton = ({ classItem, active, handleClassSelected, handleDelete
 			}`}
 			onClick={() => handleClassSelected(classItem)}
 		>
-			<p className="text-sm">{classItem.code}</p>
+			<p className="text-sm">{classItem?.code}</p>
 			<button style={{ width: "1.1rem" }} onClick={deleteClass}>
 				<img src="/remove.svg" />
 			</button>

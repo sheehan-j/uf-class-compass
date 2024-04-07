@@ -30,9 +30,6 @@ const CourseSearch = () => {
         <div className="content py-6 w-full flex flex-col items-center">
             <div className="w-4/5">
                 <div className="flex justify-center gap-5 w-full mb-4">
-                    <div className="w-16 h-full flex items-center justify-center">
-                        <img src="/CourseCompassLogo.png" className="h-full" alt="Logo" />
-                    </div>
                     <div className="relative w-full">
                         <input
                             type="text"
