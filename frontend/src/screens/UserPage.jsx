@@ -47,20 +47,20 @@ const UserPage = () => {
                 <div className="w-full sm:w-3/4 lg:w-4/6 h-fit pb-10 rounded-lg shadow dark:border text-white" style={{backgroundColor : StyleColors.blue}}>
                     <div className="p-6 space-y-4 md:space-y-6 sm:p-8 text-white">
                         <div className="signInButtons flex justify-center">
-                            <button style={{ backgroundColor: isSignIn ? StyleColors.orange : "white", color: isSignIn ? "white" : "black" }} className="rounded-l-lg p-3 text-xl font-bold leading-tight tracking-tight md:text-2xl dark:text-black" onClick={() => setSignIn(true)} id={isSignIn ? "active" : ""}>
+                            <button style={{ backgroundColor: isSignIn ? StyleColors.orange : "white", color: isSignIn ? "white" : "black" }} className="rounded-l-lg p-3 text-2xl font-bold leading-tight tracking-tight dark:text-black" onClick={() => setSignIn(true)} id={isSignIn ? "active" : ""}>
                                     Sign in
                             </button>
-                            <button style={{ backgroundColor: !isSignIn ? StyleColors.orange : "white", color: !isSignIn ? "white" : "black" }} className="rounded-r-lg p-3 text-xl font-bold leading-tight tracking-tight md:text-2xl dark:text-black" onClick={() => setSignIn(false)} id={!isSignIn ? "active" : ""}>
+                            <button style={{ backgroundColor: !isSignIn ? StyleColors.orange : "white", color: !isSignIn ? "white" : "black" }} className="rounded-r-lg p-3 text-2xl font-bold leading-tight tracking-tight dark:text-black" onClick={() => setSignIn(false)} id={!isSignIn ? "active" : ""}>
                                     Sign Up
                             </button>
                         </div>
                         <div className="w-full flex justify-center">
                             {isSignIn ? (
-                                <div className="p-3 text-xl font-bold leading-tight tracking-tight  md:text-l flex">
+                                <div className="p-3 text-xl font-bold leading-tight tracking-tight flex">
                                     Welcome Back!
                                 </div>
                             ) : (
-                                <div className="p-3 text-xl font-bold leading-tight tracking-tight md:text-l text-white">
+                                <div className="p-3 text-xl font-bold leading-tight tracking-tight text-white">
                                     Create an Account
                                 </div>
                             )}
@@ -82,10 +82,10 @@ const UserPage = () => {
                             )}
                             <div className="flex justify-center submitButtons">
                                 {isSignIn ? (
-                                    <button type="submit" style={{backgroundColor: StyleColors.orange}} className="bg-teal-500 rounded-lg  w-1/2 p-3 text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
+                                    <button type="submit" style={{backgroundColor: StyleColors.orange}} className="bg-teal-500 rounded-lg  w-1/2 p-3 text-2xl font-bold leading-tight tracking-tight text-gray-900 dark:text-white">
                                         Sign in
                                 </button>) : (
-                                    <button type="submit" style={{backgroundColor: StyleColors.orange}} className="bg-teal-500 w-1/2 rounded-lg p-3 text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
+                                    <button type="submit" style={{backgroundColor: StyleColors.orange}} className="bg-teal-500 w-1/2 rounded-lg p-3 text-2xl font-bold leading-tight tracking-tight text-gray-900 dark:text-white">
                                         Sign up
                                 </button>)}
                             </div>
