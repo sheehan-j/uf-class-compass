@@ -13,7 +13,7 @@ const SchedulePage = () => {
 	};
 	const [schedules, setSchedules] = useState([]);
 	const [activeSchedule, setActiveSchedule] = useState({});
-	const [activeClass, setActiveClass] = useState({});
+	const [activeClass, setActiveClass] = useState(""); // the CODE of the active class (e.g. COP3502C)
 	const [previewSchedule, setPreviewSchedule] = useState({});
 	const auth = useAuth();
 

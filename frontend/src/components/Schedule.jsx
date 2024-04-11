@@ -29,22 +29,22 @@ const Schedule = ({ colCount, maxRowCount, activeSchedule, previewSchedule, hand
 
 		var colorIndex = 0;
 		let totalCredits = 0;
-		let classes = null;
-		if (previewSchedule?.classes?.length > 0) classes = previewSchedule.classes;
-		else if (activeSchedule?.classes?.length > 0) classes = activeSchedule.classes;
+		let sections = null;
+		if (previewSchedule?.sections?.length > 0) sections = previewSchedule.sections;
+		else if (activeSchedule?.sections?.length > 0) sections = activeSchedule.sections;
 
-		if (classes) {
-			classes.forEach((classItem) => {
-				totalCredits += classItem?.credits;
+		if (sections) {
+			sections.forEach((section) => {
+				totalCredits += section.credits;
 
-				classItem?.meetings?.forEach((meetingItem) => {
+				section?.meetings?.forEach((meetingItem) => {
 					rows[meetingItem.period - 1][meetingItem.day] = {
-						// ** Subtract 1 from the period to zero it (all periods stored for classes are 1-based)
+						// ** Subtract 1 from the period to zero it (all periods stored for sections are 1-based)
 						period: meetingItem.period,
-						instructor: classItem.instructor,
+						instructor: section.instructor.name,
 						isClass: true,
 						color: Colors.classColors[colorIndex],
-						code: classItem.code,
+						code: section.class.code,
 						location: `${meetingItem.building.code} ${meetingItem.room}`,
 						length: meetingItem.length,
 						distance: meetingItem?.distance ? meetingItem.distance : null,
@@ -140,7 +140,7 @@ const Schedule = ({ colCount, maxRowCount, activeSchedule, previewSchedule, hand
 				<div className="w-full grow border border-slate-300 relative">
 					{/* 
 				There are TWO grids, one is a skeleton that creates the grid lines,
-				the other is the grid actually containing the classes and their colored
+				the other is the grid actually containing the sections and their colored
 				rectangles. This is done to achieve the visual effect of the grid lines
 				behind the transparent class boxes.
 				*/}
