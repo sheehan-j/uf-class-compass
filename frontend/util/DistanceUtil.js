@@ -2,13 +2,13 @@ import { config } from "../src/config/config";
 
 const updateScheduleWithDistances = async (schedule) => {
 	// Go through each class
-	schedule.classes = await Promise.all(
-		schedule.classes.map(async (originClass) => {
+	schedule.sections = await Promise.all(
+		schedule.sections.map(async (originClass) => {
 			// Go through each meeting
 			originClass.meetings = await Promise.all(
 				originClass.meetings.map(async (originMeeting) => {
 					// Check this meeting against every other meeting for back-to-back relationship
-					for (const potentialDestClass of schedule.classes) {
+					for (const potentialDestClass of schedule.sections) {
 						if (originClass._id !== potentialDestClass._id) {
 							for (const potentialDestMeeting of potentialDestClass.meetings) {
 								if (
@@ -24,7 +24,7 @@ const updateScheduleWithDistances = async (schedule) => {
 										...originMeeting,
 										distance: {
 											time: distance,
-											class: potentialDestClass.code,
+											class: potentialDestClass.class.code,
 										},
 									};
 								}

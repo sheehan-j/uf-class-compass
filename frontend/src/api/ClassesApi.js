@@ -1,7 +1,7 @@
 import { config } from "../config/config";
 
-const getClassesByCode = async (code) => {
-	const response = await fetch(config.API_BASE_URL + `/classes?code=${code}`, {
+const getClassSections = async (code) => {
+	const response = await fetch(config.API_BASE_URL + `/classes/sections?code=${code}`, {
 		method: "GET",
 		headers: {
 			"Content-Type": "application/json",
@@ -29,6 +29,6 @@ const getClassByNumber = async (number) => {
 };
 
 export const ClassesApi = {
-	getClassesByCode,
+	getClassSections,
 	getClassByNumber,
 };
