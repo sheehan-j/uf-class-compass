@@ -3,10 +3,10 @@ const mongoose = require("mongoose");
 const Schema = new mongoose.Schema({
 	name: String,
 	user: mongoose.Schema.Types.ObjectId,
-	classes: [
+	sections: [
 		{
 			type: mongoose.Schema.Types.ObjectId,
-			ref: "Class",
+			ref: "Section",
 		},
 	],
 });
