@@ -9,7 +9,7 @@ const Home = () => {
                 <div className="p-5 w-full md:w-7/12 text-center md:text-left">
                     <h1 className="text-5xl md:text-7xl font-bold pb-10">UF Class Compass</h1>
                     <h3 className="text-4xl md:text-5xl pb-10">Plan your schedule with ease</h3>
-                    <Link className="link-item" to="/SchedulePage">
+                    <Link className="link-item" to="/schedule">
                         <button className="py-2.5 px-5 rounded-lg text-white text-xl lg:text-3xl" style={{backgroundColor: StyleColors.orange}}>Start Building Your Schedule Now</button>
                     </Link>
                 </div>
