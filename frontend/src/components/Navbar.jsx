@@ -25,13 +25,13 @@ const Navbar = () => {
             <Link className={`link-item  mb-2 sm:mb-0 w-3/5 sm:w-full sm:hidden`} to="/">
               <button className="py-2.5 px-2 md:px-5 rounded-lg w-full" style={{ backgroundColor: StyleColors.orange }}>Home</button>
             </Link>
-            <Link className={`link-item  mb-2 sm:mb-0 w-3/5 sm:w-full`} to="/SchedulePage">
+            <Link className={`link-item  mb-2 sm:mb-0 w-3/5 sm:w-full`} to="/schedule">
               <button className="py-2.5 px-2 md:px-5 rounded-lg w-full" style={{ backgroundColor: StyleColors.orange }}>Schedule</button>
             </Link>
-            <Link className={`link-item  mb-2 sm:mb-0 w-3/5 sm:w-full`} to="/CourseSearch">
+            <Link className={`link-item  mb-2 sm:mb-0 w-3/5 sm:w-full`} to="/search">
               <button className="py-2.5 px-2 md:px-5 rounded-lg w-full" style={{ backgroundColor: StyleColors.orange }}>Course Search</button>
             </Link>
-            <Link className={`link-item w-3/5 sm:w-full`} to="/UserPage">
+            <Link className={`link-item w-3/5 sm:w-full`} to="/login">
               <button className="py-2.5 px-2 md:px-5 rounded-lg w-full" style={{ backgroundColor: StyleColors.orange }}>Login</button>
             </Link>
           </div>

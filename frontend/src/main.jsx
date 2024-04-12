@@ -2,7 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import Home from "./screens/Home";
 import SchedulePage from "./screens/SchedulePage";
-import UserPage from "./screens/UserPage";
+import LoginPage from "./screens/LoginPage";
 import CourseSearch from "./screens/CourseSearch";
 import DataEntry from "./screens/DataEntry";
 import AuthProvider from "./hooks/AuthProvider";
@@ -19,7 +19,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
 					<Route element={<PrivateRoute />}>
 						<Route path="/schedule" element={<SchedulePage />} />
 					</Route>
-					<Route path="/login" element={<UserPage />} />
+					<Route path="/login" element={<LoginPage />} />
 					<Route path="/search" element={<CourseSearch />} />
 					<Route path="/DataEntry" element={<DataEntry />} />
 				</Routes>

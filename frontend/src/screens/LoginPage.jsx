@@ -4,7 +4,7 @@ import StyleColors from "../constants/StyleColors";
 import { useAuth } from "../hooks/AuthProvider";
 import { UserApi } from "../api/UserApi";
 
-const UserPage = () => {
+const LoginPage = () => {
 	const [isSignIn, setSignIn] = useState(true);
 	const [firstName, setFirstName] = useState("");
 	const [lastName, setLastName] = useState("");
@@ -219,4 +219,4 @@ const UserPage = () => {
 	);
 };
 
-export default UserPage;
+export default LoginPage;
