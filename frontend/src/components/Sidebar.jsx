@@ -186,7 +186,7 @@ const Sidebar = ({
 				disabled={!activeSchedule?.sections}
 			/>
 			<button
-				className={`w-full text-white bg-blue-600 hover:bg-blue-700 py-2 rounded-lg ${
+				className={`w-full text-white bg-customBlue hover:bg-customBlue-dark py-2 rounded-lg ${
 					searchError == "" && activeSchedule?.sections ? "mb-4" : "mb-1"
 				} ${activeSchedule?.sections ? "" : "opacity-60"}`}
 				onClick={handleSearch}

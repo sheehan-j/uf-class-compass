@@ -13,7 +13,7 @@ export default {
 				},
 				customBlue: {
 					DEFAULT: "rgb(40, 87, 151)",
-					hover: "rgb(27, 69, 128)",
+					dark: "rgb(27, 69, 128)",
 				},
 			},
 		},
