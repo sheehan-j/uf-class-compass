@@ -69,7 +69,7 @@ const MySchedules = ({
 
 	return (
 		<div className="w-full">
-			<div className="relative py-3 px-4 mb-3 bg-white border-gray-300 border">
+			<div className="relative py-3 px-4 mb-3 bg-white border-gray-300 border shadow-lg h-fit">
 				<div
 					className="flex items-center justify-between cursor-pointer"
 					onClick={() => setIsCollapsed(!isCollapsed)}
@@ -78,7 +78,7 @@ const MySchedules = ({
 					<img src="/folder.svg" style={{ height: "1.3rem" }} />
 				</div>
 				<div
-					className="overflow-hidden"
+					className="overflow-hidden mb-3"
 					ref={schedulesMenuRef}
 					style={{
 						transition: "all 0.1s linear",
@@ -95,11 +95,10 @@ const MySchedules = ({
 							/>
 						))}
 					<button
-						className="px-4 py-1 mt-2 block mx-auto bg-white border border-gray-400"
-						style={{ borderRadius: "1000px" }}
+						className="px-4 py-1 my-2 block flex justify-center text-center mx-auto bg-white border border-gray-400 rounded-full"
 						onClick={handleNewSchedule}
 					>
-						New Schedule
+						New Schedulue
 					</button>
 				</div>
 				<button
@@ -114,10 +113,9 @@ const MySchedules = ({
 					)}
 				</button>
 			</div>
-			<div className="flex justify-center w-full">
+			<div className="flex justify-center w-full mb-4">
 				<div
-					className="flex justify-center mb-4 py-1 bg-white"
-					style={{ border: "1px solid gray", borderRadius: "1000px", width: "80%" }}
+					className="flex justify-center text-center p-1 bg-white rounded-full w-10/12 shadow-lg"
 				>
 					{activeSchedule?.name ? activeSchedule.name : "No Schedule Selected"}
 				</div>
