@@ -2,11 +2,27 @@
 @tailwind components;
 @tailwind utilities;
 
-@layer base {
+html {
+	font-size: 12px;
+}
+
+/* Media query for small screens (min-width: 640px) */
+@media (min-width: 640px) {
 	html {
-	  font-size: 16px;
-	  @media (max-width:640px) {
-		font-size: 14px;
-	  }
+		font-size: 13px;
 	}
-  }
+}
+
+/* Media query for medium screens (min-width: 768px) */
+@media (min-width: 768px) {
+	html {
+		font-size: 14px;
+	}
+}
+
+/* Media query for large screens (min-width: 1024px) */
+@media (min-width: 1024px) {
+	html {
+		font-size: 15px;
+	}
+}

@@ -24,7 +24,7 @@ const MySchedules = ({
 		const newSchedules = await SchedulesApi.createSchedule(`Schedule ${newScheduleNumber}`, auth.user._id);
 		if (newSchedules.length == schedules.length + 1) setActiveSchedule(newSchedules[newSchedules.length - 1]);
 		setSchedules(newSchedules);
-		setActiveClass({});
+		setActiveClass("");
 		setClassResults([]);
 	};
 
@@ -32,7 +32,7 @@ const MySchedules = ({
 		const newSchedules = await SchedulesApi.deleteSchedule(id);
 		setActiveSchedule(newSchedules.length > 0 ? newSchedules[newSchedules.length - 1] : {});
 		setSchedules(newSchedules);
-		setActiveClass({});
+		setActiveClass("");
 		setClassResults([]);
 	};
 
@@ -41,7 +41,7 @@ const MySchedules = ({
 		setActiveSchedule(newActiveSchedule);
 		// TODO: Decide whether to automatically select an active class or set it to none
 		// setActiveClass(schedule.classes.length > 0 ? schedule.classes[0] : {});
-		setActiveClass({});
+		setActiveClass("");
 		setClassResults([]);
 	};
 
