@@ -18,6 +18,7 @@ const Schema = new mongoose.Schema({
 					ref: "Building",
 				},
 				room: String,
+				online: Boolean,
 			},
 		],
 	},

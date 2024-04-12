@@ -42,8 +42,21 @@ const createClassRecord = async (classObj) => {
 	return { ...result, status: response.status };
 };
 
+const createSectionRecord = async (section) => {
+	const response = await fetch(config.API_BASE_URL + `/dataentry/section`, {
+		method: "POST",
+		headers: {
+			"Content-Type": "application/json",
+		},
+		body: JSON.stringify(section),
+	});
+	const result = await response.json();
+	return { ...result, status: response.status };
+};
+
 export const DataEntryApi = {
 	createBuildingRecord,
 	createInstructorRecord,
 	createClassRecord,
+	createSectionRecord,
 };
