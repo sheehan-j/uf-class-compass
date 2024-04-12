@@ -3,7 +3,7 @@ import EmptyCell from "./EmptyCell";
 import ClassCell from "./ClassCell";
 import React, { useState, useEffect } from "react";
 
-const Grid = ({ grid, colCount, rowCount, isSkeleton, isClassClicked, setIsClassClicked, setCell }) => {
+const Grid = ({ grid, colCount, rowCount, isSkeleton, setIsClassClicked, setCell }) => {
 	const handleCellClick = (cell) => {
 		setIsClassClicked(true);
 		setCell(cell);
@@ -64,7 +64,6 @@ Grid.propTypes = {
 	rowCount: PropTypes.number.isRequired,
 	grid: PropTypes.array.isRequired,
 	isSkeleton: PropTypes.bool.isRequired,
-	isClassClicked: PropTypes.bool,
 	setIsClassClicked: PropTypes.func,
 	setCell: PropTypes.func,
 };

@@ -22,16 +22,12 @@ const SlidingSidebar = ({ isClassClicked, setIsClassClicked, cell }) => {
 				<b>{cell?.code}</b>
 			</div>
 
-			<div>
-				<b>CLASS</b>
-			</div>
-
 			{/* GET CLASS DATES */}
 
 			<div className="relative flex mb-1">
 				<div style={{ width: "50%" }}>INSTRUCTOR</div>
 				<div style={{ width: "50%" }}>
-					<b>{cell?.instructor.toUpperCase()}</b>
+					<b>{cell?.instructor?.toUpperCase()}</b>
 				</div>
 			</div>
 

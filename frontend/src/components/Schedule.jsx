@@ -48,13 +48,18 @@ const Schedule = ({ colCount, maxRowCount, activeSchedule, previewSchedule, hand
 						location: `${meetingItem.building.code} ${meetingItem.room}`,
 						length: meetingItem.length,
 						distance: meetingItem?.distance ? meetingItem.distance : null,
+						displayText: true,
 					};
 
 					for (var i = 1; i < meetingItem.length; i++) {
 						rows[meetingItem.period - 1 + i][meetingItem.day] = {
+							instructor: section.instructor.name,
+							location: `${meetingItem.building.code} ${meetingItem.room}`,
 							period: meetingItem.period,
 							isClass: true,
+							code: section.class.code,
 							color: Colors.classColors[colorIndex],
+							displayText: false,
 						};
 					}
 				});

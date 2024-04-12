@@ -13,6 +13,17 @@ exports.getClass = async (req, res) => {
 	}
 };
 
+exports.getClassPrefix = async (req, res) => {
+	try {
+		const result = await Class.find({ code: { $regex: `^${req.query.code}`, $options: 'i' } });
+		if (!result) return res.status(204).json({ message: "No class with that prefix found not found." });
+		return res.status(200).json(result);
+	} catch (err) {
+		console.error("Error:", err);
+		return res.status(500).json({ message: "Internal server error." });
+	}
+};
+
 exports.getSections = async (req, res) => {
 	try {
 		if (req.query?.code) {

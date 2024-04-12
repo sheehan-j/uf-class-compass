@@ -6,7 +6,7 @@ const ClassCell = ({ cell, onCellClick }) => {
 	const distanceTooltipRef = useRef(null);
 	const cellRef = useRef(null);
 	const [distanceHovered, setDistanceHovered] = useState(false);
-	const { color, code, instructor, location, length, period, distance } = cell;
+	const { color, code, instructor, location, length, period, distance, displayText } = cell;
 	const [screenWidth, setScreenWidth] = useState(window.innerWidth);
 
 	useEffect(() => {
@@ -48,10 +48,10 @@ const ClassCell = ({ cell, onCellClick }) => {
 		>
 			<div>
 				<div className="font-semibold" style={{ fontSize: "1.05rem", lineHeight: "1.1rem" }}>
-					{code}
+					{displayText && code}
 				</div>
 				<div className="hidden sm:block" style={{ fontSize: "0.9rem" }}>
-					{instructor}
+					{displayText && instructor}
 				</div>
 			</div>
 			<div
@@ -67,7 +67,7 @@ const ClassCell = ({ cell, onCellClick }) => {
 							</span>
 						</div>
 					)}
-					<div className="font-semibold">{location}</div>
+					<div className="font-semibold">{displayText && location}</div>
 				</div>
 				{distance && screenWidth >= 640 && (
 					<div
@@ -119,6 +119,7 @@ ClassCell.propTypes = {
 		location: PropTypes.string,
 		length: PropTypes.number,
 		row: PropTypes.number,
+		displayText: PropTypes.boolean,
 	}).isRequired,
 	onCellClick: PropTypes.func.isRequired,
 };
