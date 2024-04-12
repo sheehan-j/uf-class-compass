@@ -13,9 +13,9 @@ const SlidingSidebar = ({ isClassClicked, setIsClassClicked, cell }) => {
 				transition: "right 0.3s linear",
 				right: isClassClicked ? "0" : "-100%",
 			}}
-			className="max-w-sm sm:max-w-xs z-40 top-0 h-full p-5 text-black absolute overflow-y-auto"
+			className="min-w-fit z-40 top-0 h-full p-5 text-black absolute overflow-y-auto"
 		>
-			<div className="absolute right-5" onClick={handleMinimize}>
+			<div className="absolute left-2 top-2" onClick={handleMinimize}>
 				<img src="/remove.svg" />
 			</div>
 			<div className="flex justify-center">
@@ -24,52 +24,49 @@ const SlidingSidebar = ({ isClassClicked, setIsClassClicked, cell }) => {
 
 			{/* GET CLASS DATES */}
 
-			<div className="relative flex mb-1">
-				<div style={{ width: "50%" }}>INSTRUCTOR</div>
-				<div style={{ width: "50%" }}>
+			<div className="relative flex mb-1 grid grid-cols-2">
+				<div>INSTRUCTOR</div>
+				<div>
 					<b>{cell?.instructor?.toUpperCase()}</b>
 				</div>
 			</div>
 
-			<div className="relative flex mb-1">
-				<div style={{ width: "50%" }}>CREDITS </div>
-				<div style={{ width: "50%" }}>
+			<div className="relative flex mb-1 grid grid-cols-2">
+				<div>CREDITS </div>
+				<div>
 					<b>3</b>
-				</div>{" "}
-				{/*HARD CODED*/}
+				</div>
 			</div>
 
-			<div className="relative flex mb-1">
-				<div style={{ width: "50%" }}>FINAL EXAM</div>
-				<div className="text-sm" style={{ width: "50%" }}>
+			<div className="relative flex mb-1 grid grid-cols-2">
+				<div>FINAL EXAM</div>
+				<div className="text-sm">
 					<b>5/22/2024</b>
-				</div>{" "}
-				{/*HARD CODED*/}
+				</div>
 			</div>
 
-			<div className="relative flex mb-1">
-				<div style={{ width: "50%" }}>LOCATION</div>
-				<div style={{ width: "50%" }}>
+			<div className="relative flex mb-1 grid grid-cols-2">
+				<div>LOCATION</div>
+				<div>
 					<b>{cell?.location}</b>
 				</div>
 			</div>
 
-			<div className="relative flex mb-1">
-				<div style={{ width: "50%" }}>CLASS DATES</div>
-				<div className="text-sm" style={{ width: "50%" }}>
+			<div className="relative flex mb-1 grid grid-cols-2">
+				<div>CLASS DATES</div>
+				<div className="text-sm">
 					<b>1/08/2024-04/24/2024</b>
-				</div>{" "}
-				{/*HARD CODED*/}
+				</div>
 			</div>
 
-			<div className="flex justify-between my-5 gap-5">
+			<div className="flex w-full justify-between my-5">
 				<button className="p-2 text-white rounded-md" style={{ backgroundColor: StyleColors.blue }}>
-					<span style={{ display: "block" }}>PROFESSOR</span>
-					<span style={{ display: "block" }}>INFO</span>
+					<span className="block">PROFESSOR</span>
+					<span className="block">INFO</span>
 				</button>
 				<button className="p-2 text-white rounded-md" style={{ backgroundColor: StyleColors.blue }}>
-					<span style={{ display: "block" }}>TEXTBOOK</span>
-					<span style={{ display: "block" }}>LOOKUP</span>
+					<span className="block">TEXTBOOK</span>
+					<span className="block">LOOKUP</span>
 				</button>
 			</div>
 		</div>

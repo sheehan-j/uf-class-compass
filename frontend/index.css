@@ -1,3 +1,4 @@
 :root{
     width: 100vw;
+    overflow-x: clip;
 }
