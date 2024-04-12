@@ -7,13 +7,13 @@ import { DistanceUtil } from "../../util/DistanceUtil";
 import { useAuth } from "../hooks/AuthProvider";
 
 const SchedulePage = () => {
-	const [sidebarVisible, setSidebarVisible] = useState(true);
+	const [sidebarVisible, setSidebarVisible] = useState(false);
 	const toggleSidebar = () => {
 		setSidebarVisible(!sidebarVisible);
 	};
 	const [schedules, setSchedules] = useState([]);
 	const [activeSchedule, setActiveSchedule] = useState({});
-	const [activeClass, setActiveClass] = useState({});
+	const [activeClass, setActiveClass] = useState(""); // the CODE of the active class (e.g. COP3502C)
 	const [previewSchedule, setPreviewSchedule] = useState({});
 	const auth = useAuth();
 
@@ -35,36 +35,35 @@ const SchedulePage = () => {
 			loadSchedules();
 		}
 
-		const handleResize = () => {
-			if (!window.matchMedia("(max-width: 768px)").matches) {
-				setSidebarVisible(true);
-			}
-		};
+		// const handleResize = () => {
+		// 	if (!window.matchMedia("(max-width: 768px)").matches) {
+		// 		setSidebarVisible(true);
+		// 	}
+		// };
 
-		window.addEventListener("resize", handleResize);
+		// window.addEventListener("resize", handleResize);
 
-		return () => {
-			window.removeEventListener("resize", handleResize);
-		};
+		// return () => {
+		// 	window.removeEventListener("resize", handleResize);
+		// };
 	}, [auth]);
 
 	return (
 		<div className="w-screen h-screen flex flex-col">
 			<Navbar />
 			<div className="flex grow relative">
-				{sidebarVisible && (
-					<Sidebar
-						schedules={schedules}
-						setSchedules={setSchedules}
-						activeSchedule={activeSchedule}
-						setActiveSchedule={setActiveSchedule}
-						activeClass={activeClass}
-						setActiveClass={setActiveClass}
-						previewSchedule={previewSchedule}
-						setPreviewSchedule={setPreviewSchedule}
-						handleToggleSidebar={toggleSidebar}
-					/>
-				)}
+				<Sidebar
+					schedules={schedules}
+					setSchedules={setSchedules}
+					activeSchedule={activeSchedule}
+					setActiveSchedule={setActiveSchedule}
+					activeClass={activeClass}
+					setActiveClass={setActiveClass}
+					previewSchedule={previewSchedule}
+					setPreviewSchedule={setPreviewSchedule}
+					sidebarVisible={sidebarVisible}
+					handleToggleSidebar={toggleSidebar}
+				/>
 				<Schedule
 					colCount={5}
 					maxRowCount={11}
