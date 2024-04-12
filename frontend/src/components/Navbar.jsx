@@ -36,32 +36,22 @@ const Navbar = () => {
 
 						<div className="flex flex-col w-full mt-2 sm:mt-0 sm:w-auto sm:flex-row gap-3">
 							<Link className={`link-item w-full sm:w-auto sm:hidden`} to="/">
-								<button
-									className="py-2.5 px-5 rounded-lg w-full"
-									style={{ backgroundColor: StyleColors.orange }}
-								>
+								<button className="py-2.5 px-5 rounded-lg w-full bg-customOrange hover:bg-customOrange-dark">
 									Home
 								</button>
 							</Link>
 							<Link className={`link-item`} to="/schedule">
-								<button
-									className="py-2.5 px-10 rounded-lg w-full"
-									style={{ backgroundColor: StyleColors.orange }}
-								>
+								<button className="py-2.5 px-10 rounded-lg w-full bg-customOrange hover:bg-customOrange-dark">
 									Schedule
 								</button>
 							</Link>
 							<Link className={`link-item`} to="/search">
-								<button
-									className="py-2.5 px-10 rounded-lg w-full"
-									style={{ backgroundColor: StyleColors.orange }}
-								>
+								<button className="py-2.5 px-10 rounded-lg w-full bg-customOrange hover:bg-customOrange-dark">
 									Course Search
 								</button>
 							</Link>
 							<button
-								className="py-2.5 px-5 rounded-lg w-full sm:w-auto"
-								style={{ backgroundColor: StyleColors.orange }}
+								className="py-2.5 px-5 rounded-lg w-full sm:w-auto bg-customOrange hover:bg-customOrange-dark"
 								onClick={
 									auth?.user
 										? () => {
