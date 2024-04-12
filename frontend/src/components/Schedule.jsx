@@ -105,8 +105,8 @@ const Schedule = ({ colCount, maxRowCount, activeSchedule, previewSchedule, hand
 					{grid.map((row, index) => (
 						<div key={index} className="relative flex grow items-center justify-end">
 							<div
-								className="italic absolute"
-								style={{ whiteSpace: "nowrap", fontSize: "0.9rem", top: "-0.45rem", right: "1.5rem" }}
+								className="italic absolute right-4 lg:right-6"
+								style={{ whiteSpace: "nowrap", fontSize: "0.9rem", top: "-0.45rem" }}
 							>
 								<span className="hidden sm:block">{getPeriodTimes(row[0].period).start}</span>
 							</div>

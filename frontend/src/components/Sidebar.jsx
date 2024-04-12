@@ -18,6 +18,7 @@ const Sidebar = ({
 	setActiveClass,
 	previewSchedule,
 	setPreviewSchedule,
+	sidebarVisible,
 	handleToggleSidebar,
 }) => {
 	const [selectedButton, setSelectedButton] = useState("schedulePlanner");
@@ -130,10 +131,14 @@ const Sidebar = ({
 
 	return (
 		<div
-			style={{ backgroundColor: StyleColors.gray }}
-			className="min-h-full top-0 left-0 w-1/2 p-5 text-black absolute md:w-5/12 lg:w-1/4 md:sticky overflow-y-auto z-50 border-r border-black md:border-none"
+			style={{
+				backgroundColor: StyleColors.gray,
+				transition: "left 0.3s linear",
+				left: sidebarVisible ? "0" : "-100%",
+			}}
+			className="min-h-full top-0 w-11/12 md:w-7/12 p-5 text-black absolute lg:w-1/4 lg:sticky overflow-x-visible overflow-y-scroll z-50 border-r border-gray-300 lg:border-none"
 		>
-			<div className="md:hidden w-full flex justify-end">
+			<div className="mb-3 lg:hidden w-full flex justify-end">
 				<button onClick={handleToggleSidebar}>
 					<img src="/remove.svg" />
 				</button>
