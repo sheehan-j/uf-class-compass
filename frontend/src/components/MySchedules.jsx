@@ -78,7 +78,7 @@ const MySchedules = ({
 					<img src="/folder.svg" style={{ height: "1.3rem" }} />
 				</div>
 				<div
-					className="overflow-hidden"
+					className="overflow-hidden mb-3"
 					ref={schedulesMenuRef}
 					style={{
 						transition: "all 0.1s linear",
@@ -95,8 +95,7 @@ const MySchedules = ({
 							/>
 						))}
 					<button
-						className="px-4 py-1 mt-2 block mx-auto bg-white border border-gray-400"
-						style={{ borderRadius: "1000px" }}
+						className="px-4 py-1 my-2 block mx-auto bg-white border border-gray-400 rounded-full"
 						onClick={handleNewSchedule}
 					>
 						New Schedule

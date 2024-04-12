@@ -77,7 +77,7 @@ const Navbar = () => {
 							</span>
 						</Link>
 
-						<div className="flex flex-col w-full mt-2 sm:mt-0 sm:w-auto sm:flex-row gap-3">
+						<div className="flex flex-col w-full mt-2 sm:mt-0 sm:w-auto sm:grid sm:grid-cols-3 gap-3">
 							<Link className={`link-item w-full sm:w-auto sm:hidden`} to="/">
 								<button className="py-2.5 px-5 rounded-lg w-full bg-customOrange hover:bg-customOrange-dark">
 									Home
