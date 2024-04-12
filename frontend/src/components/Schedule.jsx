@@ -80,16 +80,16 @@ const Schedule = ({ colCount, maxRowCount, activeSchedule, previewSchedule, hand
 	}, [colCount, maxRowCount, activeSchedule, previewSchedule]);
 
 	return (
-		<div className="px-0 sm:px-10 py-20 w-full min-h-full flex relative overflow-x-hidden">
+		<div className="pl-3 pr-1 sm:px-10 py-20 w-full min-h-full flex relative overflow-x-hidden">
 			<div className="absolute top-5 right-5 font-bold p-2">CREDITS: {credits}</div>
 			<div
-				className="absolute top-5 rounded-lg text-white left-5 font-bold md:hidden p-2"
+				className="flex pl-10 pr-3 rounded-r-md align-items-center absolute top-5 text-white left-0 font-bold lg:hidden p-2 hover:cursor-pointer bg-customOrange hover:bg-customOrange-dark"
 				onClick={handleToggleSidebar}
-				style={{ backgroundColor: StyleColors.orange }}
 			>
-				View Schedules
+				{/* View Schedules */}
+				<img src="./expand_right.svg" className="h-7 w-auto" />
 			</div>
-			<div className="flex flex-col sm:mr-3 w-4 sm:w-1/12">
+			<div className="flex flex-col mr-2 sm:mr-3 w-4 sm:w-1/12">
 				<div
 					className="font-medium"
 					style={{
