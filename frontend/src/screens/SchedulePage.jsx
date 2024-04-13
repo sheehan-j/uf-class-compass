@@ -49,7 +49,7 @@ const SchedulePage = () => {
 	}, [auth]);
 
 	return (
-		<div className="w-screen h-screen flex flex-col">
+		<div className="w-screen h-screen flex flex-col relative">
 			<Navbar />
 			<div className="flex grow relative">
 				<Sidebar

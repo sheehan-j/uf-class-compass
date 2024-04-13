@@ -119,7 +119,7 @@ ClassCell.propTypes = {
 		location: PropTypes.string,
 		length: PropTypes.number,
 		row: PropTypes.number,
-		displayText: PropTypes.boolean,
+		displayText: PropTypes.bool,
 	}).isRequired,
 	onCellClick: PropTypes.func.isRequired,
 };

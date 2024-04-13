@@ -9,12 +9,12 @@ const SlidingSidebar = ({ isClassClicked, setIsClassClicked, cell }) => {
 	return (
 		<div
 			style={{
-				backgroundColor: StyleColors.gray,
 				transition: "right 0.3s linear",
 				right: isClassClicked ? "0" : "-100%",
 			}}
-			className="min-w-fit z-40 top-0 h-full p-5 text-black absolute overflow-y-auto"
+			className="min-w-fit z-40 absolute top-0 h-full text-black bg-customGray"
 		>
+			<div className="sticky p-5 top-0 overflow-auto">
 			<div className="absolute left-2 top-2" onClick={handleMinimize}>
 				<img src="/remove.svg" />
 			</div>
@@ -68,6 +68,7 @@ const SlidingSidebar = ({ isClassClicked, setIsClassClicked, cell }) => {
 					<span className="block">TEXTBOOK</span>
 					<span className="block">LOOKUP</span>
 				</button>
+			</div>
 			</div>
 		</div>
 	);
