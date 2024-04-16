@@ -72,9 +72,7 @@ const Navbar = () => {
 								src="/CourseCompassLogo.png"
 								alt="Logo"
 							/>
-							<span className="max-md:hidden font-bold text-start md:text-l lg:text-2xl">
-								UF Class Compass
-							</span>
+							<span className="max-lg:hidden font-bold text-start lg:text-2xl">UF Class Compass</span>
 						</Link>
 
 						<div className="flex flex-col w-full mt-2 sm:mt-0 sm:w-auto sm:grid sm:grid-cols-3 gap-3">
