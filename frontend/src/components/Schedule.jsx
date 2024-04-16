@@ -7,7 +7,7 @@ import { Days } from "../constants/Days";
 import { getPeriodTimes } from "../constants/BlockTimes";
 import { SchedulesApi } from "../api/SchedulesApi";
 import StyleColors from "../constants/StyleColors";
-import SlidingSidebar from "./SlidingSidebar"
+import SlidingSidebar from "./SlidingSidebar";
 
 const Schedule = ({ colCount, maxRowCount, activeSchedule, previewSchedule, handleToggleSidebar }) => {
 	const [grid, setGrid] = useState([]);
@@ -29,32 +29,37 @@ const Schedule = ({ colCount, maxRowCount, activeSchedule, previewSchedule, hand
 
 		var colorIndex = 0;
 		let totalCredits = 0;
-		let classes = null;
-		if (previewSchedule?.classes?.length > 0) classes = previewSchedule.classes;
-		else if (activeSchedule?.classes?.length > 0) classes = activeSchedule.classes;
+		let sections = null;
+		if (previewSchedule?.sections?.length > 0) sections = previewSchedule.sections;
+		else if (activeSchedule?.sections?.length > 0) sections = activeSchedule.sections;
 
-		if (classes) {
-			classes.forEach((classItem) => {
-				totalCredits += classItem?.credits;
+		if (sections) {
+			sections.forEach((section) => {
+				totalCredits += section.credits;
 
-				classItem?.meetings?.forEach((meetingItem) => {
+				section?.meetings?.forEach((meetingItem) => {
 					rows[meetingItem.period - 1][meetingItem.day] = {
-						// ** Subtract 1 from the period to zero it (all periods stored for classes are 1-based)
+						// ** Subtract 1 from the period to zero it (all periods stored for sections are 1-based)
 						period: meetingItem.period,
-						instructor: classItem.instructor,
+						instructor: section.instructor.name,
 						isClass: true,
 						color: Colors.classColors[colorIndex],
-						code: classItem.code,
+						code: section.class.code,
 						location: `${meetingItem.building.code} ${meetingItem.room}`,
 						length: meetingItem.length,
 						distance: meetingItem?.distance ? meetingItem.distance : null,
+						displayText: true,
 					};
 
 					for (var i = 1; i < meetingItem.length; i++) {
 						rows[meetingItem.period - 1 + i][meetingItem.day] = {
+							instructor: section.instructor.name,
+							location: `${meetingItem.building.code} ${meetingItem.room}`,
 							period: meetingItem.period,
 							isClass: true,
+							code: section.class.code,
 							color: Colors.classColors[colorIndex],
+							displayText: false,
 						};
 					}
 				});
@@ -80,12 +85,16 @@ const Schedule = ({ colCount, maxRowCount, activeSchedule, previewSchedule, hand
 	}, [colCount, maxRowCount, activeSchedule, previewSchedule]);
 
 	return (
-		<div className="px-0 sm:px-10 py-20 w-full min-h-full flex relative">
+		<div className="pl-3 pr-1 sm:px-10 py-20 w-full min-h-full flex relative overflow-x-clip">
 			<div className="absolute top-5 right-5 font-bold p-2">CREDITS: {credits}</div>
-			<div className="absolute top-5 rounded-lg text-white left-5 font-bold md:hidden p-2" onClick={handleToggleSidebar} style={{backgroundColor: StyleColors.orange}}>View Schedules</div>
 			<div
-				className="flex flex-col sm:mr-3 w-4 sm:w-1/12"
+				className="flex pl-10 pr-3 rounded-r-md align-items-center absolute top-5 text-white left-0 font-bold lg:hidden p-2 hover:cursor-pointer bg-customOrange hover:bg-customOrange-dark"
+				onClick={handleToggleSidebar}
 			>
+				{/* View Schedules */}
+				<img src="./expand_right.svg" className="h-7 w-auto" />
+			</div>
+			<div className="flex flex-col mr-2 sm:mr-3 w-4 sm:w-1/12">
 				<div
 					className="font-medium"
 					style={{
@@ -96,14 +105,13 @@ const Schedule = ({ colCount, maxRowCount, activeSchedule, previewSchedule, hand
 						justifyContent: "center",
 						alignItems: "center",
 					}}
-				>
-				</div>
+				></div>
 				<div className="h-full flex flex-col">
 					{grid.map((row, index) => (
 						<div key={index} className="relative flex grow items-center justify-end">
 							<div
-								className="italic absolute"
-								style={{ whiteSpace: "nowrap", fontSize: "0.9rem", top: "-0.45rem", right: "1.5rem" }}
+								className="italic absolute right-4 lg:right-6"
+								style={{ whiteSpace: "nowrap", fontSize: "0.9rem", top: "-0.45rem" }}
 							>
 								<span className="hidden sm:block">{getPeriodTimes(row[0].period).start}</span>
 							</div>
@@ -137,7 +145,7 @@ const Schedule = ({ colCount, maxRowCount, activeSchedule, previewSchedule, hand
 				<div className="w-full grow border border-slate-300 relative">
 					{/* 
 				There are TWO grids, one is a skeleton that creates the grid lines,
-				the other is the grid actually containing the classes and their colored
+				the other is the grid actually containing the sections and their colored
 				rectangles. This is done to achieve the visual effect of the grid lines
 				behind the transparent class boxes.
 				*/}
@@ -163,7 +171,7 @@ const Schedule = ({ colCount, maxRowCount, activeSchedule, previewSchedule, hand
 					/>
 				</div>
 			</div>
-			<SlidingSidebar isClassClicked={isClassClicked} setIsClassClicked={setIsClassClicked} cell={cell}/>
+			<SlidingSidebar isClassClicked={isClassClicked} setIsClassClicked={setIsClassClicked} cell={cell} />
 		</div>
 	);
 };

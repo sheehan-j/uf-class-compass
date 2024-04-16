@@ -2,10 +2,11 @@ const mongoose = require("mongoose");
 
 const Schema = new mongoose.Schema({
 	name: String,
-	classes: [
+	user: mongoose.Schema.Types.ObjectId,
+	sections: [
 		{
 			type: mongoose.Schema.Types.ObjectId,
-			ref: "Class",
+			ref: "Section",
 		},
 	],
 });

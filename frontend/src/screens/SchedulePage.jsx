@@ -4,21 +4,22 @@ import Navbar from "../components/Navbar";
 import { useEffect, useState } from "react";
 import { SchedulesApi } from "../api/SchedulesApi";
 import { DistanceUtil } from "../../util/DistanceUtil";
+import { useAuth } from "../hooks/AuthProvider";
 
 const SchedulePage = () => {
-	const [sidebarVisible, setSidebarVisible] = useState(true);
+	const [sidebarVisible, setSidebarVisible] = useState(false);
 	const toggleSidebar = () => {
 		setSidebarVisible(!sidebarVisible);
 	};
-
 	const [schedules, setSchedules] = useState([]);
 	const [activeSchedule, setActiveSchedule] = useState({});
-	const [activeClass, setActiveClass] = useState({});
+	const [activeClass, setActiveClass] = useState(""); // the CODE of the active class (e.g. COP3502C)
 	const [previewSchedule, setPreviewSchedule] = useState({});
+	const auth = useAuth();
 
 	useEffect(() => {
 		const loadSchedules = async () => {
-			const data = await SchedulesApi.getAllSchedules();
+			const data = await SchedulesApi.getSchedulesByUser(auth.user._id);
 			setSchedules(data);
 
 			if (data.length > 0) {
@@ -30,38 +31,39 @@ const SchedulePage = () => {
 			// setActiveClass(data.length > 0 ? (data[0].classes.length > 0 ? data[0].classes[0] : {}) : {});
 		};
 
-		const handleResize = () => {
-			if (!window.matchMedia("(max-width: 768px)").matches) {
-				setSidebarVisible(true);
-			}
-		};
+		if (auth.user) {
+			loadSchedules();
+		}
 
-		window.addEventListener("resize", handleResize);
+		// const handleResize = () => {
+		// 	if (!window.matchMedia("(max-width: 768px)").matches) {
+		// 		setSidebarVisible(true);
+		// 	}
+		// };
 
-		loadSchedules();
+		// window.addEventListener("resize", handleResize);
 
-		return () => {
-			window.removeEventListener("resize", handleResize);
-		};
-	}, []);
+		// return () => {
+		// 	window.removeEventListener("resize", handleResize);
+		// };
+	}, [auth]);
 
 	return (
-		<div className="w-screen h-screen flex flex-col">
+		<div className="w-screen h-screen flex flex-col relative">
 			<Navbar />
 			<div className="flex grow relative">
-				{sidebarVisible && (
-					<Sidebar
-						schedules={schedules}
-						setSchedules={setSchedules}
-						activeSchedule={activeSchedule}
-						setActiveSchedule={setActiveSchedule}
-						activeClass={activeClass}
-						setActiveClass={setActiveClass}
-						previewSchedule={previewSchedule}
-						setPreviewSchedule={setPreviewSchedule}
-						handleToggleSidebar={toggleSidebar}
-					/>
-				)}
+				<Sidebar
+					schedules={schedules}
+					setSchedules={setSchedules}
+					activeSchedule={activeSchedule}
+					setActiveSchedule={setActiveSchedule}
+					activeClass={activeClass}
+					setActiveClass={setActiveClass}
+					previewSchedule={previewSchedule}
+					setPreviewSchedule={setPreviewSchedule}
+					sidebarVisible={sidebarVisible}
+					handleToggleSidebar={toggleSidebar}
+				/>
 				<Schedule
 					colCount={5}
 					maxRowCount={11}

@@ -9,18 +9,27 @@ const DataEntry = () => {
 	const [building, setBuilding] = useState({ code: "", name: "", pid: "" });
 	const [classObj, setClassObj] = useState({
 		code: "",
-		number: "",
 		title: "",
+		description: "",
+		prerequisites: "",
+	});
+	const [section, setSection] = useState({
+		number: "",
+		class: "",
 		instructor: "",
 		credits: "",
+		final: "",
+		department: "",
 	});
 	const [instructor, setInstructor] = useState({ name: "" });
 	const [buildingLookupName, setBuildingLookupName] = useState("");
 	const [buildingLookupResult, setBuildingLookupResult] = useState("");
 	const [instructorLookupName, setInstructorLookupName] = useState("");
 	const [instructorLookupResult, setInstructorLookupResult] = useState("");
-	const [classLookupNumber, setClassLookupNumber] = useState("");
+	const [classLookupCode, setClassLookupCode] = useState("");
 	const [classLookupResult, setClassLookupResult] = useState("");
+	const [sectionLookupNumber, setSectionLookupNumber] = useState("");
+	const [sectionLookupResult, setSectionLookupResult] = useState("");
 
 	const lookupBuilding = async (event) => {
 		event.preventDefault();
@@ -36,8 +45,14 @@ const DataEntry = () => {
 
 	const lookupClass = async (event) => {
 		event.preventDefault();
-		const result = await ClassesApi.getClassByNumber(classLookupNumber.toUpperCase());
+		const result = await ClassesApi.getClass(classLookupCode.toUpperCase());
 		setClassLookupResult(result ? "This class exists." : "This class does not exist.");
+	};
+
+	const lookupSection = async (event) => {
+		event.preventDefault();
+		const result = await ClassesApi.getSection(sectionLookupNumber);
+		setSectionLookupResult(result ? "This section exists." : "This section does not exist.");
 	};
 
 	const submitBuilding = async (event) => {
@@ -65,15 +80,29 @@ const DataEntry = () => {
 		const newClass = {
 			...classObj,
 			code: classObj.code.toUpperCase(),
-			number: parseInt(classObj.number),
-			credits: parseInt(classObj.credits),
-			meetings: [...meetings],
 		};
 		const result = await DataEntryApi.createClassRecord(newClass);
 		if (result.status == 201) {
 			alert("Class successfully created.");
 		} else {
 			alert(`Class could not be created.\nError message: ${result.error}`);
+		}
+	};
+
+	const submitSection = async (event) => {
+		event.preventDefault();
+		const newSection = {
+			...section,
+			class: section.class.toUpperCase(),
+			number: parseInt(section.number),
+			credits: parseInt(section.credits),
+			meetings: [...meetings],
+		};
+		const result = await DataEntryApi.createSectionRecord(newSection);
+		if (result.status == 201) {
+			alert("Section successfully created.");
+		} else {
+			alert(`Section could not be created.\nError message: ${result.error}`);
 		}
 	};
 
@@ -219,14 +248,14 @@ const DataEntry = () => {
 			>
 				<h2 className="text-xl font-semibold mb-3">Class Lookup</h2>
 				<input
-					value={classLookupNumber}
+					value={classLookupCode}
 					onChange={(e) => {
-						setClassLookupNumber(e.target.value);
+						setClassLookupCode(e.target.value);
 						setClassLookupResult("");
 					}}
 					className="border border-gray-300 w-full p-2 mb-3"
 					type="text"
-					placeholder="Enter class NUMBER"
+					placeholder="Enter class CODE"
 				/>
 				<button type="submit" className="w-full bg-blue-600 hover:bg-blue-700 p-1.5 text-white font-medium">
 					Submit
@@ -244,7 +273,7 @@ const DataEntry = () => {
 
 			<form
 				onSubmit={submitClass}
-				className="w-11/12 sm:w-10/12 md:w-8/12 lg:w-5/12 p-5 bg-gray-100 border border-gray-300 flex flex-col"
+				className="w-11/12 sm:w-10/12 md:w-8/12 lg:w-5/12 mb-10 p-5 bg-gray-100 border border-gray-300 flex flex-col"
 			>
 				<h2 className="text-xl font-semibold mb-3">Enter New Class</h2>
 				<h4 className="mb-2 font-medium">Code</h4>
@@ -256,15 +285,6 @@ const DataEntry = () => {
 					placeholder="Enter class code  (should be all caps)"
 				/>
 
-				<h4 className="mb-2 font-medium">Number</h4>
-				<input
-					value={classObj.number}
-					onChange={(e) => setClassObj({ ...classObj, number: e.target.value })}
-					className="border border-gray-300 w-full mb-3 p-2"
-					type="text"
-					placeholder="Enter class number"
-				/>
-
 				<h4 className="mb-2 font-medium">Title</h4>
 				<input
 					value={classObj.title}
@@ -274,10 +294,84 @@ const DataEntry = () => {
 					placeholder="Enter class title"
 				/>
 
+				<h4 className="mb-2 font-medium">Description</h4>
+				<textarea
+					value={classObj.description}
+					onChange={(e) => setClassObj({ ...classObj, description: e.target.value })}
+					className="border border-gray-300 w-full mb-3 p-2"
+					type="text"
+					placeholder="Enter class description"
+				></textarea>
+
+				<h4 className="mb-2 font-medium">Prerequisites</h4>
+				<input
+					value={classObj.prerequisites}
+					onChange={(e) => setClassObj({ ...classObj, prerequisites: e.target.value })}
+					className="border border-gray-300 w-full mb-3 p-2"
+					type="text"
+					placeholder="Enter class prerequisites"
+				/>
+
+				<button className="w-full bg-blue-600 hover:bg-blue-700 p-1.5 text-white font-medium">Submit</button>
+			</form>
+
+			<form
+				onSubmit={lookupSection}
+				className="w-11/12 sm:w-10/12 md:w-8/12 lg:w-5/12 p-5 bg-gray-100 border border-gray-300 flex flex-col"
+			>
+				<h2 className="text-xl font-semibold mb-3">Section Lookup</h2>
+				<input
+					value={sectionLookupNumber}
+					onChange={(e) => {
+						setSectionLookupNumber(e.target.value);
+						setSectionLookupResult("");
+					}}
+					className="border border-gray-300 w-full p-2 mb-3"
+					type="text"
+					placeholder="Enter section NUMBER"
+				/>
+				<button type="submit" className="w-full bg-blue-600 hover:bg-blue-700 p-1.5 text-white font-medium">
+					Submit
+				</button>
+				{sectionLookupResult && (
+					<p
+						className={`mt-2 font-bold ${
+							sectionLookupResult == "This section exists." ? "text-red-600" : "text-green-700"
+						}`}
+					>
+						{sectionLookupResult}
+					</p>
+				)}
+			</form>
+
+			<form
+				onSubmit={submitSection}
+				className="w-11/12 sm:w-10/12 md:w-8/12 lg:w-5/12 mb-10 p-5 bg-gray-100 border border-gray-300 flex flex-col"
+			>
+				<h2 className="text-xl font-semibold mb-3">Enter New Section</h2>
+
+				<h4 className="mb-2 font-medium">Number</h4>
+				<input
+					value={section.number}
+					onChange={(e) => setSection({ ...section, number: e.target.value })}
+					className="border border-gray-300 w-full mb-3 p-2"
+					type="text"
+					placeholder="Enter section number"
+				/>
+
+				<h4 className="mb-2 font-medium">Class Code</h4>
+				<input
+					value={section.class}
+					onChange={(e) => setSection({ ...section, class: e.target.value })}
+					className="border border-gray-300 w-full mb-3 p-2"
+					type="text"
+					placeholder="Enter class code (should be all caps)"
+				/>
+
 				<h4 className="mb-2 font-medium">Instructor</h4>
 				<input
-					value={classObj.instructor}
-					onChange={(e) => setClassObj({ ...classObj, instructor: e.target.value })}
+					value={section.instructor}
+					onChange={(e) => setSection({ ...section, instructor: e.target.value })}
 					className="border border-gray-300 w-full mb-3 p-2"
 					type="text"
 					placeholder="Enter instructor name"
@@ -285,11 +379,29 @@ const DataEntry = () => {
 
 				<h4 className="mb-2 font-medium">Credits</h4>
 				<input
-					value={classObj.credits}
-					onChange={(e) => setClassObj({ ...classObj, credits: e.target.value })}
+					value={section.credits}
+					onChange={(e) => setSection({ ...section, credits: e.target.value })}
 					className="border border-gray-300 w-full mb-3 p-2"
 					type="text"
 					placeholder="Enter class credits"
+				/>
+
+				<h4 className="mb-2 font-medium">Final</h4>
+				<input
+					value={section.final}
+					onChange={(e) => setSection({ ...section, final: e.target.value })}
+					className="border border-gray-300 w-full mb-3 p-2"
+					type="text"
+					placeholder="Enter final"
+				/>
+
+				<h4 className="mb-2 font-medium">Department</h4>
+				<input
+					value={section.department}
+					onChange={(e) => setSection({ ...section, department: e.target.value })}
+					className="border border-gray-300 w-full mb-3 p-2"
+					type="text"
+					placeholder="Enter department"
 				/>
 
 				<h4 className="mb-2 font-medium">

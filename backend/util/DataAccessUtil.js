@@ -3,32 +3,36 @@ const Class = require("../model/Class");
 const Building = require("../model/Building");
 const Instructor = require("../model/Instructor");
 
-exports.mapClassResults = (classes) => {
-	return classes.map((classObj) => {
-		return {
-			...classObj.toObject(),
-			instructor: classObj.instructor.name,
-		};
-	});
-};
+// exports.mapClassResults = (classes) => {
+// 	return classes.map((classObj) => {
+// 		return {
+// 			...classObj.toObject(),
+// 			instructor: classObj.instructor.name,
+// 		};
+// 	});
+// };
 
-exports.mapScheduleResults = (schedules) => {
-	return schedules.map((schedule) => {
-		return {
-			...schedule.toObject(),
-			classes: this.mapClassResults(schedule.classes),
-		};
-	});
-};
+// exports.mapScheduleResults = (schedules) => {
+// 	return schedules.map((schedule) => {
+// 		return {
+// 			...schedule.toObject(),
+// 			classes: this.mapClassResults(schedule.classes),
+// 		};
+// 	});
+// };
 
-exports.getAllSchedules = async (req, res) => {
-	let result = await Schedule.find({})
+exports.getSchedules = async (params) => {
+	let result = await Schedule.find(params)
 		.populate({
-			path: "classes",
+			path: "sections",
 			populate: { path: "instructor" },
 		})
 		.populate({
-			path: "classes",
+			path: "sections",
+			populate: { path: "class" },
+		})
+		.populate({
+			path: "sections",
 			populate: {
 				path: "meetings",
 				populate: {
@@ -37,5 +41,5 @@ exports.getAllSchedules = async (req, res) => {
 			},
 		});
 
-	return this.mapScheduleResults(result);
+	return result;
 };
