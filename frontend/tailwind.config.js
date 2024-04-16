@@ -15,6 +15,10 @@ export default {
 					DEFAULT: "rgb(40, 87, 151)",
 					dark: "rgb(27, 69, 128)",
 				},
+				customGray: {
+					DEFAULT: "rgb(235, 235, 235)",
+					dark: "rgb(27, 69, 128)",
+				},
 			},
 		},
 	},

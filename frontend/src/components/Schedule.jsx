@@ -48,13 +48,18 @@ const Schedule = ({ colCount, maxRowCount, activeSchedule, previewSchedule, hand
 						location: `${meetingItem.building.code} ${meetingItem.room}`,
 						length: meetingItem.length,
 						distance: meetingItem?.distance ? meetingItem.distance : null,
+						displayText: true,
 					};
 
 					for (var i = 1; i < meetingItem.length; i++) {
 						rows[meetingItem.period - 1 + i][meetingItem.day] = {
+							instructor: section.instructor.name,
+							location: `${meetingItem.building.code} ${meetingItem.room}`,
 							period: meetingItem.period,
 							isClass: true,
+							code: section.class.code,
 							color: Colors.classColors[colorIndex],
+							displayText: false,
 						};
 					}
 				});
@@ -80,7 +85,7 @@ const Schedule = ({ colCount, maxRowCount, activeSchedule, previewSchedule, hand
 	}, [colCount, maxRowCount, activeSchedule, previewSchedule]);
 
 	return (
-		<div className="pl-3 pr-1 sm:px-10 py-20 w-full min-h-full flex relative overflow-x-hidden">
+		<div className="pl-3 pr-1 sm:px-10 py-20 w-full min-h-full flex relative overflow-x-clip">
 			<div className="absolute top-5 right-5 font-bold p-2">CREDITS: {credits}</div>
 			<div
 				className="flex pl-10 pr-3 rounded-r-md align-items-center absolute top-5 text-white left-0 font-bold lg:hidden p-2 hover:cursor-pointer bg-customOrange hover:bg-customOrange-dark"
