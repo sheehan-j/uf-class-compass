@@ -33,6 +33,7 @@ app.use("/api/user", require("./routes/user"));
 app.use("/api/instructors", require("./routes/instructors"));
 app.use("/api/buildings", require("./routes/buildings"));
 app.use("/api/dataentry", require("./routes/dataentry"));
+app.use("/api/rmp", require("./routes/rmp"));
 
 if (process.env.NODE_ENV !== "production") {
 	// Log routes for testing purposes
