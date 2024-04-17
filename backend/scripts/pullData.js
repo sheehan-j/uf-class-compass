@@ -1,5 +1,6 @@
 const API_KEY = require("./key.js");
 const fs = require("fs");
+const api = require("./DataEntryApi.js");
 
 const buildingMap = createMapFromJSON("buildings.json");
 function interpretday(day) {
@@ -151,12 +152,13 @@ async function getInstructors(instructors) {
   //for each one attempt to add an instructor to the DB or link to an existing instructor in the DB
   //return that list?
 
-  instructors.forEach(instructor =>{
+  await instructors.forEach(async instructor =>{
     const instructorUpload = {
       name: instructor,
     };
 
     //TODO add in call to create instructor API
+    await api.createInstructorRecord(instructorUpload);
   });
 }
 
@@ -176,7 +178,7 @@ async function getBuilding(buildingCode, buildingCodeLetters) {
     //bid: buildingObj.ID
   }
 
-
+  await api.createBuildingRecord(uploadedBuilding);
   //TODO add in call to create building API
 }
 
@@ -198,7 +200,8 @@ async function collectData() {
     courseUpload.code = course.code;
     courseUpload.title = course.name;
     courseUpload.description = course.description;
-    courseUpload.prereq = course.prerequisites;
+    courseUpload.preqrequisites = course.prerequisites;
+    await api.createClassRecord(courseUpload);
 
     course.sections.forEach(async (section) => {
       var classSectionUpload = {};
@@ -207,9 +210,12 @@ async function collectData() {
       });
 
       classSectionUpload.number = section.classNumber;
-      classSectionUpload.title = course.name;
+      classSectionUpload.credits = section.credits;
+      classSectionUpload.final = section.finalExam;
+      classSectionUpload.department = section.deptName;
       //add instructor(s)
-      classSectionUpload.instructors = await getInstructors(instructors);
+      classSectionUpload.instructors = 
+      await getInstructors(instructors);
 
       section.meetings.forEach(async (meeting) => {
         var meetDay;
@@ -220,15 +226,14 @@ async function collectData() {
             period: meeting.meetPeriodBegin,
             length: meeting.meetPeriodEnd - meeting.meetPeriodBegin + 1,
             room: meeting.meetRoom,
-            building: await getBuilding(meeting.meetBldgCode, meeting.meetBuilding),
+            building: meeting.meetBuilding,
           });
+          await getBuilding(meeting.meetBldgCode, meeting.meetBuilding)
         });
       });
-      
-      //TODO call create class API statement for classSectionUpload
+      await api.createSectionRecord(classSectionUpload);
+      //TODO call create class API statement for create section
     });
-
-    //TODO call create course API call for courseUpload
   });
 }
 
