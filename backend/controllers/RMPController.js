@@ -1,9 +1,8 @@
 const Instructor = require("../model/Instructor");
-const RMP = require("../model/RMP");
 
 exports.updateRMPData = async (req, res) => {
 	try {
-		console.log("RMP date updated initiated.");
+		console.log("RMP data update initiated.");
 		let instructors = [];
 		if (req.query?.update_all) {
 			instructors = await Instructor.find({});
@@ -76,7 +75,7 @@ exports.updateRMPData = async (req, res) => {
 
 		console.log(JSON.stringify(rmpData));
 
-		await RMP.deleteMany({}); // Delete all existing records
+		await Instructor.updateMany({}, { $set: { rmpData: null } }); // Delete all existing records
 
 		// Once all python script executions are successfully made, update the DB
 		const dbPromises = [];
@@ -85,7 +84,10 @@ exports.updateRMPData = async (req, res) => {
 		rmpData.forEach((rmp) => {
 			const promise = new Promise(async (resolve, reject) => {
 				try {
-					await RMP.create(rmp);
+					const id = rmp.instructor;
+					console.log(id);
+					delete rmp.instructor;
+					await Instructor.updateOne({ _id: id }, { $set: { rmpData: rmp } });
 					console.log(`MongoDB create command completed (${++updates}/${total})`);
 					resolve();
 				} catch (err) {
