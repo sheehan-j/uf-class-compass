@@ -22,24 +22,29 @@ const Instructor = require("../model/Instructor");
 // };
 
 exports.getSchedules = async (params) => {
-	let result = await Schedule.find(params)
-		.populate({
-			path: "sections",
-			populate: { path: "instructor" },
-		})
-		.populate({
-			path: "sections",
-			populate: { path: "class" },
-		})
-		.populate({
-			path: "sections",
-			populate: {
-				path: "meetings",
+	try {
+		let result = await Schedule.find(params)
+			.populate({
+				path: "sections",
+				populate: { path: "instructor" },
+			})
+			.populate({
+				path: "sections",
+				populate: { path: "class" },
+			})
+			.populate({
+				path: "sections",
 				populate: {
-					path: "building",
+					path: "meetings",
+					populate: {
+						path: "building",
+					},
 				},
-			},
-		});
+			});
 
-	return result;
+		return result;
+	} catch (err) {
+		console.error(err);
+		return -1;
+	}
 };

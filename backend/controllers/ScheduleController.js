@@ -7,16 +7,20 @@ const DataAccessUtil = require("../util/DataAccessUtil");
 
 exports.getAllSchedules = async (req, res) => {
 	const schedules = await DataAccessUtil.getSchedules({});
+	if (schedules == -1) return res.status(500).json({ error: "Interval server error getting schedules." });
 	return res.status(200).json(schedules);
 };
 
 exports.getSchedulesByUser = async (req, res) => {
 	const schedules = await DataAccessUtil.getSchedules({ user: req.query.user });
+	if (schedules == -1) return res.status(500).json({ error: "Interval server error getting schedules." });
 	return res.status(200).json(schedules);
 };
 
 exports.createSchedule = async (req, res) => {
 	try {
+		if (!req.query.user) return res.status(400).json({ error: "User is required." });
+
 		await Schedule.create({
 			name: req.query.name,
 			user: req.query.user,
