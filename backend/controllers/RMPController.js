@@ -34,6 +34,7 @@ exports.updateRMPData = async (req, res) => {
 
 						let formattedData = {
 							instructor: instructor._id,
+							rmpId: split[0],
 							department: split[1],
 							school: split[2],
 							rating: split[3],

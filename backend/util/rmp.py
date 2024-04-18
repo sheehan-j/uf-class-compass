@@ -9,7 +9,7 @@ professor = ratemyprofessor.get_professor_by_school_and_name(
     ratemyprofessor.get_school_by_name("University of Florida"), professor_name)
 
 if professor is not None and professor.school.name == "University of Florida" and professor.name == professor_name:
-  print(professor.name) 
+  print(professor.id)
   print(professor.department)
   print(professor.school.name)
   print(professor.rating)
