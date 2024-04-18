@@ -91,20 +91,18 @@ const Navbar = () => {
 									Course Search
 								</button>
 							</Link>
-							<button
-								className="py-2.5 px-5 rounded-lg w-full sm:w-auto bg-customOrange hover:bg-customOrange-dark"
-								onClick={
-									auth?.user
-										? () => {
-												auth.logout();
-										  }
-										: () => {
-												auth.login();
-										  }
-								}
-							>
-								{auth?.user ? "Logout" : "Login"}
-							</button>
+							<Link className={`link-item`} to={auth?.user ? "" : "/login"}>
+								<button
+									className="py-2.5 px-5 rounded-lg w-full bg-customOrange hover:bg-customOrange-dark"
+									onClick={() => {
+										if (auth?.user) {
+											auth.logout();
+										}
+									}}
+								>
+									{auth?.user ? "Logout" : "Login"}
+								</button>
+							</Link>
 						</div>
 					</div>
 				</div>
