@@ -1,0 +1,9 @@
+Class failure:  failure for ABE4949 {"error":"Class already exists: ABE4949"}
+Instructor failure:  failure for  {"error":"Instructor already exists."}
+Instructor failure:  failure for  {"error":"Instructor already exists."}
+Class failure:  failure for CAP3220 {"error":"Class already exists: CAP3220"}
+Instructor failure:  failure for Rong Zhang {"error":"Instructor already exists."}
+Building failure:  failure for CSE {"error":"Building already exists."}
+Building failure:  failure for CSE {"error":"Building already exists."}
+Building failure:  failure for CSE {"error":"Building already exists."}
+Section failure:  failure for CAP3220 11221 {"error":"Section already exists: 11221"}

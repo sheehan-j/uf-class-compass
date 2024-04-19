@@ -1,8 +1,118 @@
+const { clear } = require("console");
 const API_KEY = require("./key.js");
 const fs = require("fs");
-const api = require("./DataEntryApi.js");
+//const api = require("./DataEntryApi.js");
+//const { createBuildingRecord, createInstructorRecord, createClassRecord, createSectionRecord } = require('./dataEntryApi.js');
 
-const buildingMap = createMapFromJSON("buildings.json");
+const baseApiUrl = "http://localhost:6205/api";
+
+const buildingMap = createMapFromJSON("./backend/scripts/buildings.json");
+
+const createBuildingRecord = async (building) => {
+  try {
+    const response = await fetch(baseApiUrl + `/dataentry/building`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(building),
+    });
+    let result = null;
+    if (response.status == 201) {
+      result = response.json();
+    } else {
+      const errorMessage = await response.text();
+      addtofaileduploadlist(
+        building.code + " " + errorMessage,
+        "Building failure: "
+      );
+    }
+    return result;
+  } catch (error) {
+    console.error("Error uploading data:", error);
+    addtofaileduploadlist(building.code, "Building failure: ");
+  }
+};
+
+const createInstructorRecord = async (instructor) => {
+  try {
+    const response = await fetch(baseApiUrl + `/dataentry/instructor`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(instructor),
+    });
+    let result = null;
+    if (response.status == 201) {
+      result = response.json();
+    } else {
+      const errorMessage = await response.text();
+      addtofaileduploadlist(
+        instructor.name + " " + errorMessage,
+        "Instructor failure: "
+      );
+    }
+    return result;
+  } catch (error) {
+    console.error("Error uploading data:", error);
+    addtofaileduploadlist(instructor.name, "Instructor failure: ");
+  }
+};
+
+const createClassRecord = async (classObj) => {
+  try {
+    const response = await fetch(baseApiUrl + `/dataentry/class`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(classObj),
+    });
+    if (response.status != 201) {
+      const errorMessage = await response.text();
+      addtofaileduploadlist(
+        classObj.code + " " + errorMessage,
+        "Class failure: "
+      );
+    } else {
+      const result = await response.json();
+      return { ...result, status: response.status };
+    }
+  } catch (error) {
+    console.error("Error uploading data:", error);
+    addtofaileduploadlist(classObj.code, "Class failure: ");
+  }
+};
+
+const createSectionRecord = async (section) => {
+  try {
+    const response = await fetch(baseApiUrl + `/dataentry/section`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(section),
+    });
+    if (response.status != 201) {
+      const errorMessage = await response.text();
+      addtofaileduploadlist(
+        section.class + " " + section.number + " " + errorMessage,
+        "Section failure: "
+      );
+    } else {
+      const result = await response.json();
+      return { ...result, status: response.status };
+    }
+  } catch (error) {
+    console.error("Error uploading data:", error);
+    addtofaileduploadlist(
+      section.class + " " + section.number,
+      "Section failure: "
+    );
+  }
+};
+
 function interpretday(day) {
   switch (day) {
     case "M":
@@ -22,12 +132,15 @@ function interpretday(day) {
       return 7;
   }
 }
-async function readFile() {
+function readCourseFile() {
   // Function to read the file and call async function for each line
 
   const courseCodes = [];
   try {
-    const data = fs.readFileSync(filename, "utf8");
+    const data = fs.readFileSync(
+      "./backend/scripts/allcoursecodes.txt",
+      "utf8"
+    );
     const lines = data.split("\n");
 
     for (let line of lines) {
@@ -40,10 +153,129 @@ async function readFile() {
         courseCodes.push(line);
       }
     }
-    console.log("Processing complete.");
+    console.log("Processing course file complete.");
+    return courseCodes;
   } catch (err) {
     console.error("Error reading the file:", err);
   }
+}
+
+function addtofailedlist(stringToAdd) {
+  const filename = "./backend/scripts/allfailedcoursecodes.txt";
+  try {
+    // Read the contents of the file synchronously
+    let data = fs.readFileSync(filename, "utf-8");
+
+    // Split the contents into lines
+    let lines = data.split("\n");
+
+    // Find the index of the next open line (i.e., empty line or line with only whitespace)
+    let nextOpenLineIndex = lines.findIndex((line) => line.trim() === "");
+
+    // If no open line is found, add the string to the end of the file
+    if (nextOpenLineIndex === -1) {
+      nextOpenLineIndex = lines.length;
+    }
+
+    // Add the string to the next open line
+    lines.splice(nextOpenLineIndex, 0, stringToAdd);
+
+    // Join the lines back together
+    let newData = lines.join("\n");
+
+    // Write the updated contents back to the file synchronously
+    fs.writeFileSync(filename, newData, "utf-8");
+
+    console.log(
+      `String "${stringToAdd}" added to the next open line of ${filename}`
+    );
+  } catch (error) {
+    console.error("Error:", error);
+  }
+}
+
+function addtoskippedlist(stringToAdd) {
+  const filename = "./backend/scripts/skippedcourses.txt";
+  try {
+    // Read the contents of the file synchronously
+    let data = fs.readFileSync(filename, "utf-8");
+
+    // Split the contents into lines
+    let lines = data.split("\n");
+
+    // Find the index of the next open line (i.e., empty line or line with only whitespace)
+    let nextOpenLineIndex = lines.findIndex((line) => line.trim() === "");
+
+    // If no open line is found, add the string to the end of the file
+    if (nextOpenLineIndex === -1) {
+      nextOpenLineIndex = lines.length;
+    }
+
+    // Add the string to the next open line
+    lines.splice(nextOpenLineIndex, 0, stringToAdd);
+
+    // Join the lines back together
+    let newData = lines.join("\n");
+
+    // Write the updated contents back to the file synchronously
+    fs.writeFileSync(filename, newData, "utf-8");
+
+    console.log(
+      `String "${stringToAdd}" added to the next open line of ${filename}`
+    );
+  } catch (error) {
+    console.error("Error:", error);
+  }
+}
+
+function addtofaileduploadlist(stringToAdd, type) {
+  const filename = "./backend/scripts/faileduploads.txt";
+
+  stringToAdd = type + " failure for " + stringToAdd;
+  try {
+    // Read the contents of the file synchronously
+    let data = fs.readFileSync(filename, "utf-8");
+
+    // Split the contents into lines
+    let lines = data.split("\n");
+
+    // Find the index of the next open line (i.e., empty line or line with only whitespace)
+    let nextOpenLineIndex = lines.findIndex((line) => line.trim() === "");
+
+    // If no open line is found, add the string to the end of the file
+    if (nextOpenLineIndex === -1) {
+      nextOpenLineIndex = lines.length;
+    }
+
+    // Add the string to the next open line
+    lines.splice(nextOpenLineIndex, 0, stringToAdd);
+
+    // Join the lines back together
+    let newData = lines.join("\n");
+
+    // Write the updated contents back to the file synchronously
+    fs.writeFileSync(filename, newData, "utf-8");
+
+    console.log(
+      `String "${stringToAdd}" added to the next open line of ${filename}`
+    );
+  } catch (error) {
+    console.error("Error:", error);
+  }
+}
+
+function clearlogs() {
+  const files = [
+    "./backend/scripts/faileduploads.txt",
+    "./backend/scripts/skippedcourses.txt",
+    "./backend/scripts/allfailedcoursecodes.txt",
+  ];
+
+  files.forEach((file) => {
+    // Clear the contents of each file by writing an empty string to it synchronously
+    fs.writeFileSync(file, "");
+    console.log(`Cleared file: ${file}`);
+  });
 }
 
 function createMapFromJSON(filePath) {
@@ -61,8 +293,10 @@ function createMapFromJSON(filePath) {
     // Assuming each object has an "ID" attribute
     const id = obj.ID;
     map.set(id, obj);
+    console.log("Item added to map");
   });
 
+  console.log("Map finished");
   // Return the reference to the Map
   return map;
 }
@@ -70,47 +304,49 @@ async function searchPlaces(query) {
   // Constructing the API URL with the provided query and API key
   const apiUrl = `https://maps.googleapis.com/maps/api/place/textsearch/json?query=${query}&key=${API_KEY}`;
   // Making the API request
-  console.log(apiUrl);
-  return await fetch(apiUrl)
-    .then((response) => {
-      if (!response.ok) {
-        throw new Error("Network response was not ok");
+  try {
+    const response = await fetch(apiUrl);
+    if (!response.ok) {
+      throw new Error("Network response was not ok");
+    }
+    const data = await response.json();
+
+    // Initialize a variable to store the found place
+    let foundPlace = null;
+
+    // Iterate over the results and set the found place if valid
+    for (const result of data.results) {
+      const location = result.geometry.location;
+      const latitude_ = location.lat;
+      const longitude_ = location.lng;
+
+      if (
+        latitude_ >= 29 && //make sure it's in Gainesville
+        latitude_ <= 30 &&
+        longitude_ >= -83 &&
+        longitude_ <= -82
+      ) {
+        const formattedAddress_ = result.formatted_address;
+        const name_ = result.name;
+        const placeId_ = result.place_id;
+
+        foundPlace = {
+          name: name_,
+          placeId: placeId_,
+          formattedAddress: formattedAddress_,
+          latitude: latitude_,
+          longitude: longitude_,
+        };
+        // Break the loop once a valid place is found
+        break;
       }
-      return response.json();
-    })
-    .then((data) => {
-      // Handling the response data
-      data.results.forEach((result) => {
-        // Accessing the formatted address
-        var location = result.geometry.location;
-        var latitude_ = location.lat;
-        var longitude_ = location.lng;
-        if (
-          latitude_ >= 29 && //make sure it's in gaines
-          latitude_ <= 30 &&
-          longitude_ >= -83 &&
-          longitude_ <= -82
-        ) {
-          var formattedAddress_ = result.formatted_address;
-          var name_ = result.name;
-          var placeId_ = result.place_id;
-
-          var place = {
-            name: name_,
-            placeId: placeId_,
-            formattedAddress: formattedAddress_,
-            latitude: latitude_,
-            longitude: longitude_,
-          };
-          return place;
-        }
-      });
-
-      // You can further process the data here
-    })
-    .catch((error) => {
-      console.error("There was a problem with the fetch operation:", error);
-    });
+    }
+    // Return the found place (or null if no valid place is found)
+    return foundPlace;
+  } catch (error) {
+    console.error("There was a problem with the fetch operation:", error);
+    return null;
+  }
 }
 
 async function searchClass(courseCode) {
@@ -134,11 +370,14 @@ async function searchClass(courseCode) {
         data[0].COURSES.length > 0
       ) {
         const course = data[0].COURSES[0];
+
         return course;
       } else {
         console.log(
           `COURSES array is empty or not found for class ${courseCode}. Skipping...`
         );
+        addtoskippedlist(courseCode);
+        return null;
       }
       // You can further process the data here
     })
@@ -147,19 +386,17 @@ async function searchClass(courseCode) {
     });
 }
 
-async function getInstructors(instructors) {
+async function getInstructor(instructor) {
   //get list of instructors in param
   //for each one attempt to add an instructor to the DB or link to an existing instructor in the DB
   //return that list?
+  const instructorUpload = {
+    name: instructor,
+  };
 
-  await instructors.forEach(async instructor =>{
-    const instructorUpload = {
-      name: instructor,
-    };
-
-    //TODO add in call to create instructor API
-    await api.createInstructorRecord(instructorUpload);
-  });
+  //TODO add in call to create instructor API
+  await createInstructorRecord(instructorUpload);
+  console.log(`Instructor ${instructorUpload.name} uploaded`);
 }
 
 async function getBuilding(buildingCode, buildingCodeLetters) {
@@ -167,80 +404,103 @@ async function getBuilding(buildingCode, buildingCodeLetters) {
   //search building up with google query searchPlace() func
   //return the building ?
   const buildingObj = buildingMap.get(buildingCode);
-  const placeObj = searchPlaces(buildingObj.NAME);
+  const placeObj = await searchPlaces(buildingObj.NAME);
 
-  const uploadedBuilding ={ //TODO change this to match the DB schema
+  const uploadedBuilding = {
     code: buildingCodeLetters,
     pid: placeObj.placeId,
     name: buildingObj.NAME,
-    //long: buildingObj.LON,
-    //lat: buildingObj.LAT,
-    //bid: buildingObj.ID
-  }
+    bid: buildingObj.ID,
+    lat: buildingObj.LAT,
+    long: buildingObj.LON,
+  };
 
-  await api.createBuildingRecord(uploadedBuilding);
+  await createBuildingRecord(uploadedBuilding);
+  console.log(`Building ${uploadedBuilding.code} uploaded`);
   //TODO add in call to create building API
 }
 
 async function collectData() {
-  //Grab all uf courses
-  //place into objects with proper formatting
-  //grab all instructors in seperate data structure
-  //run add instructor api until all instructors
-  //store all the buildings codes into a data structure
+  clearlogs();
 
-  const courseCodes = await readFile();
+  //const courseCodes = readCourseFile();
+  const courseCodes = ["ABE4949 ", "CAP3220"];
+  const waitInterval = 1000;
+  var courseCode;
+  for (let index = 0; index < courseCodes.length; index++) {
+    try {
+      if (index !== 0) {
+        await new Promise((resolve) => setTimeout(resolve, waitInterval)); // Wait logic
+      }
 
-  courseCodes.forEach(async (courseCode) => {
-    const course = await searchClass(courseCode);
+      courseCode = courseCodes[index];
+      const course = await searchClass(courseCode);
 
-    const instructors = [];
-    const courseUpload = {};
+      if (course == null) {
+        continue;
+      }
 
-    courseUpload.code = course.code;
-    courseUpload.title = course.name;
-    courseUpload.description = course.description;
-    courseUpload.preqrequisites = course.prerequisites;
-    await api.createClassRecord(courseUpload);
+      const courseUpload = {
+        code: course.code,
+        title: course.name,
+        description: course.description,
+        prerequisites: course?.prerequisites || null,
+      };
 
-    course.sections.forEach(async (section) => {
-      var classSectionUpload = {};
-      section.instructors.forEach((instructor) => {
-        instructors.push(instructor);
-      });
+      await createClassRecord(courseUpload);
+      console.log(`Class ${course.code} uploaded`);
 
-      classSectionUpload.number = section.classNumber;
-      classSectionUpload.credits = section.credits;
-      classSectionUpload.final = section.finalExam;
-      classSectionUpload.department = section.deptName;
-      //add instructor(s)
-      classSectionUpload.instructors = 
-      await getInstructors(instructors);
+      for (const section of course.sections) {
+        const classSectionUpload = {
+          number: section.classNumber,
+          class: course.code,
+          instructor: section.instructors[0]?.name || "",
+          credits: section.credits != "VAR" ? section.credits : 0,
+          final: section.finalExam,
+          department: section.deptName,
+          meetings: [],
+          isOnline: !(section.meetTimes.length > 0),
+        };
 
-      section.meetings.forEach(async (meeting) => {
-        var meetDay;
-        section.meetDays.forEach(async (day) => {
-          meetDay = interpretday(day);
-          classSectionUpload.meetings.push({
-            day: meetDay,
-            period: meeting.meetPeriodBegin,
-            length: meeting.meetPeriodEnd - meeting.meetPeriodBegin + 1,
-            room: meeting.meetRoom,
-            building: meeting.meetBuilding,
-          });
-          await getBuilding(meeting.meetBldgCode, meeting.meetBuilding)
-        });
-      });
-      await api.createSectionRecord(classSectionUpload);
-      //TODO call create class API statement for create section
-    });
-  });
+        await getInstructor(section.instructors[0]?.name || "");
+
+        if(section.meetTimes.length > 0){
+          for (const meeting of section.meetTimes) {
+            let meetDay;
+            for (const day of meeting.meetDays) {
+              meetDay = interpretday(day);
+              classSectionUpload.meetings.push({
+                day: meetDay,
+                period: meeting.meetPeriodBegin,
+                length: meeting.meetPeriodEnd - meeting.meetPeriodBegin + 1,
+                room: meeting.meetRoom,
+                building: meeting.meetBuilding,
+              });
+              await getBuilding(meeting.meetBldgCode, meeting.meetBuilding);
+            }
+          }
+        } 
+        
+        await createSectionRecord(classSectionUpload);
+        console.log(`Section ${course.code} + ${section.classNumber} uploaded`);
+        //TODO call create class API statement for create section
+      }
+    } catch (error) {
+      addtofailedlist(courseCode);
+      console.error(
+        "There was a problem with the class " + courseCode + " : ",
+        error
+      );
+    }
+  }
 }
 
 //Function Caller
 (async () => {
   try {
-    //collectData();
+    console.log("Started");
+    await collectData();
+    console.log("Ended");
   } catch (error) {
     console.error("Error occurred:", error);
   }
