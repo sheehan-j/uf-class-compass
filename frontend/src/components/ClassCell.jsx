@@ -39,7 +39,6 @@ const ClassCell = ({ cell, onCellClick }) => {
 	};
 	return (
 		<div
-			// TODO: Remove these overflow classes if possible because they are breaking styling for walking distance
 			className={`overflow-scroll sm:overflow-visible z-10 p-1.5 flex flex-col justify-between box-content relative ${
 				distance ? "z-20" : "z-10"
 			}`}

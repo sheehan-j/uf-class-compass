@@ -3,7 +3,7 @@ import EmptyCell from "./EmptyCell";
 import ClassCell from "./ClassCell";
 import React, { useState, useEffect } from "react";
 
-const Grid = ({ grid, colCount, rowCount, isSkeleton, setIsClassClicked, setCell }) => {
+const Grid = ({ grid, colCount, rowCount, isSkeleton, setIsClassClicked, setCell, gridRef }) => {
 	const handleCellClick = (cell) => {
 		setIsClassClicked(true);
 		setCell(cell);
@@ -30,7 +30,8 @@ const Grid = ({ grid, colCount, rowCount, isSkeleton, setIsClassClicked, setCell
 
 	return (
 		<div
-			className="grid w-full h-full"
+			ref={gridRef}
+			className="grid border border-slate-300 w-full h-full"
 			style={{
 				gridTemplateColumns: `repeat(${colCount}, minmax(0, 1fr))`,
 				gridTemplateRows: `repeat(${rowCount}, minmax(${cellHeight}, 1fr))`,

@@ -22,6 +22,7 @@ const Schema = new mongoose.Schema({
 			},
 		],
 	},
+	isOnline: Boolean,
 });
 
 module.exports = mongoose.model("Section", Schema);
