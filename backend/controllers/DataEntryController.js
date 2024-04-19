@@ -69,20 +69,29 @@ exports.createSectionRecord = async (req, res) => {
 		if (!instructorSearch)
 			return res.status(400).json({ error: `Instructor does not exist: ${req.body.instructor}` });
 
-		const meetings = await Promise.all(
-			req.body.meetings.map(async (meeting) => {
-				const building = await Building.findOne({ code: meeting.building });
-				return building ? { ...meeting, building: building._id } : { error: true, code: meeting.building };
-			})
-		);
+		let meetings = [];
+		if (req.body.meetings.length > 0) {
+			meetings = await Promise.all(
+				req.body.meetings.map(async (meeting) => {
+					const building = await Building.findOne({ code: meeting.building });
+					return building ? { ...meeting, building: building._id } : { error: true, code: meeting.building };
+				})
+			);
 
-		// Check that all meetings were mapped successfully
-		for (let i = 0; i < meetings.length; i++) {
-			if (meetings[i]?.error)
-				return res.status(400).json({ error: `Building does not exist: ${meetings[i].code}` });
+			// Check that all meetings were mapped successfully
+			for (let i = 0; i < meetings.length; i++) {
+				if (meetings[i]?.error)
+					return res.status(400).json({ error: `Building does not exist: ${meetings[i].code}` });
+			}
+		} else {
+			if (!req.body?.isOnline) {
+				return res
+					.status(400)
+					.json({ error: "'meetings' must be a list of length > 0 unless isOnline is true." });
+			}
 		}
 
-		const createResult = await Section.create({
+		let newSection = {
 			number: req.body.number,
 			class: classSearch._id,
 			instructor: instructorSearch._id,
@@ -90,7 +99,12 @@ exports.createSectionRecord = async (req, res) => {
 			final: req.body.final,
 			department: req.body.department,
 			meetings: meetings,
-		});
+		};
+
+		if (req.body?.isOnline) {
+			newSection = { ...newSection, isOnline: true };
+		}
+		const createResult = await Section.create(newSection);
 		return res.status(201).json(createResult);
 	} catch (err) {
 		console.error(err);
