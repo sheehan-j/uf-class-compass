@@ -59,39 +59,50 @@ const Schedule = ({ colCount, maxRowCount, activeSchedule, previewSchedule, hand
 		if (sections) {
 			sections.forEach((section) => {
 				totalCredits += section.credits;
+
+				let sectionInfoObject = {
+					_id: section._id,
+					instructor: section.instructor.name,
+					credits: section.credits,
+					final: section.final,
+					department: section.department,
+					color: Colors.classColors[colorIndex],
+					code: section.class.code,
+					title: section.class.title,
+					description: section.class.description,
+					prerequisites: section.class?.prerequisites ? section.class?.prerequisites : null,
+				};
+				console.log(section.class);
+
 				if (section?.isOnline) {
 					const onlineSection = {
-						_id: section._id,
-						instructor: section.instructor.name,
-						color: Colors.classColors[colorIndex],
-						code: section.class.code,
+						...sectionInfoObject,
 						location: "Online",
 					};
 					newOnlineSections.push(onlineSection);
 				} else {
 					section?.meetings?.forEach((meetingItem) => {
+						// ** Subtract 1 from the period to zero it (all periods stored for sections are 1-based)
 						rows[meetingItem.period - 1][meetingItem.day] = {
-							// ** Subtract 1 from the period to zero it (all periods stored for sections are 1-based)
+							...sectionInfoObject,
 							period: meetingItem.period,
-							instructor: section.instructor.name,
-							isClass: true,
-							color: Colors.classColors[colorIndex],
-							code: section.class.code,
 							location: `${meetingItem.building.code} ${meetingItem.room}`,
 							length: meetingItem.length,
-							distance: meetingItem?.distance ? meetingItem.distance : null,
+							distance: meetingItem?.distance && meetingItem.length == 1 ? meetingItem.distance : null,
+							isClass: true,
 							displayText: true,
 						};
 
 						for (var i = 1; i < meetingItem.length; i++) {
 							rows[meetingItem.period - 1 + i][meetingItem.day] = {
-								instructor: section.instructor.name,
+								...sectionInfoObject,
 								location: `${meetingItem.building.code} ${meetingItem.room}`,
 								period: meetingItem.period,
 								isClass: true,
-								code: section.class.code,
-								color: Colors.classColors[colorIndex],
 								displayText: false,
+								distance:
+									// If this is class > 2 in length, add the distance to the last cell
+									meetingItem?.distance && i == meetingItem.length - 1 ? meetingItem.distance : null,
 							};
 						}
 					});
