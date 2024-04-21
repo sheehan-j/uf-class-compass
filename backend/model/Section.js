@@ -7,6 +7,7 @@ const Schema = new mongoose.Schema({
 	credits: Number,
 	final: String,
 	department: String,
+	isOnline: Boolean,
 	meetings: {
 		type: [
 			{
@@ -22,7 +23,6 @@ const Schema = new mongoose.Schema({
 			},
 		],
 	},
-	isOnline: Boolean,
 });
 
 module.exports = mongoose.model("Section", Schema);

@@ -89,6 +89,7 @@ exports.createSectionRecord = async (req, res) => {
 			credits: req.body.credits,
 			final: req.body.final,
 			department: req.body.department,
+			isOnline: req.body.isOnline,
 			meetings: meetings,
 		});
 		return res.status(201).json(createResult);

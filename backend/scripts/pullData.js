@@ -236,29 +236,34 @@ function addtofaileduploadlist(stringToAdd, type) {
     // Read the contents of the file synchronously
     let data = fs.readFileSync(filename, "utf-8");
 
-    // Split the contents into lines
-    let lines = data.split("\n");
+    // Check if the stringToAdd contains "already exists"
+    if (!stringToAdd.includes("already exists")) {
+      // Split the contents into lines
+      let lines = data.split("\n");
 
-    // Find the index of the next open line (i.e., empty line or line with only whitespace)
-    let nextOpenLineIndex = lines.findIndex((line) => line.trim() === "");
+      // Find the index of the next open line (i.e., empty line or line with only whitespace)
+      let nextOpenLineIndex = lines.findIndex((line) => line.trim() === "");
 
-    // If no open line is found, add the string to the end of the file
-    if (nextOpenLineIndex === -1) {
-      nextOpenLineIndex = lines.length;
+      // If no open line is found, add the string to the end of the file
+      if (nextOpenLineIndex === -1) {
+        nextOpenLineIndex = lines.length;
+      }
+
+      // Add the string to the next open line
+      lines.splice(nextOpenLineIndex, 0, stringToAdd);
+
+      // Join the lines back together
+      let newData = lines.join("\n");
+
+      // Write the updated contents back to the file synchronously
+      fs.writeFileSync(filename, newData, "utf-8");
+
+      console.log(
+        `String "${stringToAdd}" added to the next open line of ${filename}`
+      );
+    } else {
+      console.log(`String "${stringToAdd}" contains 'already exists'. Not adding to the file.`);
     }
-
-    // Add the string to the next open line
-    lines.splice(nextOpenLineIndex, 0, stringToAdd);
-
-    // Join the lines back together
-    let newData = lines.join("\n");
-
-    // Write the updated contents back to the file synchronously
-    fs.writeFileSync(filename, newData, "utf-8");
-
-    console.log(
-      `String "${stringToAdd}" added to the next open line of ${filename}`
-    );
   } catch (error) {
     console.error("Error:", error);
   }
@@ -408,7 +413,7 @@ async function getBuilding(buildingCode, buildingCodeLetters) {
 
   const uploadedBuilding = {
     code: buildingCodeLetters,
-    pid: placeObj.placeId,
+    pid: placeObj?.placeId || null,
     name: buildingObj.NAME,
     bid: buildingObj.ID,
     lat: buildingObj.LAT,
@@ -421,11 +426,11 @@ async function getBuilding(buildingCode, buildingCodeLetters) {
 }
 
 async function collectData() {
-  clearlogs();
+  //clearlogs();
 
-  //const courseCodes = readCourseFile();
-  const courseCodes = ["ABE4949 ", "CAP3220"];
-  const waitInterval = 1000;
+  const courseCodes = readCourseFile();
+  //const courseCodes = ["ABE4949 ", "CAP3220"];
+  const waitInterval = 500;
   var courseCode;
   for (let index = 0; index < courseCodes.length; index++) {
     try {
@@ -456,7 +461,7 @@ async function collectData() {
           class: course.code,
           instructor: section.instructors[0]?.name || "",
           credits: section.credits != "VAR" ? section.credits : 0,
-          final: section.finalExam,
+          final: section?.finalExam || "",
           department: section.deptName,
           meetings: [],
           isOnline: !(section.meetTimes.length > 0),
