@@ -7,18 +7,26 @@ router.route('/update').post(RMPController.updateRMPData);
 
 router.get('/url/:instructorId', async (req, res) => {
   try {
+    const instructorId = req.params.instructorId;
+    console.log('Instructor ID:', instructorId);
+
     const instructor = await Instructor.findOne({
-      'rmpData.rmpId': req.params.instructorId,
+      'rmpData.rmpId': instructorId,
     });
+    console.log('Instructor:', instructor);
+
     if (!instructor) {
+      console.log('Instructor not found.');
       return res.status(404).json({ error: 'Instructor not found.' });
     }
 
     if (instructor.rmpData && instructor.rmpData.rmpId) {
       const rmpUrl = `https://www.ratemyprofessors.com/professor/${instructor.rmpData.rmpId}`;
+      console.log('RMP URL:', rmpUrl);
 
       return res.json({ rmpUrl });
     } else {
+      console.log('Rate My Professor data not found for this instructor.');
       return res.status(404).json({
         error: 'Rate My Professor data not found for this instructor.',
       });
