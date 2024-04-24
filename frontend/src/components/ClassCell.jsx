@@ -5,6 +5,7 @@ import { useRef, useState, useEffect } from "react";
 const ClassCell = ({ cell, onCellClick }) => {
 	const distanceTooltipRef = useRef(null);
 	const cellRef = useRef(null);
+	const [distanceString, setDistanceString] = useState("");
 	const [distanceHovered, setDistanceHovered] = useState(false);
 	const { color, code, instructor, location, length, period, distance, displayText } = cell;
 	const [screenWidth, setScreenWidth] = useState(window.innerWidth);
@@ -21,6 +22,17 @@ const ClassCell = ({ cell, onCellClick }) => {
 			window.removeEventListener("resize", handleResize);
 		};
 	}, []);
+
+	useEffect(() => {
+		if (distance) {
+			console.log(typeof distance.time.split(" ")[0]);
+			if (distance.time.split(" ")[0] === "1") {
+				setDistanceString(distance.time);
+			} else {
+				setDistanceString(distance.time.substring(0, distance.time.length - 1));
+			}
+		}
+	}, [cell]);
 
 	useEffect(() => {
 		if (distanceTooltipRef?.current) {
@@ -93,7 +105,7 @@ const ClassCell = ({ cell, onCellClick }) => {
 										: "text-lime-600"
 								}`}
 							>
-								{distance.time.substring(0, distance.time.length - 1)}
+								{distanceString}
 							</span>{" "}
 							walk to {distance.class}
 						</p>
