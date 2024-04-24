@@ -72,7 +72,6 @@ const Schedule = ({ colCount, maxRowCount, activeSchedule, previewSchedule, hand
 					description: section.class.description,
 					prerequisites: section.class?.prerequisites ? section.class?.prerequisites : null,
 				};
-				console.log(section.class);
 
 				if (section?.isOnline) {
 					const onlineSection = {
