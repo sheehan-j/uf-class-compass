@@ -24,7 +24,7 @@ exports.updateRMPData = async (req, res) => {
 			});
 		}
 		if (req.query?.begin && req.query?.end) {
-			instructors = instructors.slice(req.query.begin, req.query.end);
+			instructors = instructors.slice(parseInt(req.query.begin), parseInt(req.query.end) + 1);
 		}
 		console.log("Instructor retrieval from MongoDB complete.");
 
@@ -56,6 +56,7 @@ exports.updateRMPData = async (req, res) => {
 								difficulty: split[4],
 								numRatings: split[5],
 								wouldTakeAgain: split[6] == "N/A" ? null : split[6],
+								isNull: false,
 							};
 
 							if (split[6] !== "N/A") {
@@ -65,7 +66,10 @@ exports.updateRMPData = async (req, res) => {
 							rmpData.push(formattedData);
 							console.log(`Python API request completed (${apiReqIndex}/${total})`);
 						} else {
-							rmpData.push(null);
+							rmpData.push({
+								instructor: instructor._id,
+								isNull: true,
+							});
 							console.log(`Python API request completed (returned null) (${apiReqIndex}/${total})`);
 						}
 					});
@@ -93,10 +97,6 @@ exports.updateRMPData = async (req, res) => {
 			return res.status(400);
 		}
 
-		// console.log("Beginning to delete all existing RMP data in MongoDB...");
-		// await Instructor.updateMany({}, { $set: { rmpData: null } }); // Delete all existing records
-		// console.log("Delete completed.");
-
 		// Once all python script executions are successfully made, update the DB
 		const dbPromises = [];
 		let dbUpdateIndex = 0;
@@ -109,9 +109,13 @@ exports.updateRMPData = async (req, res) => {
 			await new Promise(async (resolve, reject) => {
 				try {
 					console.log(`MongoDB create command starting (${++dbUpdateIndex}/${total})`);
-					const id = rmp.instructor;
-					delete rmp.instructor; // Delete this field, not needed when passed into record as rmpData
-					await Instructor.updateOne({ _id: id }, { $set: { rmpData: rmp } });
+					if (!rmp.isNull) {
+						const id = rmp.instructor;
+						delete rmp.instructor; // Delete this field, not needed when passed into record as rmpData
+						await Instructor.updateOne({ _id: id }, { $set: { rmpData: rmp } });
+					} else {
+						await Instructor.updateOne({ _id: rmp.instructor }, { $set: { rmpData: null } });
+					}
 					console.log(`MongoDB create command completed (${dbUpdateIndex}/${total})`);
 					resolve();
 				} catch (err) {
