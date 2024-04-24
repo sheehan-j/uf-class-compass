@@ -98,7 +98,7 @@ const MySchedules = ({
 						className="px-4 py-1 my-2 block flex justify-center text-center mx-auto bg-white border border-gray-400 rounded-full"
 						onClick={handleNewSchedule}
 					>
-						New Schedulue
+						New Schedule
 					</button>
 				</div>
 				<button
@@ -114,9 +114,7 @@ const MySchedules = ({
 				</button>
 			</div>
 			<div className="flex justify-center w-full mb-4">
-				<div
-					className="flex justify-center text-center p-1 bg-white rounded-full w-10/12 shadow-lg"
-				>
+				<div className="flex justify-center text-center p-1 bg-white rounded-full w-10/12 shadow-lg">
 					{activeSchedule?.name ? activeSchedule.name : "No Schedule Selected"}
 				</div>
 			</div>
