@@ -2,7 +2,7 @@ const onlineSection = ({ cell, onCellClick, width }) => {
 	const { instructor, color, code, location } = cell;
 	return (
 		<div
-			className={`overflow-scroll h-28 z-10 p-1.5 flex flex-col justify-between border-2 relative`}
+			className={`overflow-hidden h-28 z-10 p-1.5 flex flex-col justify-between border-2 relative`}
 			style={{ backgroundColor: color, borderColor: color, cursor: "pointer", width: width }}
 			onClick={onCellClick}
 		>
