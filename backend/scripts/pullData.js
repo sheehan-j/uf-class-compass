@@ -524,14 +524,18 @@ async function collectData() {
             let meetDay;
             for (const day of meeting.meetDays) {
               meetDay = interpretday(day);
-              
+              const buildingCodeLetters  = getbuildingCodeLetters(meeting.meetBldgCode, meeting.meetBuilding)
               classSectionUpload.meetings.push({
                 day: meetDay,
                 period: calculatePeriod(meeting.meetPeriodBegin),
                 length: calculatePeriodLength(meeting.meetPeriodBegin,meeting.meetPeriodEnd),
                 room: meeting.meetRoom,
-                building: getbuildingCodeLetters(meeting.meetBldgCode, meeting.meetBuilding),
+                building: buildingCodeLetters,
               });
+
+              if( buildingCodeLetters == "WEB"){
+                classSectionUpload.isOnline = true;
+              }
               await getBuilding(meeting.meetBldgCode, meeting.meetBuilding);
             }
           }
