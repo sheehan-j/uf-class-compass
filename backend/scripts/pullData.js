@@ -444,6 +444,37 @@ async function getBuilding(buildingCode, buildingCodeLetters) {
   //TODO add in call to create building API
 }
 
+function getbuildingCodeLetters(meetBldgCode, meetBuilding){
+  if(meetBldgCode == "WEB"){
+    return "WEB";
+  }
+  else if(meetBldgCode == ""){
+    return "TBA";
+  }
+  else{
+    return meetBuilding;
+  }
+}
+
+function calculatePeriod(meetPeriodBegin){
+  switch (meetPeriodBegin) {
+    case "E1":
+      return 12;
+    case "E2":
+      return 13;
+    case "E3":
+      return 14;
+
+    default:
+      return meetPeriodBegin;
+  }
+
+}
+
+function calculatePeriodLength(meetPeriodBegin,meetPeriodEnd){
+  return calculatePeriod(meetPeriodEnd) - calculatePeriod(meetPeriodBegin) + 1
+}
+
 async function collectData() {
   clearlogs();
 
@@ -493,22 +524,13 @@ async function collectData() {
             let meetDay;
             for (const day of meeting.meetDays) {
               meetDay = interpretday(day);
-              var buildingCodeLetters;
-              if(meeting.meetBldgCode == "WEB"){
-                buildingCodeLetters = "WEB";
-              }
-              else if(meeting.meetBldgCode == ""){
-                buildingCodeLetters = "TBA";
-              }
-              else{
-                buildingCodeLetters = meeting.meetBuilding;
-              }
+              
               classSectionUpload.meetings.push({
                 day: meetDay,
-                period: meeting.meetPeriodBegin,
-                length: meeting.meetPeriodEnd - meeting.meetPeriodBegin + 1,
+                period: calculatePeriod(meeting.meetPeriodBegin),
+                length: calculatePeriodLength(meeting.meetPeriodBegin,meeting.meetPeriodEnd),
                 room: meeting.meetRoom,
-                building: buildingCodeLetters || meeting.meetBldgCode,
+                building: getbuildingCodeLetters(meeting.meetBldgCode, meeting.meetBuilding),
               });
               await getBuilding(meeting.meetBldgCode, meeting.meetBuilding);
             }
