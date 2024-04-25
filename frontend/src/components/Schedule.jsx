@@ -71,6 +71,7 @@ const Schedule = ({ colCount, maxRowCount, activeSchedule, previewSchedule, hand
 					title: section.class.title,
 					description: section.class.description,
 					prerequisites: section.class?.prerequisites ? section.class?.prerequisites : null,
+					rmpData: section.instructor.rmpData
 				};
 
 				if (section?.isOnline) {

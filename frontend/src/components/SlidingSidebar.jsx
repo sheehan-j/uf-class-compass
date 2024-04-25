@@ -4,6 +4,7 @@ import PropTypes from "prop-types";
 import StyleColors from "../constants/StyleColors";
 
 const SlidingSidebar = ({ isClassClicked, setIsClassClicked, cell }) => {
+	console.log(cell);
 	// const { credits, final, department, color, code, title, description, prerequisites, location } = cell;
 	const handleMinimize = () => {
 		setIsClassClicked(false);
@@ -25,6 +26,20 @@ const SlidingSidebar = ({ isClassClicked, setIsClassClicked, cell }) => {
 	}, []);
 
 	const position = { lat: 61.2176, lng: -149.8997 };
+
+	const renderStars = (numStars) => {
+        const roundedStars = Math.round(numStars * 2) / 2;
+        const wholeStars = Math.floor(roundedStars);
+        const hasHalfStar = roundedStars % 1 !== 0 && roundedStars % 1 >= 0.25 && roundedStars % 1 < 0.75;
+        const stars = [];
+        for (let i = 0; i < wholeStars; i++) {
+            stars.push(<img key={"star"+i} src="/star.svg" alt="Star" />);
+        }
+        if (hasHalfStar) {
+            stars.push(<img key="half-star" src="/halfStar.svg" alt="Half Star" />);
+        }
+        return (<span className="flex">{stars}</span>);
+    };
 	return (
 		<div
 			style={{
@@ -82,6 +97,17 @@ const SlidingSidebar = ({ isClassClicked, setIsClassClicked, cell }) => {
 								<div className="text-end">{cell?.department}</div>
 							</div>
 						)}
+						{cell?.rmpData && 
+							<>
+							<div className="w-full bg-gray-300 my-3" style={{ height: "1px" }}></div>
+							<div className="font-semibold w-full">RMP Data</div>
+							<div className="flex flex-row gap-2 justify-between items-center">
+									<div className="text-end flex flex-col items-center"> <span><span className="font-semibold mr-1">Rating: </span> {JSON.stringify(cell.rmpData.rating)} / 5</span>  <span className="ml-2 ">{renderStars(cell.rmpData.rating)}</span></div>
+									<div className="text-end"> <span className="font-semibold">Difficulty: </span>{JSON.stringify(cell.rmpData.difficulty)} / 5</div>
+									<div className="text-end text-blue-700"> <a href={`https://www.ratemyprofessors.com/professor/${cell.rmpData.rmpId}`}>Link to RMP</a></div>
+								</div>
+								</>
+							}
 					</div>
 				</div>
 			</div>
