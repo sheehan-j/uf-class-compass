@@ -116,20 +116,20 @@ const createSectionRecord = async (section) => {
 function interpretday(day) {
   switch (day) {
     case "M":
-      return 1;
+      return 0;
     case "T":
-      return 2;
+      return 1;
     case "W":
-      return 3;
+      return 2;
     case "R":
-      return 4;
+      return 3;
     case "F":
-      return 5;
+      return 4;
     case "S":
-      return 6;
+      return 5;
 
     default:
-      return 7;
+      return 6;
   }
 }
 function readCourseFile() {
@@ -138,7 +138,7 @@ function readCourseFile() {
   const courseCodes = [];
   try {
     const data = fs.readFileSync(
-      "./backend/scripts/allcoursecodes.txt",
+      "./backend/scripts/allfailedafterrun1.txt",
       "utf8"
     );
     const lines = data.split("\n");
@@ -408,11 +408,30 @@ async function getBuilding(buildingCode, buildingCodeLetters) {
   //get building code from map
   //search building up with google query searchPlace() func
   //return the building ?
-  const buildingObj = buildingMap.get(buildingCode);
-  const placeObj = await searchPlaces(buildingObj.NAME);
+  var buildingObj = buildingMap.get(buildingCode);
+  if(!buildingObj){
+    for (let building of buildingMap.values()) {
+      if (building.ABBREV == buildingCodeLetters) {
+        buildingObj = building;
+        break;
+      }
+    }
+  }
+  var placeObj;
+  if(buildingObj.NAME != "WEB" || buildingObj.NAME != "TBA"){
+    placeObj = await searchPlaces(buildingObj.NAME);
+  }
+  
+  if(buildingObj.NAME == "WEB"){
+    buildingCodeLetters = "WEB";
+  }
+
+  if(buildingObj.NAME == "TBA"){
+    buildingCodeLetters = "TBA";
+  }
 
   const uploadedBuilding = {
-    code: buildingCodeLetters,
+    code: buildingCodeLetters || buildingObj.ABBREV,
     pid: placeObj?.placeId || null,
     name: buildingObj.NAME,
     bid: buildingObj.ID,
@@ -426,7 +445,7 @@ async function getBuilding(buildingCode, buildingCodeLetters) {
 }
 
 async function collectData() {
-  //clearlogs();
+  clearlogs();
 
   const courseCodes = readCourseFile();
   //const courseCodes = ["ABE4949 ", "CAP3220"];
@@ -474,12 +493,22 @@ async function collectData() {
             let meetDay;
             for (const day of meeting.meetDays) {
               meetDay = interpretday(day);
+              var buildingCodeLetters;
+              if(meeting.meetBldgCode == "WEB"){
+                buildingCodeLetters = "WEB";
+              }
+              else if(meeting.meetBldgCode == ""){
+                buildingCodeLetters = "TBA";
+              }
+              else{
+                buildingCodeLetters = meeting.meetBuilding;
+              }
               classSectionUpload.meetings.push({
                 day: meetDay,
                 period: meeting.meetPeriodBegin,
                 length: meeting.meetPeriodEnd - meeting.meetPeriodBegin + 1,
                 room: meeting.meetRoom,
-                building: meeting.meetBuilding,
+                building: buildingCodeLetters || meeting.meetBldgCode,
               });
               await getBuilding(meeting.meetBldgCode, meeting.meetBuilding);
             }

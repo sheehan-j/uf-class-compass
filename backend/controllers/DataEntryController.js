@@ -95,6 +95,6 @@ exports.createSectionRecord = async (req, res) => {
 		return res.status(201).json(createResult);
 	} catch (err) {
 		console.error(err);
-		return res.status(500).json({ error: "Internal server error" });
+		return res.status(500).json({ error: "Internal server error:" + err});
 	}
 };
