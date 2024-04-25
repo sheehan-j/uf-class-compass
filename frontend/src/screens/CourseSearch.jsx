@@ -48,51 +48,58 @@ const CourseSearch = () => {
 			<Navbar />
 			<div className="content py-6 w-full flex flex-col items-center">
 				<div className="w-4/5">
-					<div className="flex justify-center gap-3 w-full mb-4">
-						<div>
-							<input
-								type="text"
-								value={codeSearch}
-								onChange={(e) => setCodeSearch(e.target.value)}
-								onKeyDown={handleKeyPress}
-								className="px-4 py-2 border border-gray-300 rounded-md placeholder-gray-400 focus:outline-none focus:border-blue-500"
-								placeholder="Code (ex. CIS4930)"
-							/>
+					<div className="flex flex-col lg:flex-row justify-center gap-3 w-full mb-4">
+						<div className="flex flex-row grow gap-3">
+							<div className="grow">
+								<input
+									type="text"
+									value={codeSearch}
+									onChange={(e) => setCodeSearch(e.target.value)}
+									onKeyDown={handleKeyPress}
+									className="w-full px-4 py-2 border border-gray-300 rounded-md placeholder-gray-400 focus:outline-none focus:border-blue-500"
+									placeholder="Code (ex. CIS4930)"
+								/>
+							</div>
+							<div className="grow">
+								<input
+									type="text"
+									value={numberSearch}
+									onChange={(e) => setNumberSearch(e.target.value)}
+									onKeyDown={handleKeyPress}
+									className="w-full px-4 py-2 border border-gray-300 rounded-md placeholder-gray-400 focus:outline-none focus:border-blue-500"
+									placeholder="Number (ex. 12345)"
+								/>
+							</div>
 						</div>
-						<div>
-							<input
-								type="text"
-								value={numberSearch}
-								onChange={(e) => setNumberSearch(e.target.value)}
-								onKeyDown={handleKeyPress}
-								className="px-4 py-2 border border-gray-300 rounded-md placeholder-gray-400 focus:outline-none focus:border-blue-500"
-								placeholder="Number (ex. 12345)"
-							/>
-						</div>
-						<div className="relative grow w-full">
-							<input
-								type="text"
-								value={titleSearch}
-								onChange={(e) => setTitleSearch(e.target.value)}
-								onKeyDown={handleKeyPress}
-								className="w-full px-4 py-2 border border-gray-300 rounded-md placeholder-gray-400 focus:outline-none focus:border-blue-500"
-								placeholder="Course Title (ex. Internet Computing)"
-							/>
-							{/* <span className="absolute inset-y-0 left-3 flex items-center">
+						<div className="flex flex-row grow gap-3">
+							<div className="relative grow w-full">
+								<input
+									type="text"
+									value={titleSearch}
+									onChange={(e) => setTitleSearch(e.target.value)}
+									onKeyDown={handleKeyPress}
+									className="w-full px-4 py-2 border border-gray-300 rounded-md placeholder-gray-400 focus:outline-none focus:border-blue-500"
+									placeholder="Course Title (ex. Internet Computing)"
+								/>
+								{/* <span className="absolute inset-y-0 left-3 flex items-center">
 								<img src="/search_icon.svg" className="h-5 w-5" alt="Search Icon" />
 							</span> */}
-							{titleSearch != "" && (
-								<button className="absolute inset-y-0 right-3 flex items-center" onClick={clearInput}>
-									<img src="/remove.svg" />
-								</button>
-							)}
+								{titleSearch != "" && (
+									<button
+										className="absolute inset-y-0 right-3 flex items-center"
+										onClick={clearInput}
+									>
+										<img src="/remove.svg" />
+									</button>
+								)}
+							</div>
+							<button
+								className="bg-customBlue hover:bg-customBlue-dark text-white px-10 rounded-lg"
+								onClick={handleSearch}
+							>
+								Search
+							</button>
 						</div>
-						<button
-							className="bg-customBlue hover:bg-customBlue-dark text-white px-10 rounded-lg"
-							onClick={handleSearch}
-						>
-							Search
-						</button>
 					</div>
 					{/* {searchResults.length > 0 && (
 						<div className="text-left w-full font-bold text-2xl">Search results for {titleSearch}</div>
