@@ -13,6 +13,7 @@ const MyScheduleBox = ({ schedule, selected, onSelect, onDelete }) => {
 			className={`w-full h-auto relative cursor-pointer border border-gray-400 flex items-center justify-between my-2 p-1 ${
 				selected ? "bg-gray-200" : "bg-white"
 			}`}
+			role="button"
 			onClick={() => onSelect(schedule)}
 		>
 			<p className="ml-2">{schedule.name}</p>

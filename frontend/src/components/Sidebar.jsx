@@ -219,7 +219,7 @@ const Sidebar = ({
 				)}
 
 				<p className={`mb-1 ${activeSchedule?.sections ? "" : "opacity-40"}`}>Course Code Search</p>
-				<div className="relative w-full" ref={autoCompleteRef}>
+				<div className="relative w-full " ref={autoCompleteRef}>
 					<input
 						className={`w-full py-2 px-2 flex align-center bg-white border border-gray-300 ${
 							activeSchedule?.sections ? "" : "opacity-60 line-through"
@@ -232,7 +232,7 @@ const Sidebar = ({
 					/>
 					{classByPrefix && (
 						<div
-							className={`absolute z-50 w-full ${showAutoComplete ? "block" : "hidden"} w-full`}
+							className={`absolute z-50 w-full ${showAutoComplete ? "block" : "hidden"} w-full h-[200px] overflow-y-scroll`}
 							ref={autoCompleteRef}
 						>
 							{classByPrefix.map((classCode, index) => {

@@ -2,6 +2,7 @@ import { useState, useRef, useEffect } from "react";
 import { Link } from "react-router-dom";
 import StyleColors from "../constants/StyleColors";
 import { useAuth } from "../hooks/AuthProvider";
+import UserButton from "./UserButton";
 
 const Navbar = () => {
 	const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -91,6 +92,7 @@ const Navbar = () => {
 									Course Search
 								</button>
 							</Link>
+							{auth?.user && <UserButton firstName={auth.user.firstName} lastName={auth.user.lastName}/>}
 							<Link className={`link-item`} to={auth?.user ? "" : "/login"}>
 								<button
 									className="py-2.5 px-5 rounded-lg w-full bg-customOrange hover:bg-customOrange-dark"

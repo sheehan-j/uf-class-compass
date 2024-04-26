@@ -24,8 +24,7 @@ const ClassCell = ({ cell, onCellClick }) => {
 	}, []);
 
 	useEffect(() => {
-		if (distance) {
-			console.log(typeof distance.time.split(" ")[0]);
+		if (distance?.time) {
 			if (distance.time.split(" ")[0] === "1") {
 				setDistanceString(distance.time);
 			} else {
@@ -80,7 +79,7 @@ const ClassCell = ({ cell, onCellClick }) => {
 					)}
 					<div className="font-semibold">{displayText && location}</div>
 				</div>
-				{distance && screenWidth >= 640 && (
+				{distance?.time && screenWidth >= 640 && (
 					<div
 						className="relative block pb-1.5"
 						onMouseEnter={() => setDistanceHovered(true)}

@@ -4,7 +4,6 @@ import PropTypes from "prop-types";
 import StyleColors from "../constants/StyleColors";
 
 const SlidingSidebar = ({ isClassClicked, setIsClassClicked, cell }) => {
-	console.log(cell);
 	// const { credits, final, department, color, code, title, description, prerequisites, location } = cell;
 	const handleMinimize = () => {
 		setIsClassClicked(false);
@@ -25,7 +24,7 @@ const SlidingSidebar = ({ isClassClicked, setIsClassClicked, cell }) => {
 		};
 	}, []);
 
-	const position = { lat: 61.2176, lng: -149.8997 };
+	const position = { lat: 44.4280, lng: -110.5885 };
 
 	const renderStars = (numStars) => {
         const roundedStars = Math.round(numStars * 2) / 2;

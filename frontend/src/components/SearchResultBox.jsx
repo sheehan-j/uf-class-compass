@@ -80,8 +80,8 @@ const SearchResultBox = ({ searchResult, expanded, handleClick, index }) => {
 														? `-${meeting.period + meeting.length - 1}`
 														: ""}{" "}
 													{"("}
-													{getPeriodTimes(meeting.period).start} -{" "}
-													{getPeriodTimes(meeting.period + meeting.length - 1)?.end}
+													{meeting.period && getPeriodTimes(meeting.period)?.start} -{" "}
+													{meeting.period && getPeriodTimes(meeting.period + meeting.length - 1)?.end}
 													{")"}
 												</div>
 											))}
@@ -114,8 +114,8 @@ const SearchResultBox = ({ searchResult, expanded, handleClick, index }) => {
 							<div className="w-full bg-gray-300 my-3" style={{ height: "1px" }}></div>
 							<div className="flex flex-row gap-2 justify-between items-center">
 									<div className="font-semibold">RMP Data</div>
-									<div className="text-end flex flex-row items-center"> <span className="font-semibold mr-1">Rating: </span>{JSON.stringify(section.instructor.rmpData.rating)} / 5 <span className="ml-2 ">{renderStars(section.instructor.rmpData.rating)}</span></div>
-									<div className="text-end"> <span className="font-semibold">Difficulty: </span>{JSON.stringify(section.instructor.rmpData.difficulty)} / 5 </div>
+									<div className="text-end flex flex-row items-center"> <span className="font-semibold mr-1">Rating: </span>{section.instructor.rmpData.rating} / 5 <span className="ml-2 ">{renderStars(section.instructor.rmpData.rating)}</span></div>
+									<div className="text-end"> <span className="font-semibold">Difficulty: </span>{section.instructor.rmpData.difficulty} / 5 </div>
 									<div className="text-end text-blue-700"> <a href={`https://www.ratemyprofessors.com/professor/${section.instructor.rmpData.rmpId}`}>Link to RMP</a></div>
 								</div>
 								</>
