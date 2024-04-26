@@ -1,8 +1,11 @@
 import Navbar from "../components/Navbar";
 import CourseSearchModal from "../components/courseSearchModal";
 import SearchResultBox from "../components/SearchResultBox";
-import { useState } from "react";
+import AddSectionFromSearch from "../components/AddSectionFromSearch";
+import { useState, useEffect } from "react";
 import { SearchApi } from "../api/SearchApi";
+import { SchedulesApi } from "../api/SchedulesApi";
+import { useAuth } from "../hooks/AuthProvider";
 
 const CourseSearch = () => {
 	const [searchResults, setSearchResults] = useState([]);
@@ -11,6 +14,21 @@ const CourseSearch = () => {
 	const [codeSearch, setCodeSearch] = useState("");
 	const [loading, setLoading] = useState(false);
 	const [expanded, setExpanded] = useState(null);
+	const [modalOpen, setModalOpen] = useState(false);
+	const [sectionToAdd, setSectionToAdd] = useState(null);
+	const [schedules, setSchedules] = useState([]);
+	const auth = useAuth();
+
+	useEffect(() => {
+		const loadSchedules = async () => {
+			const response = await SchedulesApi.getSchedulesByUser(auth.user._id);
+			setSchedules(response);
+		};
+
+		if (auth.user) {
+			loadSchedules();
+		}
+	}, [auth]);
 
 	const clearInput = () => {
 		if (loading) return;
@@ -44,7 +62,7 @@ const CourseSearch = () => {
 	};
 
 	return (
-		<div className="w-full">
+		<div className="w-full min-h-screen relative">
 			<Navbar />
 			<div className="content py-6 w-full flex flex-col items-center">
 				<div className="w-4/5">
@@ -81,9 +99,6 @@ const CourseSearch = () => {
 									className="w-full px-4 py-2 border border-gray-300 rounded-md placeholder-gray-400 focus:outline-none focus:border-blue-500"
 									placeholder="Course Title (ex. Internet Computing)"
 								/>
-								{/* <span className="absolute inset-y-0 left-3 flex items-center">
-								<img src="/search_icon.svg" className="h-5 w-5" alt="Search Icon" />
-							</span> */}
 								{titleSearch != "" && (
 									<button
 										className="absolute inset-y-0 right-3 flex items-center"
@@ -101,9 +116,6 @@ const CourseSearch = () => {
 							</button>
 						</div>
 					</div>
-					{/* {searchResults.length > 0 && (
-						<div className="text-left w-full font-bold text-2xl">Search results for {titleSearch}</div>
-					)} */}
 					<div className="w-full flex flex-col gap-5 justify-center items-center">
 						{!loading &&
 							searchResults.map((searchResult, index) => (
@@ -115,17 +127,25 @@ const CourseSearch = () => {
 									handleClick={() => {
 										setExpanded(expanded === searchResult._id ? null : searchResult._id);
 									}}
+									sectionToAdd={sectionToAdd}
+									setSectionToAdd={setSectionToAdd}
+									setModalOpen={setModalOpen}
 								/>
 							))}
 						{searchResults.length == 0 && !loading && (
-							// <div className="w-full drop-shadow-sm bg-white p-3 rounded-lg border border-customBlue-transparent flex justify-center items-center">
 							<div className="text-gray-500">No results found!</div>
-							// </div>
 						)}
 						{loading && <div className="text-gray-500">Loading search results...</div>}
 					</div>
 				</div>
 			</div>
+			<AddSectionFromSearch
+				schedules={schedules}
+				setSchedules={setSchedules}
+				modalOpen={modalOpen}
+				setModalOpen={setModalOpen}
+				sectionToAdd={sectionToAdd}
+			/>
 		</div>
 	);
 };

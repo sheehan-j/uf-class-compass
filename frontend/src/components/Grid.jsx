@@ -31,7 +31,7 @@ const Grid = ({ grid, colCount, rowCount, isSkeleton, setIsClassClicked, setCell
 	return (
 		<div
 			ref={gridRef}
-			className="grid border border-slate-300 w-full h-full"
+			className={`grid border border-slate-300 w-full h-full ${isSkeleton ? "z-10" : "z-20"}`}
 			style={{
 				gridTemplateColumns: `repeat(${colCount}, minmax(0, 1fr))`,
 				gridTemplateRows: `repeat(${rowCount}, minmax(${cellHeight}, 1fr))`,

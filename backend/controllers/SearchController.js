@@ -12,6 +12,16 @@ exports.fullSearch = async (req, res) => {
 		.populate("class")
 		.lean();
 
+	let temp = sections.filter((section) => section.meetings.filter((meeting) => meeting.period > 11).length > 0);
+	temp.forEach((temp) => {
+		console.log(temp._id);
+	});
+
+	// let temp = sections.filter((section) => section.meetings.filter((meeting) => meeting.length === null).length > 0);
+	// temp.forEach((temp) => {
+	// 	console.log(temp._id.toString());
+	// });
+
 	// If there was a number searched, only check for the number, there's no need to check based on code or title otherwise because
 	// there should only be a single match by number
 	if (req.query?.number) {

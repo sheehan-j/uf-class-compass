@@ -25,8 +25,8 @@ const ClassCell = ({ cell, onCellClick }) => {
 
 	useEffect(() => {
 		if (distance?.time) {
-			if (distance.time.split(" ")[0] === "1") {
-				setDistanceString(distance.time);
+			if (distance?.time?.split(" ")[0] === "1") {
+				setDistanceString(distance?.time);
 			} else {
 				setDistanceString(distance.time.substring(0, distance.time.length - 1));
 			}
@@ -50,9 +50,7 @@ const ClassCell = ({ cell, onCellClick }) => {
 	};
 	return (
 		<div
-			className={`overflow-scroll sm:overflow-visible z-10 p-1.5 flex flex-col justify-between box-content relative ${
-				distance ? "z-20" : "z-10"
-			}`}
+			className={`overflow-scroll sm:overflow-visible p-1.5 flex flex-col justify-between box-content relative`}
 			style={{ backgroundColor: color, borderWidth: "1px", borderColor: color, cursor: "pointer" }}
 			onClick={clickClass}
 		>
@@ -99,14 +97,14 @@ const ClassCell = ({ cell, onCellClick }) => {
 						>
 							<span
 								className={`font-bold ${
-									parseInt(distance.time.substring(0, distance.time.indexOf(" "))) >= 16
+									parseInt(distance?.time?.substring(0, distance.time.indexOf(" "))) >= 16
 										? "text-red-800"
 										: "text-lime-600"
 								}`}
 							>
 								{distanceString}
 							</span>{" "}
-							walk to {distance.class}
+							walk to {distance?.class}
 						</p>
 						<img src="./walking.svg" className="w-7 h-7" />
 						<img

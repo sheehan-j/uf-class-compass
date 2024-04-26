@@ -2,13 +2,15 @@ import { useState, useRef, useEffect } from "react";
 import { Link } from "react-router-dom";
 import StyleColors from "../constants/StyleColors";
 import { useAuth } from "../hooks/AuthProvider";
-import UserButton from "./UserButton";
+import UserIcon from "./UserIcon";
 
 const Navbar = () => {
 	const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 	const mobileMenuRef = useRef();
 	const auth = useAuth();
 	const [screenWidth, setScreenWidth] = useState(window.innerWidth);
+
+	
 
 	useEffect(() => {
 		const handleResize = () => {
@@ -52,12 +54,15 @@ const Navbar = () => {
 		<header className="w-full text-white relative" style={{ backgroundColor: StyleColors.blue }}>
 			<nav className="w-full relative" style={{ borderBottom: "1px solid rgba(235,235,235, 0.5)" }}>
 				<div className="flex flex-col sm:flex-row justify-between items-center py-3 px-5">
-					<div className="block w-full h-10 sm:hidden">
+					<div className="block w-full h-10 sm:hidden flex justify-between">
 						<img
 							className="float-left h-full"
 							src="/mobileMenu.svg"
 							onClick={() => setIsMobileMenuOpen((prev) => !prev)}
 						/>
+						<div className="pr-5">
+							{auth?.user && <UserIcon firstName={auth.user.firstName} lastName={auth.user.lastName}/>}
+						</div>
 					</div>
 					<div
 						ref={mobileMenuRef}
@@ -75,34 +80,44 @@ const Navbar = () => {
 							/>
 							<span className="max-lg:hidden font-bold text-start lg:text-2xl">UF Class Compass</span>
 						</Link>
-
-						<div className="flex flex-col w-full mt-2 sm:mt-0 sm:w-auto sm:grid sm:grid-cols-3 gap-3">
-							<Link className={`link-item w-full sm:w-auto sm:hidden`} to="/">
-								<button className="py-2.5 px-5 rounded-lg w-full bg-customOrange hover:bg-customOrange-dark">
-									Home
-								</button>
-							</Link>
-							<Link className={`link-item`} to="/schedule">
-								<button className="py-2.5 px-10 rounded-lg w-full bg-customOrange hover:bg-customOrange-dark">
-									Schedule
-								</button>
-							</Link>
-							<Link className={`link-item`} to="/search">
-								<button className="py-2.5 px-10 rounded-lg w-full bg-customOrange hover:bg-customOrange-dark">
-									Course Search
-								</button>
-							</Link>
-							{auth?.user && <UserButton firstName={auth.user.firstName} lastName={auth.user.lastName}/>}
-							<Link className={`link-item`} to={auth?.user ? "" : "/login"}>
-								<button
+						<div className="flex flex-col sm:items-center sm:flex-row gap-3 h-full">
+							<div className={`flex flex-col w-full mt-2 sm:mt-0 sm:w-auto sm:grid ${auth.user ? "sm:grid-cols-2" : "sm:grid-cols-3" } gap-3`}>
+								<Link className={`link-item w-full sm:w-auto sm:hidden`} to="/">
+									<button className="py-2.5 px-5 rounded-lg w-full bg-customOrange hover:bg-customOrange-dark">
+										Home
+									</button>
+								</Link>
+								<Link className={`link-item`} to="/schedule">
+									<button className="py-2.5 px-10 rounded-lg w-full bg-customOrange hover:bg-customOrange-dark">
+										Schedule
+									</button>
+								</Link>
+								<Link className={`link-item`} to="/search">
+									<button className="py-2.5 px-10 rounded-lg w-full bg-customOrange hover:bg-customOrange-dark">
+										Course Search
+									</button>
+								</Link>
+								{/* <Link className={`link-item`} to={auth?.user ? "" : "/login"}>
+									<button
 									className="py-2.5 px-5 rounded-lg w-full bg-customOrange hover:bg-customOrange-dark"
 									onClick={() => {
 										if (auth?.user) {
 											auth.logout();
 										}
 									}}
-								>
+									>
 									{auth?.user ? "Logout" : "Login"}
+									</button>
+								</Link> */}
+								<Link className={`${auth.user? "hidden" : "block"} link-item`} to={auth?.user ? "" : "/login"}>
+									<button className="py-2.5 px-5 rounded-lg w-full bg-customOrange hover:bg-customOrange-dark">
+										Login
+									</button>
+								</Link>
+							</div>
+							<Link className="hidden sm:block h-full link-item" to={auth?.user ? "" : "/login"}>
+								<button onClick={() => {auth.logout();}}>
+									{auth?.user && <UserIcon auth={auth}/>}
 								</button>
 							</Link>
 						</div>
