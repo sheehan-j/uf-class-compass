@@ -6,6 +6,7 @@ import LoginPage from "./screens/LoginPage";
 import CourseSearch from "./screens/CourseSearch";
 import DataEntry from "./screens/DataEntry";
 import AuthProvider from "./hooks/AuthProvider";
+import UserPage from "./screens/UserPage";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { APIProvider } from "@vis.gl/react-google-maps";
 import "./index.css";
@@ -24,6 +25,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
 						<Route path="/login" element={<LoginPage />} />
 						<Route path="/search" element={<CourseSearch />} />
 						<Route path="/DataEntry" element={<DataEntry />} />
+						<Route path="/UserPage" element={<UserPage/>} />
 					</Routes>
 				</AuthProvider>
 			</APIProvider>
