@@ -16,7 +16,7 @@ const Home = () => {
 					</Link>
 				</div>
 				<div className="hidden md:block md:w-7/12 px-5 h-auto">
-					<img src="/mockup.png" className="w-full h-auto" alt="Logo" />
+					<img src="/mockup.webp" className="w-full h-auto" alt="Logo" />
 				</div>
 			</div>
 			<div
