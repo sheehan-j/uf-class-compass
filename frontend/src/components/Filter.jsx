@@ -1,107 +1,49 @@
-import Dropdown from 'react-bootstrap/Dropdown';
+import Dropdown from 'react-multilevel-dropdown';
 import React, { useState } from 'react';
-import Button from 'react-bootstrap/Button';
-import ButtonGroup from 'react-bootstrap/ButtonGroup';
-import '../styles/FilterDropdown.css';
-import "bootstrap/dist/css/bootstrap.min.css";
-// import "bootstrap/dist/js/bootstrap.bundle.min";
+import RangeSlider from 'react-range-slider-input';
+import 'react-range-slider-input/dist/style.css';
 import ProfessorFilter from './ProfessorFilter';
 import CreditsFilter from './CreditsFilter';
 import LevelFilter from './LevelFilter';
 import MeetingFilter from './MeetingFilter';
 import BuildingFilter from './BuildingFilter';
 
-
-const Filter = ({filter,key,onSelect,onDelete}) => {
+const Filter = () => {
     const [activeItem, setActiveItem] = useState('Add Filter');
-    const [activeState, setActiveState] = useState('+');
-    
-
-    const CustomToggle = React.forwardRef(({ children, onClick }, ref) => (
-      <a
-        href=""
-        ref={ref}
-        onClick={(e) => {
-          e.preventDefault();
-          onClick(e);
-        }}
-        className = "drop"
-      >
-        {children}
-      </a>
-      )
-    );
-  
-    const CustomX = React.forwardRef(({ children, onClick }, ref) => (
-      <a
-        href=""
-        ref={ref}
-        onClick={(e) => {
-          e.preventDefault();
-          onClick(e);
-        }}
-        className = "FilterX"
-      >
-        {children}
-      </a>
-      )
-    );
-
-    const [value, setValue] = useState('');
+    const [clearInput, setClearInput] = useState(false);
 
     const handleFilterChange = (filter) => {
-      setValue('');
       setActiveItem(filter);
-      setActiveState('x');
-      onSelect(filter);
     };
-  
-    const CustomMenu = React.forwardRef(
-      ({ children, style, className, 'aria-labelledby': labeledBy }, ref) => {
-  
-        return (
-          <div
-            ref={ref}
-            style={style}
-            className={className}
-            aria-labelledby={labeledBy}
-          >
-            <ul className="list-unstyled">
-              {React.Children.toArray(children).filter(
-                (child) =>
-                  !value || child.props.children.toLowerCase().startsWith(value),
-              ).map((child) => (
-                <li key={child.props.eventKey} className={child.props.eventKey === activeItem ? 'active' : ''}>
-                  {React.cloneElement(child, { onSelect: handleFilterChange })} {/* Pass handleFilterChange as onSelect prop */}
-                </li>
-              ))}
-            </ul>
-          </div>
-        );
-      },
-    );
-  
-    const handleClick = () => {
-      setActiveState('+');
+
+    const clearFilters = () => {
       setActiveItem('Add Filter');
-      onDelete();
-    }
+      // Additional logic to clear other filter states if needed
+    };
 
   return(
-    <Dropdown as={ButtonGroup}>
-    <Dropdown.Toggle as={CustomToggle} id="dropdown-custom-components">
-      {activeItem}
-    </Dropdown.Toggle>
-
-    <Dropdown.Menu as={CustomMenu}>
-      <ProfessorFilter eventKey="Professor" onSelect={handleFilterChange} />
-      <CreditsFilter eventKey="Credits" onSelect={handleFilterChange} />
-      <LevelFilter eventKey="Level" onSelect={handleFilterChange} />
-      <MeetingFilter evetnKey="Meeting" onSelect={handleFilterChange} />
-      <BuildingFilter eventKey="Building" onSelect={handleFilterChange} />
-    </Dropdown.Menu>
-    <Button as={CustomX} onClick={handleClick}>{activeState}</Button>
-  </Dropdown>
+    <Dropdown 
+      position='right'
+      title={activeItem}
+      style={{ width: 'auto' }}
+    >
+        <Dropdown.Item style={{ width: '140px', margin: '0' }}> {/* Adjusted width and removed padding/margin */}
+          <ProfessorFilter eventKey="Professor" onSelect={handleFilterChange}/>
+        </Dropdown.Item>
+        <Dropdown.Item style={{ width: '140px', margin: '0' }}>
+          <CreditsFilter eventKey="Credits" onSelect={handleFilterChange}/>
+        </Dropdown.Item>
+        <Dropdown.Item style={{ width: '140px', margin: '0' }}>
+          <LevelFilter eventKey="Level" onSelect={handleFilterChange}/>
+        </Dropdown.Item>
+        <Dropdown.Item style={{ width: '140px', margin: '0' }}>
+          <MeetingFilter eventKey="Meeting" onSelect={handleFilterChange}/>
+        </Dropdown.Item>
+        <Dropdown.Item style={{ width: '140px', margin: '0' }}>
+          <BuildingFilter eventKey="Building" onSelect={handleFilterChange}/>
+        </Dropdown.Item>  
+        <Dropdown.Item style={{ width: 'auto', margin: '0' }} onClick={clearFilters}>Clear Filter</Dropdown.Item>
+      </Dropdown>
   );
 }
 

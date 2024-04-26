@@ -6,7 +6,6 @@
     const CourseSearch = () => {
         const [searchText, setSearchText] = useState('');
         const [searchResults, setSearchResults] = useState([]);
-        const [searchFilters, setSearchFilters] = useState([]);
 
         const handleInputChange = (e) => {
             setSearchText(e.target.value.toUpperCase());
@@ -23,14 +22,6 @@
                     "Search result 1",
                 ]);
             }
-        };
-
-        const addFilter = (filter) => {
-            setSearchFilters(prevFilters => [...prevFilters, filter]);
-        };
-        
-        const deleteFilter = (index) => {
-            setSearchFilters(prevFilters => prevFilters.filter((_, idx) => idx !== index));
         };
 
         return(
@@ -60,10 +51,7 @@
                         </div>
                     </div>
                     <div>
-                        <Filter onSelect={addFilter}/>
-                        {searchFilters.map((filter, index) => (
-                            <Filter key={index} filter={filter} onSelect={addFilter} onDelete={() => deleteFilter(index)}/>
-                        ))}
+                        <Filter />
                     </div>
                     {searchResults.length > 0 && (
                         <div className="text-left w-full font-bold text-2xl" >

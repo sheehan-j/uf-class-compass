@@ -1,59 +1,77 @@
-import Dropdown from 'react-bootstrap/Dropdown';
 import React, { useState } from 'react';
-import '../styles/FilterDropdown.css';
-import "bootstrap/dist/css/bootstrap.min.css";
-import {ToggleButton,ToggleButtonGroup} from "react-bootstrap";
 import RangeSlider from 'react-range-slider-input';
-import 'react-range-slider-input/dist/style.css';
+import Dropdown from 'react-multilevel-dropdown';
 
-const MeetingFilter = () => {
+const MeetingFilter = ({ onSelect }) => {
   const [value, setValue] = useState([1, 14]);
+  const [selectedDays, setSelectedDays] = useState([]);
 
-  const MeetingToggle = React.forwardRef(({ children, onClick }, ref) => (
-    <a
-      href=""
-      ref={ref}
-      onClick={(e) => {
-        e.preventDefault();
-        onClick(e);
-      }}
-      className='FilterPadding'
-    >
-      {children}
-    </a>
-  ));
+  const handleFilterSelection = (eventKey) => {
+    const newKey = "Building: " + eventKey;
+    onSelect(newKey);
+  };
 
-  return(
-    <Dropdown drop={'end'}>
-      <Dropdown.Toggle as={MeetingToggle} id="dropdown-custom-components">
-        Day and Time <span style={{padding: '0px 10px 0px 20px'}}>&#x25B8;</span>
-      </Dropdown.Toggle>
+  const handleDayChange = (e) => {
+    const day = e.target.value;
+    const updatedSelectedDays = selectedDays.includes(day)
+      ? selectedDays.filter((d) => d !== day)
+      : [...selectedDays, day].sort((a, b) => {
+          const daysOfWeekOrder = ['M', 'T', 'W', 'R', 'F', 'S'];
+          return daysOfWeekOrder.indexOf(a) - daysOfWeekOrder.indexOf(b);
+        });
+  
+    setSelectedDays(updatedSelectedDays);
+    onSelect(`Days: ${updatedSelectedDays.join(', ')} - Period: ${value[0]}-${value[1]}`);
+  };
 
-      <Dropdown.Menu>
-      <ToggleButtonGroup type="checkbox">
-        <ToggleButton id="tbg-check-1" value={1}>
-          M
-        </ToggleButton>
-        <ToggleButton id="tbg-check-2" value={2}>
-          T
-        </ToggleButton>
-        <ToggleButton id="tbg-check-3" value={3}>
-          W
-        </ToggleButton>
-        <ToggleButton id="tbg-check-4" value={4}>
-          R
-        </ToggleButton>
-        <ToggleButton id="tbg-check-5" value={5}>
-          F
-        </ToggleButton>
-        <ToggleButton id="tbg-check-6" value={6}>
-          S
-        </ToggleButton>
-      </ToggleButtonGroup>
-      <div className="slider">Period {value[0]}-{value[1]}</div>
-      <RangeSlider min={1} max={14} step={1} onInput={setValue}/>
-      </Dropdown.Menu>
-    </Dropdown>
+  const handleSliderChange = (newValue) => {
+    setValue(newValue);
+    onSelect(`Days: ${selectedDays.join(', ')} - Period: ${newValue[0]}-${newValue[1]}`);
+  };
+
+  const daysOfWeek = ['M', 'T', 'W', 'R', 'F', 'S'];
+
+  return (
+    <>
+      Day and Time 
+      {/* <span style={{padding: '0px 10px 0px 21px'}}>&#x25B8;</span> */}
+      <Dropdown.Submenu position='right' style={{ minWidth: '200px' }}>
+        <div>
+          {daysOfWeek.map((day, index) => (
+            <div key={day} style={{ marginRight: index < daysOfWeek.length - 1 ? '3px' : '0', marginBottom: '5px', display: 'inline-block' }}>
+              <input
+                type="checkbox"
+                id={`day-${day}`}
+                value={day}
+                checked={selectedDays.includes(day)}
+                onChange={handleDayChange}
+                style={{ display: 'none' }}
+              />
+              <label
+                htmlFor={`day-${day}`}
+                style={{
+                  display: 'inline-block',
+                  width: '30px',
+                  height: '30px',
+                  borderRadius: '5px',
+                  background: selectedDays.includes(day) ? '#007bff' : '#fff',
+                  color: selectedDays.includes(day) ? '#fff' : '#000',
+                  textAlign: 'center',
+                  lineHeight: '30px',
+                  cursor: 'pointer',
+                }}
+              >
+                {day}
+              </label>
+            </div>
+          ))}
+        </div>
+        <Dropdown.Item>
+          <div style={{ marginBottom: '10px' }}>Period {value[0]}-{value[1]}</div>
+          <RangeSlider min={1} max={14} step={1} value={value} onInput={handleSliderChange} />
+        </Dropdown.Item>
+      </Dropdown.Submenu>
+    </>
   );
 }
 
