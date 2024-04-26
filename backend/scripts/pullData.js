@@ -1,5 +1,5 @@
 const { clear } = require("console");
-const API_KEY = require("./key.js");
+//const API_KEY = require("./key.js");
 const fs = require("fs");
 //const api = require("./DataEntryApi.js");
 //const { createBuildingRecord, createInstructorRecord, createClassRecord, createSectionRecord } = require('./dataEntryApi.js');
@@ -138,7 +138,7 @@ function readCourseFile() {
   const courseCodes = [];
   try {
     const data = fs.readFileSync(
-      "./backend/scripts/allfailedafterrun1.txt",
+      "./backend/scripts/run2.txt",
       "utf8"
     );
     const lines = data.split("\n");
@@ -419,7 +419,7 @@ async function getBuilding(buildingCode, buildingCodeLetters) {
   }
   var placeObj;
   if(buildingObj.NAME != "WEB" || buildingObj.NAME != "TBA"){
-    placeObj = await searchPlaces(buildingObj.NAME);
+    //placeObj = await searchPlaces(buildingObj.NAME);
   }
   
   if(buildingObj.NAME == "WEB"){
