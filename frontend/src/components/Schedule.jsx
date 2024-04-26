@@ -124,6 +124,7 @@ const Schedule = ({ colCount, maxRowCount, activeSchedule, previewSchedule, hand
 			setRowCount(rows.length);
 			setGrid(rows);
 			setOnlineSections(newOnlineSections);
+			setCredits(totalCredits);
 		}
 	}, [colCount, maxRowCount, activeSchedule, previewSchedule]);
 

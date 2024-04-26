@@ -1,7 +1,19 @@
 import { useEffect } from "react";
 import { getPeriodTimes } from "../constants/BlockTimes";
+import { useAuth } from "../hooks/AuthProvider";
 
-const SearchResultBox = ({ searchResult, expanded, handleClick, index }) => {
+const SearchResultBox = ({
+	searchResult,
+	expanded,
+	handleClick,
+	index,
+	sectionToAdd,
+	setSectionToAdd,
+	modalOpen,
+	setModalOpen,
+}) => {
+	const auth = useAuth();
+
 	const translateDay = (day) => {
 		const days = {
 			0: "M",
@@ -11,6 +23,11 @@ const SearchResultBox = ({ searchResult, expanded, handleClick, index }) => {
 			4: "F",
 		};
 		return days[day];
+	};
+
+	const handleAddToSchedule = (section) => {
+		setSectionToAdd(section);
+		setModalOpen(true);
 	};
 
 	return (
@@ -52,7 +69,21 @@ const SearchResultBox = ({ searchResult, expanded, handleClick, index }) => {
 							className="bg-white border border-gray-200 rounded py-3 px-4"
 							onClick={(event) => event.stopPropagation()}
 						>
-							Class <span className="font-semibold">#{section.number}</span>
+							<div className="flex justify-between items-center">
+								<span>
+									Class <span className="font-semibold">#{section.number}</span>
+								</span>
+								{auth.user && (
+									<button
+										onClick={() => {
+											handleAddToSchedule(section);
+										}}
+										className="bg-customBlue hover:bg-customBlue-dark text-white text-xs p-2 rounded"
+									>
+										Add to Schedule
+									</button>
+								)}
+							</div>
 							<div className="w-full bg-gray-300 my-3" style={{ height: "1px" }}></div>
 							<div className="w-full flex flex-row">
 								<div className="w-1/2">
