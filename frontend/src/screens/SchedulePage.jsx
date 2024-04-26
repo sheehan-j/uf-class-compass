@@ -66,7 +66,7 @@ const SchedulePage = () => {
 				/>
 				<Schedule
 					colCount={5}
-					maxRowCount={11}
+					maxRowCount={14}
 					activeSchedule={activeSchedule}
 					previewSchedule={previewSchedule}
 					handleToggleSidebar={toggleSidebar}
