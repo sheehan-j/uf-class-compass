@@ -50,32 +50,37 @@ const UserPage = () => {
                         </div>
 
                         <div className="flex flex-col gap-3 mt-5">
-                            <p className="font-bold">Icon Color</p>
+                            <div className="flex justify-between items-center">
+                                <p className="font-bold w-full">Icon Color</p>
+                                <div className="w-full flex justify-end">
+                                <button className="bg-customOrange text-white px-5 py-3 rounded-xl mt-5" type="submit" onClick={handleUpdate}>
+                                    Save Changes 
+                                </button>
+                            </div>
+                        </div>
                             <div>
                                 <p>Selected</p>
                                 <div className={`h-10 w-10 rounded-full`} style={{backgroundColor : StyleColors[user.iconColor]}}></div>
                             </div>
-                            <div className="colors flex gap-3">
-                                {StyleColors.map((color, index) => {
-                                    return(
-                                        <button type="button" key={"color"+index} className={`h-10 w-10 rounded-full `} style={{backgroundColor : color}} onClick={() => {
-                                            setUser(prevUser => {return { ...prevUser, iconColor: parseInt(index) }});
-                                        }}/>
-                                    )
-                                })}
+                            
+                            <p>Options</p>
+                            <div className="w-full flex justify-center">
+                                <div className="w-full sm:w-8/12 colors flex flex-wrap gap-3">
+                                    {StyleColors.map((color, index) => {
+                                        return(
+                                            <button type="button" key={"color"+index} className={`h-10 w-10 rounded-full `} style={{backgroundColor : color}} onClick={() => {
+                                                setUser(prevUser => {return { ...prevUser, iconColor: parseInt(index) }});
+                                            }}/>
+                                        )
+                                    })}
+                                </div>
                             </div>
-                        </div>
-
-                        <div className="w-full flex justify-end">
-                            <button className="bg-customOrange text-white px-5 py-3 rounded-xl mt-5" type="submit" onClick={handleUpdate}>
-                                Save Changes 
-                            </button>
                         </div>
                 </div>
            </div>) : 
            (
             <div>
-                How did you get here? Oops
+                Please Log in to access this page
             </div>
            )}
         </div>
