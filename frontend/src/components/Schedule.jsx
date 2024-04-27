@@ -7,7 +7,6 @@ import { Days } from "../constants/Days";
 import { getPeriodTimes } from "../constants/BlockTimes";
 import { getPeriodLabel } from "../constants/Periods";
 import { SchedulesApi } from "../api/SchedulesApi";
-import StyleColors from "../constants/StyleColors";
 import SlidingSidebar from "./SlidingSidebar";
 import OnlineSection from "./OnlineSection";
 

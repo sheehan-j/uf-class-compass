@@ -1,6 +1,5 @@
 import { useState, useRef, useEffect } from "react";
 import { Link } from "react-router-dom";
-import StyleColors from "../constants/StyleColors";
 import { useAuth } from "../hooks/AuthProvider";
 import UserIcon from "./UserIcon";
 
@@ -9,8 +8,6 @@ const Navbar = () => {
 	const mobileMenuRef = useRef();
 	const auth = useAuth();
 	const [screenWidth, setScreenWidth] = useState(window.innerWidth);
-
-	
 
 	useEffect(() => {
 		const handleResize = () => {
@@ -51,17 +48,17 @@ const Navbar = () => {
 	};
 
 	return (
-		<header className="w-full text-white relative" style={{ backgroundColor: StyleColors.blue }}>
+		<header className="w-full text-white relative bg-customBlue">
 			<nav className="w-full relative" style={{ borderBottom: "1px solid rgba(235,235,235, 0.5)" }}>
 				<div className="flex flex-col sm:flex-row justify-between items-center py-3 px-5">
-					<div className="block w-full h-10 sm:hidden flex justify-between">
+					<div className="block w-full h-14 sm:hidden flex justify-between">
 						<img
 							className="float-left h-full"
 							src="/mobileMenu.svg"
 							onClick={() => setIsMobileMenuOpen((prev) => !prev)}
 						/>
 						<div className="pr-5">
-							{auth?.user && <UserIcon firstName={auth.user.firstName} lastName={auth.user.lastName}/>}
+							{auth?.user && <UserIcon auth={auth}/>}
 						</div>
 					</div>
 					<div
@@ -115,8 +112,8 @@ const Navbar = () => {
 									</button>
 								</Link>
 							</div>
-							<Link className="hidden sm:block h-full link-item" to={auth?.user ? "" : "/login"}>
-								<button onClick={() => {auth.logout();}}>
+							<Link className="hidden sm:block h-full link-item" to={auth?.user ? "/UserPage" : "/login"}>
+								 <button> {/*onClick={() => {auth.logout();} */}
 									{auth?.user && <UserIcon auth={auth}/>}
 								</button>
 							</Link>

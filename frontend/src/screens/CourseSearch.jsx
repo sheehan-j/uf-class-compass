@@ -1,5 +1,4 @@
 import Navbar from "../components/Navbar";
-import CourseSearchModal from "../components/courseSearchModal";
 import SearchResultBox from "../components/SearchResultBox";
 import AddSectionFromSearch from "../components/AddSectionFromSearch";
 import { useState, useEffect } from "react";

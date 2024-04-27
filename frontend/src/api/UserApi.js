@@ -36,8 +36,24 @@ const getUser = async (token) => {
 	return { ...result, status: response.status };
 };
 
+const updateUser = async (token, userData) => {
+	console.log(JSON.stringify(userData))
+	const response = await fetch(config.API_BASE_URL + `/user/edit`, {
+		method: "PUT",
+		headers: {
+			Authorization: `Bearer ${token}`,
+			"Content-Type": "application/json",
+		},
+		body: JSON.stringify(userData),
+	});
+	const result = await response.json();
+	return { ...result, status: response.status };
+};
+
+
 export const UserApi = {
 	login,
 	register,
 	getUser,
+	updateUser,
 };

@@ -2,7 +2,6 @@ import { useState, useRef, useEffect } from "react";
 import { SchedulesApi } from "../api/SchedulesApi";
 import MyScheduleBox from "./MyScheduleBox";
 import { DistanceUtil } from "../../util/DistanceUtil";
-import StyleColors from "../constants/StyleColors";
 import { useAuth } from "../hooks/AuthProvider";
 
 const MySchedules = ({

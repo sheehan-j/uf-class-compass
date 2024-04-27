@@ -1,7 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { Map, Marker } from "@vis.gl/react-google-maps";
 import PropTypes from "prop-types";
-import StyleColors from "../constants/StyleColors";
 
 const SlidingSidebar = ({ isClassClicked, setIsClassClicked, cell }) => {
 	// const { credits, final, department, color, code, title, description, prerequisites, location } = cell;
