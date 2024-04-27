@@ -11,9 +11,7 @@
 	},
 	"dependencies": {
 		"@floating-ui/react": "^0.26.11",
-		"bootstrap": "^5.3.3",
 		"react": "^18.2.0",
-		"react-bootstrap": "^2.10.2",
 		"react-dom": "^18.2.0",
 		"react-multilevel-dropdown": "^4.0.0",
 		"react-range-slider-input": "^3.0.7",
