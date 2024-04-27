@@ -1,13 +1,13 @@
-const updateClassListWithConflicts = async (schedule, classes) => {
-	classes = classes.map((classItem) => {
-		const conflicts = ConflictsUtil.checkConflict(schedule, classItem);
+const updateClassListWithConflicts = async (schedule, sections) => {
+	sections = sections.map((section) => {
+		const conflicts = ConflictsUtil.checkConflict(schedule, section);
 		return {
-			...classItem,
+			...section,
 			conflicts,
 		};
 	});
 
-	classes.sort((a, b) => {
+	sections.sort((a, b) => {
 		// Move objects with the specified attribute value to the back
 		if (a.conflicts.length > 0 && b.conflicts.length == 0) {
 			return 1;
@@ -18,15 +18,18 @@ const updateClassListWithConflicts = async (schedule, classes) => {
 		}
 	});
 
-	return classes;
+	return sections;
 };
 
-const checkConflict = (schedule, classToBeChecked) => {
+const checkConflict = (schedule, sectionToBeChecked) => {
 	let conflicts = [];
-	classToBeChecked.meetings.forEach((meetingToBeChecked) => {
-		schedule.classes.forEach((existingClass) => {
-			if (existingClass._id !== classToBeChecked._id && existingClass.code !== classToBeChecked.code) {
-				existingClass.meetings.forEach((existingMeeting) => {
+	sectionToBeChecked.meetings.forEach((meetingToBeChecked) => {
+		schedule.sections.forEach((existingSection) => {
+			if (
+				existingSection._id !== sectionToBeChecked._id &&
+				existingSection.class.code !== sectionToBeChecked.class.code
+			) {
+				existingSection.meetings.forEach((existingMeeting) => {
 					for (let i = existingMeeting.period; i < existingMeeting.period + existingMeeting.length; i++) {
 						for (
 							let j = meetingToBeChecked.period;
@@ -34,7 +37,8 @@ const checkConflict = (schedule, classToBeChecked) => {
 							j++
 						) {
 							if (i === j && existingMeeting.day == meetingToBeChecked.day) {
-								if (!conflicts.includes(existingClass.code)) conflicts.push(existingClass.code);
+								if (!conflicts.includes(existingSection.class.code))
+									conflicts.push(existingSection.class.code);
 							}
 						}
 					}

@@ -2,6 +2,7 @@ const Building = require("../model/Building");
 const Instructor = require("../model/Instructor");
 const Schedule = require("../model/Schedule");
 const Class = require("../model/Class");
+const Section = require("../model/Section");
 
 exports.createBuildingRecord = async (req, res) => {
 	try {
@@ -29,33 +30,81 @@ exports.createInstructorRecord = async (req, res) => {
 
 exports.createClassRecord = async (req, res) => {
 	try {
-		const classSearch = await Class.find({ number: req.body.number });
-		if (classSearch.length > 0) return res.status(400).json({ error: `Class already exists: ${req.body.number}` });
+		const classSearch = await Class.findOne({ code: req.body.code });
+		if (classSearch) return res.status(400).json({ error: `Class already exists: ${req.body.code}` });
 
-		const instructor = await Instructor.findOne({ name: req.body.instructor });
-		if (!instructor) return res.status(400).json({ error: `Instructor does not exist: ${req.body.instructor}` });
-
-		const meetings = await Promise.all(
-			req.body.meetings.map(async (meeting) => {
-				const building = await Building.findOne({ code: meeting.building });
-				return building ? { ...meeting, building: building._id } : { error: true, code: meeting.building };
-			})
-		);
-
-		// Check that all meetings were mapped successfully
-		for (let i = 0; i < meetings.length; i++) {
-			if (meetings[i]?.error)
-				return res.status(400).json({ error: `Building does not exist: ${meetings[i].code}` });
+		let newClass = {};
+		if (req.body?.prerequisites) {
+			newClass = {
+				code: req.body.code,
+				title: req.body.title,
+				description: req.body.description,
+				prerequisites: req.body.prerequisites,
+			};
+		} else {
+			newClass = {
+				code: req.body.code,
+				title: req.body.title,
+				description: req.body.description,
+			};
 		}
 
-		const createResult = await Class.create({
-			code: req.body.code,
+		const createResult = await Class.create(newClass);
+		return res.status(201).json(createResult);
+	} catch (err) {
+		console.error(err);
+		return res.status(500).json({ error: "Internal server error" });
+	}
+};
+
+exports.createSectionRecord = async (req, res) => {
+	try {
+		const sectionSearch = await Section.findOne({ number: req.body.number });
+		if (sectionSearch) return res.status(400).json({ error: `Section already exists: ${req.body.number}` });
+
+		const classSearch = await Class.findOne({ code: req.body.class });
+		if (!classSearch) return res.status(400).json({ error: `Class does not exist: ${req.body.class}` });
+
+		const instructorSearch = await Instructor.findOne({ name: req.body.instructor });
+		if (!instructorSearch)
+			return res.status(400).json({ error: `Instructor does not exist: ${req.body.instructor}` });
+
+		let meetings = [];
+		if (req.body.meetings.length > 0) {
+			meetings = await Promise.all(
+				req.body.meetings.map(async (meeting) => {
+					const building = await Building.findOne({ code: meeting.building });
+					return building ? { ...meeting, building: building._id } : { error: true, code: meeting.building };
+				})
+			);
+
+			// Check that all meetings were mapped successfully
+			for (let i = 0; i < meetings.length; i++) {
+				if (meetings[i]?.error)
+					return res.status(400).json({ error: `Building does not exist: ${meetings[i].code}` });
+			}
+		} else {
+			if (!req.body?.isOnline) {
+				return res
+					.status(400)
+					.json({ error: "'meetings' must be a list of length > 0 unless isOnline is true." });
+			}
+		}
+
+		let newSection = {
 			number: req.body.number,
-			title: req.body.title,
-			instructor: instructor._id,
-			meetings: [...meetings],
+			class: classSearch._id,
+			instructor: instructorSearch._id,
 			credits: req.body.credits,
-		});
+			final: req.body.final,
+			department: req.body.department,
+			meetings: meetings,
+		};
+
+		if (req.body?.isOnline) {
+			newSection = { ...newSection, isOnline: true };
+		}
+		const createResult = await Section.create(newSection);
 		return res.status(201).json(createResult);
 	} catch (err) {
 		console.error(err);

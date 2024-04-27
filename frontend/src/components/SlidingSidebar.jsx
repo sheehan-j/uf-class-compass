@@ -1,79 +1,139 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
+import { Map, Marker } from "@vis.gl/react-google-maps";
 import PropTypes from "prop-types";
 import StyleColors from "../constants/StyleColors";
 
-const SlidingSidebar = ({ isClassClicked, setIsClassClicked,  cell }) => {
-    if (!cell || !cell.instructor) {
-        return null;
-    }
-    const handleMinimize = () => {
-        setIsClassClicked(false);
-    }
-    return (
-        <div
-            style={{
-                backgroundColor: StyleColors.gray,
-                transition: "right 0.3s ease",
-                right: isClassClicked ? "0" : "-100%",
-            }}
-            className="max-w-sm sm:max-w-xs z-40 top-0 w-full h-full p-5 text-black absolute right-0 overflow-y-auto"
-        >
-            <div className="absolute right-5" onClick={handleMinimize}>
-                <img src="/remove.svg" />
-            </div>
-             <div className="flex justify-center">
-            <b>{cell.code}</b>
-            </div>
+const SlidingSidebar = ({ isClassClicked, setIsClassClicked, cell }) => {
+	console.log(cell);
+	// const { credits, final, department, color, code, title, description, prerequisites, location } = cell;
+	const handleMinimize = () => {
+		setIsClassClicked(false);
+	};
+	const [mapConatinerWidth, setMapContainerWidth] = useState(0);
+	const mapContainerRef = useRef(null);
 
-            <div>
-                <b>CLASS</b>
-            </div>
+	useEffect(() => {
+		const handleResize = () => {
+			if (mapContainerRef.current) {
+				setMapContainerWidth(mapContainerRef.current.offsetWidth);
+			}
+		};
+		window.addEventListener("resize", handleResize);
+		handleResize();
+		return () => {
+			window.removeEventListener("resize", handleResize);
+		};
+	}, []);
 
-            {/* GET CLASS DATES */}
+	const position = { lat: 61.2176, lng: -149.8997 };
 
-            <div className="relative flex mb-1">
-                <div style={{ width: '50%' }}>INSTRUCTOR</div>
-                <div style={{ width: '50%' }}><b>{cell.instructor.toUpperCase()}</b></div>
-            </div>
-
-            <div className="relative flex mb-1">
-                <div style={{ width: '50%' }}>CREDITS </div> 
-                <div style={{ width: '50%' }}><b>3</b></div> {/*HARD CODED*/}
-            </div>
-
-            <div className="relative flex mb-1" >
-                <div style={{ width: '50%' }}>FINAL EXAM</div>
-                <div className="text-sm" style={{ width: '50%' }}><b>5/22/2024</b></div> {/*HARD CODED*/}
-            </div>
-
-            <div className="relative flex mb-1" >
-                <div style={{ width: '50%' }}>LOCATION</div>
-                <div style={{ width: '50%' }}><b>{cell.location}</b></div>
-            </div>
-
-            <div className="relative flex mb-1">
-                <div style={{ width: '50%' }}>CLASS DATES</div>
-                <div className="text-sm" style={{ width: '50%' }}><b>1/08/2024-04/24/2024</b></div> {/*HARD CODED*/}
-            </div>
-
-            <div className="flex justify-between my-5 gap-5">
-                <button className="p-2 text-white rounded-md" style={{backgroundColor: StyleColors.blue}}>
-                    <span style={{ display: 'block' }}>PROFESSOR</span>
-                    <span style={{ display: 'block' }}>INFO</span>
-                </button>
-                <button className="p-2 text-white rounded-md" style={{backgroundColor: StyleColors.blue}}>
-                    <span style={{ display: 'block' }}>TEXTBOOK</span>
-                    <span style={{ display: 'block' }}>LOOKUP</span>
-                </button>
-            </div>
-
-        </div>
-    );
+	const renderStars = (numStars) => {
+        const roundedStars = Math.round(numStars * 2) / 2;
+        const wholeStars = Math.floor(roundedStars);
+        const hasHalfStar = roundedStars % 1 !== 0 && roundedStars % 1 >= 0.25 && roundedStars % 1 < 0.75;
+        const stars = [];
+        for (let i = 0; i < wholeStars; i++) {
+            stars.push(<img key={"star"+i} src="/star.svg" alt="Star" />);
+        }
+        if (hasHalfStar) {
+            stars.push(<img key="half-star" src="/halfStar.svg" alt="Half Star" />);
+        }
+        return (<span className="flex">{stars}</span>);
+    };
+	return (
+		<div
+			style={{
+				transition: "right 0.5s linear",
+				right: isClassClicked ? "0" : "-100%",
+			}}
+			className="w-1/2 md:w-5/12 xl:w-4/12 z-40 absolute top-0 py-3 overflow-y-visible h-full bg-customGray flex flex-col"
+		>
+			<div className="px-2 mb-2" onClick={handleMinimize}>
+				<img className="hover:cursor-pointer" src="/remove.svg" />
+			</div>
+			<div className="px-3 mb-3">
+				<div className="border border-gray-300 bg-white pb-3 flex flex-col">
+					<div
+						className="font-semibold relative px-2 py-2 leading-6"
+						style={{ backgroundColor: cell?.color }}
+					>
+						<div
+							className="absolute left-0 top-0 w-1 h-full"
+							style={{ backgroundColor: cell?.color }}
+						></div>
+						{cell?.code} - {cell?.title}
+					</div>
+					<div className="px-3 py-2 text-sm flex flex-col gap-2">
+						<div className="mb-3" style={{ fontSize: "0.81rem", lineHeight: "1.1rem" }}>
+							{cell?.description}
+						</div>
+						<div className="flex flex-row gap-2 justify-between items-center">
+							<div className="font-semibold">Instructor</div>
+							<div className="text-end">{cell?.instructor}</div>
+						</div>
+						<div className="flex flex-row gap-2 justify-between items-center">
+							<div className="font-semibold">Location</div>
+							<div className="text-end">{cell?.location}</div>
+						</div>
+						<div className="flex flex-row gap-2 justify-between items-center">
+							<div className="font-semibold">Prereqs</div>
+							<div className="text-end">{cell?.prerequisites == null ? "None" : cell?.prerequisites}</div>
+						</div>
+						<div className="flex flex-row gap-2 justify-between items-center">
+							<div className="font-semibold">Credits</div>
+							{cell?.credits && (
+								<div className="text-end">{cell?.credits == 0 ? "VAR" : cell?.credits}</div>
+							)}
+						</div>
+						{cell?.final && (
+							<div className="flex flex-row gap-2 justify-between items-center">
+								<div className="font-semibold">Final Exam</div>
+								<div className="text-end">{cell?.final}</div>
+							</div>
+						)}
+						{cell?.department && (
+							<div className="flex flex-row gap-2 justify-between items-center">
+								<div className="font-semibold">Department</div>
+								<div className="text-end">{cell?.department}</div>
+							</div>
+						)}
+						{cell?.rmpData && 
+							<>
+							<div className="w-full bg-gray-300 my-3" style={{ height: "1px" }}></div>
+							<div className="font-semibold w-full">RMP Data</div>
+							<div className="flex flex-row gap-2 justify-between items-center">
+									<div className="text-end flex flex-col items-center"> <span><span className="font-semibold mr-1">Rating: </span> {JSON.stringify(cell.rmpData.rating)} / 5</span>  <span className="ml-2 ">{renderStars(cell.rmpData.rating)}</span></div>
+									<div className="text-end"> <span className="font-semibold">Difficulty: </span>{JSON.stringify(cell.rmpData.difficulty)} / 5</div>
+									<div className="text-end text-blue-700"> <a href={`https://www.ratemyprofessors.com/professor/${cell.rmpData.rmpId}`}>Link to RMP</a></div>
+								</div>
+								</>
+							}
+					</div>
+				</div>
+			</div>
+			<div ref={mapContainerRef} className="mx-3 border border-gray-300">
+				<Map
+					style={{ height: mapConatinerWidth * (2 / 3), width: "100%" }}
+					defaultCenter={position}
+					defaultZoom={10}
+					disableDefaultUI={true}
+				>
+					<Marker
+						defaultCenter={position}
+						defaultZoom={3}
+						gestureHandling={"greedy"}
+						disableDefaultUI={true}
+						controlled={true}
+					/>
+				</Map>
+			</div>
+		</div>
+	);
 };
 
 SlidingSidebar.propTypes = {
 	isClassClicked: PropTypes.bool.isRequired,
-    setIsClassClicked: PropTypes.func.isRequired
+	setIsClassClicked: PropTypes.func.isRequired,
 };
 
 export default SlidingSidebar;

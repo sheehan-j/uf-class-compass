@@ -1,15 +1,15 @@
 import PropTypes from "prop-types";
 
 const CourseSectionBox = ({
-	classItem,
-	handleAddClass,
+	section,
+	handleAddSection,
 	activeSchedule,
-	handleHoverClassStart,
-	handleHoverClassEnd,
+	handleHoverSectionStart,
+	handleHoverSectionEnd,
 }) => {
 	const addClass = (event) => {
 		event.stopPropagation();
-		handleAddClass(classItem);
+		handleAddSection(section);
 	};
 
 	return (
@@ -17,26 +17,26 @@ const CourseSectionBox = ({
 		// actual gap in between each box. This avoids a flicker effect when you move your mouse down each of the course section
 		// boxes because of the small gap in between each box where you wouldn't be hovering over anything if margin was used
 		<div
-			className={`pb-1 ${classItem?.conflicts?.length > 0 ? "opacity-90" : ""}`}
-			onMouseEnter={() => handleHoverClassStart(classItem)}
-			onMouseLeave={() => handleHoverClassEnd()}
+			className={`pb-1 ${section?.conflicts?.length > 0 ? "opacity-90" : ""}`}
+			onMouseEnter={() => handleHoverSectionStart(section)}
+			onMouseLeave={() => handleHoverSectionEnd()}
 		>
 			<div
 				className={`relative border border-gray-300 py-2 px-3 cursor-pointer bg-white ${
-					classItem?.conflicts?.length > 0 ? "cursor-not-allowed" : ""
+					section?.conflicts?.length > 0 ? "cursor-not-allowed" : ""
 				}`}
 			>
 				<div
 					className={`flex items-center justify-between ${
-						classItem?.conflicts?.length > 0 ? "line-through" : ""
+						section?.conflicts?.length > 0 ? "line-through" : ""
 					}`}
 				>
-					<p className="text-sm">{`Class #${classItem.number}`}</p>
-					{classItem?.conflicts?.length == 0 && (
+					<p className="text-sm">{`Class #${section.number}`}</p>
+					{section?.conflicts?.length == 0 && (
 						<button style={{ width: "1.1rem" }} onClick={addClass}>
-							{activeSchedule?.classes?.some(
+							{activeSchedule?.sections?.some(
 								(activeScheduleClass) =>
-									activeScheduleClass._id == classItem._id &&
+									activeScheduleClass._id == section._id &&
 									activeScheduleClass?.muteInActiveCourses != true
 							) ? (
 								<img src="/check.svg" />
@@ -46,9 +46,9 @@ const CourseSectionBox = ({
 						</button>
 					)}
 				</div>
-				{classItem?.conflicts?.length > 0 && (
+				{section?.conflicts?.length > 0 && (
 					<div className={`flex items-center justify-between text-sm italic text-gray-600`}>
-						Conflicts: {classItem.conflicts.join(", ")}
+						Conflicts: {section.conflicts.join(", ")}
 					</div>
 				)}
 			</div>
@@ -57,11 +57,11 @@ const CourseSectionBox = ({
 };
 
 CourseSectionBox.propType = {
-	classItem: PropTypes.object.isRequired,
-	handleAddClass: PropTypes.func.isRequired,
+	section: PropTypes.object.isRequired,
+	handleAddSection: PropTypes.func.isRequired,
 	activeSchedule: PropTypes.object.isRequired,
-	handleHoverClassStart: PropTypes.func.isRequired,
-	handleHoverClassEnd: PropTypes.func.isRequired,
+	handleHoverSectionStart: PropTypes.func.isRequired,
+	handleHoverSectionEnd: PropTypes.func.isRequired,
 };
 
 export default CourseSectionBox;

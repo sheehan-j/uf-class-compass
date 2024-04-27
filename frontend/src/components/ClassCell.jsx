@@ -5,8 +5,9 @@ import { useRef, useState, useEffect } from "react";
 const ClassCell = ({ cell, onCellClick }) => {
 	const distanceTooltipRef = useRef(null);
 	const cellRef = useRef(null);
+	const [distanceString, setDistanceString] = useState("");
 	const [distanceHovered, setDistanceHovered] = useState(false);
-	const { color, code, instructor, location, length, period, distance } = cell;
+	const { color, code, instructor, location, length, period, distance, displayText } = cell;
 	const [screenWidth, setScreenWidth] = useState(window.innerWidth);
 
 	useEffect(() => {
@@ -21,6 +22,16 @@ const ClassCell = ({ cell, onCellClick }) => {
 			window.removeEventListener("resize", handleResize);
 		};
 	}, []);
+
+	useEffect(() => {
+		if (distance?.time) {
+			if (distance?.time?.split(" ")[0] === "1") {
+				setDistanceString(distance?.time);
+			} else {
+				setDistanceString(distance.time.substring(0, distance.time.length - 1));
+			}
+		}
+	}, [cell]);
 
 	useEffect(() => {
 		if (distanceTooltipRef?.current) {
@@ -39,19 +50,16 @@ const ClassCell = ({ cell, onCellClick }) => {
 	};
 	return (
 		<div
-			// TODO: Remove these overflow classes if possible because they are breaking styling for walking distance
-			className={`overflow-scroll sm:overflow-visible z-10 p-1.5 flex flex-col justify-between box-content relative ${
-				distance ? "z-20" : "z-10"
-			}`}
+			className={`overflow-scroll sm:overflow-visible p-1.5 flex flex-col justify-between box-content relative`}
 			style={{ backgroundColor: color, borderWidth: "1px", borderColor: color, cursor: "pointer" }}
 			onClick={clickClass}
 		>
 			<div>
 				<div className="font-semibold" style={{ fontSize: "1.05rem", lineHeight: "1.1rem" }}>
-					{code}
+					{displayText && code}
 				</div>
 				<div className="hidden sm:block" style={{ fontSize: "0.9rem" }}>
-					{instructor}
+					{displayText && instructor}
 				</div>
 			</div>
 			<div
@@ -67,7 +75,7 @@ const ClassCell = ({ cell, onCellClick }) => {
 							</span>
 						</div>
 					)}
-					<div className="font-semibold">{location}</div>
+					<div className="font-semibold">{displayText && location}</div>
 				</div>
 				{distance && screenWidth >= 640 && (
 					<div
@@ -89,14 +97,14 @@ const ClassCell = ({ cell, onCellClick }) => {
 						>
 							<span
 								className={`font-bold ${
-									parseInt(distance.time.substring(0, distance.time.indexOf(" "))) >= 16
+									parseInt(distance?.time?.substring(0, distance.time.indexOf(" "))) >= 16
 										? "text-red-800"
 										: "text-lime-600"
 								}`}
 							>
-								{distance.time.substring(0, distance.time.length - 1)}
+								{distanceString}
 							</span>{" "}
-							walk to {distance.class}
+							walk to {distance?.class}
 						</p>
 						<img src="./walking.svg" className="w-7 h-7" />
 						<img
@@ -119,6 +127,7 @@ ClassCell.propTypes = {
 		location: PropTypes.string,
 		length: PropTypes.number,
 		row: PropTypes.number,
+		displayText: PropTypes.bool,
 	}).isRequired,
 	onCellClick: PropTypes.func.isRequired,
 };

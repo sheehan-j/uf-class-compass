@@ -1,22 +1,26 @@
 const Schedule = require("../model/Schedule");
 const Class = require("../model/Class");
+const Section = require("../model/Section");
 const Building = require("../model/Building");
 const Instructor = require("../model/Instructor");
 const DataAccessUtil = require("../util/DataAccessUtil");
 
 exports.getAllSchedules = async (req, res) => {
 	const schedules = await DataAccessUtil.getSchedules({});
+	if (schedules == -1) return res.status(500).json({ error: "Interval server error getting schedules." });
 	return res.status(200).json(schedules);
 };
 
 exports.getSchedulesByUser = async (req, res) => {
 	const schedules = await DataAccessUtil.getSchedules({ user: req.query.user });
-	console.log(schedules);
+	if (schedules == -1) return res.status(500).json({ error: "Interval server error getting schedules." });
 	return res.status(200).json(schedules);
 };
 
 exports.createSchedule = async (req, res) => {
 	try {
+		if (!req.query.user) return res.status(400).json({ error: "User is required." });
+
 		await Schedule.create({
 			name: req.query.name,
 			user: req.query.user,
@@ -57,7 +61,7 @@ exports.addClassToSchedule = async (req, res) => {
 
 		await Schedule.updateOne(
 			{ _id: req.query.schedule }, // Filter criteria to find the record to update
-			{ $push: { classes: req.query.class } } // Update to push the new object ID to the list field
+			{ $push: { sections: req.query.class } } // Update to push the new object ID to the list field
 		);
 
 		const result = await DataAccessUtil.getSchedules({ user: scheduleSearch.user });
@@ -74,7 +78,7 @@ exports.deleteClassFromSchedule = async (req, res) => {
 
 		await Schedule.updateOne(
 			{ _id: req.query.schedule }, // Filter criteria to find the record to update
-			{ $pull: { classes: req.query.class } } // Update to pull the new object ID to the list field
+			{ $pull: { sections: req.query.class } } // Update to pull the new object ID to the list field
 		);
 
 		const result = await DataAccessUtil.getSchedules({ user: scheduleSearch.user });
