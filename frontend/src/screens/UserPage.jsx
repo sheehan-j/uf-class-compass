@@ -12,11 +12,9 @@ const UserPage = () => {
     useEffect(() => {
         try{ //TODO: Not sure why, but includes password when user first logged in
             const { password, ...user } = auth.user;
-            console.log("FIRST LOAD in try: ", user);
             setUser(user);
         }catch{
             setUser(auth.user); 
-            console.log("FIRST LOAD: ", auth.user);
         }
     }, [auth])
     

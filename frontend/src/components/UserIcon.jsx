@@ -14,7 +14,7 @@ const UserIcon = () => {
 
     return(
         <div className={`rounded-full h-[40px] w-[40px] flex text-center justify-center items-center p-3 text-white`} style={{backgroundColor : StyleColors[iconColor]}}>
-                {firstInitial}{lastInitial}
+                <p className="font-bold text-lg">{firstInitial}{lastInitial}</p>
         </div>
     )
 }
