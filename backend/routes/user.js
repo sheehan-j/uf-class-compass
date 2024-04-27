@@ -35,11 +35,7 @@ router.put("/edit", verifyToken, async (req, res) => {
 			user.password = passwordHash;
 		}
 
-		// Update icon color if provided
-		if (req.body.iconColor) {
-			user.iconColor = req.body.iconColor;
-		}
-
+		user.iconColor = req.body.iconColor || user.iconColor;
 		user.firstName = req.body.firstName || user.firstName;
 		user.lastName = req.body.lastName || user.lastName;
 

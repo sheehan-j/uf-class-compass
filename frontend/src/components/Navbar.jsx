@@ -8,6 +8,7 @@ const Navbar = () => {
 	const mobileMenuRef = useRef();
 	const auth = useAuth();
 	const [screenWidth, setScreenWidth] = useState(window.innerWidth);
+	const [userDropDown, setUserDropDown] = useState(false);
 
 	useEffect(() => {
 		const handleResize = () => {
@@ -112,14 +113,20 @@ const Navbar = () => {
 									</button>
 								</Link>
 							</div>
-							<Link className="hidden sm:block h-full link-item" to={auth?.user ? "/UserPage" : "/login"}>
-								 <button> {/*onClick={() => {auth.logout();} */}
-									{auth?.user && <UserIcon auth={auth}/>}
+								<button  className="hidden sm:block h-full link-item" onClick={() => setUserDropDown(!userDropDown)}>
+									{auth?.user && <UserIcon/>}
 								</button>
-							</Link>
 						</div>
 					</div>
 				</div>
+					{userDropDown && (
+						<div className="rounded-lg gap-4 absolute px-5 py-3 flex flex-col bg-gray-400 h-fit w-fit z-50 top-22 right-5 justify-center text-center items-center">
+							<p>{auth?.user?.email}</p>
+							{auth?.user && <UserIcon/>}
+							<Link to="/UserPage">Your Profile</Link>
+							<button onClick={() => {auth.logout()}}>Logout</button>
+						</div>
+					)}
 			</nav>
 		</header>
 	);
