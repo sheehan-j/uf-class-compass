@@ -20,7 +20,8 @@ const register = async (userData) => {
 		},
 		body: JSON.stringify(userData),
 	});
-	const result = await response.json();
+	const resWithPass = await response.json();
+	const { password, ...result } = resWithPass;
 	return { ...result, status: response.status };
 };
 
