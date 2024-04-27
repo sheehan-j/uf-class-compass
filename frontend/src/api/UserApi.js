@@ -32,9 +32,9 @@ const getUser = async (token) => {
 			"Content-Type": "application/json",
 		},
 	});
-	
+
 	const resWithPass = await response.json();
-	const { password, ...result } = resWithPass
+	const { password, ...result } = resWithPass;
 
 	return { ...result, status: response.status };
 };

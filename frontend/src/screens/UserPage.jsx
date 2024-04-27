@@ -11,6 +11,7 @@ const UserPage = () => {
 
     useEffect(() => {
         setUser(auth.user);
+        console.log("FIRST LOAD GET USER: ", auth.user)
     }, [auth])
     
 
