@@ -27,6 +27,7 @@ router.put("/edit", verifyToken, async (req, res) => {
 		if (req.body.email) {
 			user.email = req.body.email;
 		}
+		console.error(req.body)
 
 		// Update password if provided
 		if (req.body.password) {

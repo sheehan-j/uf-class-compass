@@ -11,12 +11,15 @@ const UserPage = () => {
 
     useEffect(() => {
         setUser(auth.user);
+        console.log("AUTH UPDATED: ", auth.user);
     }, [auth])
+    
 
     const handleUpdate = async (e) => {
         e.preventDefault();
         try {
             const response = await UserApi.updateUser(token, user);
+            console.log("PASSWORD AFTER:", response)
             setUser(response);
         } catch (error) {
             console.error("Error updating user information:", error);

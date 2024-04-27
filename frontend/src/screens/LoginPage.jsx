@@ -27,7 +27,7 @@ const LoginPage = () => {
 			lastName: lastName,
 			email: email,
 			password: password,
-			userIcon: 0
+			userIcon: 0,
 		});
 
 		if (signUpResponse.status === 201) {

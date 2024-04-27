@@ -21,7 +21,7 @@ const UserSchema = new mongoose.Schema({
   },
   iconColor: {
     type: Number,
-    default: '',
+    default: 0,
   },
 });
 
