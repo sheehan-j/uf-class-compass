@@ -27,19 +27,20 @@ router.put("/edit", verifyToken, async (req, res) => {
 		if (req.body.email) {
 			user.email = req.body.email;
 		}
-		console.error(req.body)
-
+		
 		// Update password if provided
 		if (req.body.password) {
 			const salt = await bcrypt.genSalt();
 			const passwordHash = await bcrypt.hash(req.body.password, salt);
 			user.password = passwordHash;
 		}
-
-		user.iconColor = req.body.iconColor || user.iconColor;
+		if(req.body.iconColor != null){
+			user.iconColor = req.body.iconColor;
+		}
+		
 		user.firstName = req.body.firstName || user.firstName;
 		user.lastName = req.body.lastName || user.lastName;
-
+		
 		const updatedUser = await user.save();
 		res.json(updatedUser);
 	} catch (err) {

@@ -11,7 +11,6 @@ const UserPage = () => {
 
     useEffect(() => {
         setUser(auth.user);
-        console.log("AUTH UPDATED: ", auth.user);
     }, [auth])
     
 
@@ -19,7 +18,6 @@ const UserPage = () => {
         e.preventDefault();
         try {
             const response = await UserApi.updateUser(token, user);
-            console.log("PASSWORD AFTER:", response)
             setUser(response);
         } catch (error) {
             console.error("Error updating user information:", error);
@@ -60,7 +58,9 @@ const UserPage = () => {
                             <div className="colors flex gap-3">
                                 {StyleColors.map((color, index) => {
                                     return(
-                                        <button type="button" key={"color"+index} className={`h-10 w-10 rounded-full `} style={{backgroundColor : color}} onClick={() => setUser({ ...user, iconColor: index })}/>
+                                        <button type="button" key={"color"+index} className={`h-10 w-10 rounded-full `} style={{backgroundColor : color}} onClick={() => {
+                                            setUser(prevUser => {return { ...prevUser, iconColor: parseInt(index) }});
+                                        }}/>
                                     )
                                 })}
                             </div>
