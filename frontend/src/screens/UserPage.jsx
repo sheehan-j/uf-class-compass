@@ -37,7 +37,7 @@ const UserPage = () => {
                 <div className="w-full sm:w-10/12">
                         <div className="bg-[#eef8fc] p-3">
                             <p className="text-2xl">Hi</p>
-                            <p>Welcome to your acount. Here, You can change your name, password, and email.</p>
+                            <p>Welcome to your account. Edit your profile here.</p>
                         </div>
                         <div className="flex flex-col gap-3 mt-5">
                             <label htmlFor="firstName" className="font-bold">First name</label>
