@@ -72,7 +72,7 @@ const Navbar = () => {
 							src="/mobileMenu.svg"
 							onClick={() => setIsMobileMenuOpen((prev) => !prev)}
 						/>
-						<div className="pr-5">
+						<div className="pr-5" onClick={() => setUserDropDown(!userDropDown)}>
 							{auth?.user && <UserIcon auth={auth}/>}
 						</div>
 					</div>
