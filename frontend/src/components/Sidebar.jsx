@@ -199,11 +199,10 @@ const Sidebar = ({
 	return (
 		<div
 			style={{
-				backgroundColor: StyleColors.gray,
 				transition: "left 0.3s linear",
 				left: sidebarVisible ? "0" : "-100%",
 			}}
-			className="min-h-full top-0 w-full md:w-7/12 text-black absolute lg:w-1/4 lg:sticky overflow-x-visible z-50 border-r border-gray-300 lg:border-none"
+			className="bg-customGray min-h-full top-0 w-full md:w-7/12 text-black absolute lg:w-1/4 lg:sticky overflow-x-visible z-50 border-r border-gray-300 lg:border-none"
 		>
 			<div className="sticky top-0 overflow-y-visible h-fit p-5">
 				<div className="mb-3 lg:hidden w-full flex justify-end">
