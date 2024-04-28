@@ -72,6 +72,7 @@ const Schedule = ({ colCount, maxRowCount, activeSchedule, previewSchedule, hand
 					description: section.class.description,
 					prerequisites: section.class?.prerequisites ? section.class?.prerequisites : null,
 					rmpData: section.instructor.rmpData,
+					isOnline: section.isOnline,
 				};
 
 				if (section?.isOnline) {
@@ -87,6 +88,7 @@ const Schedule = ({ colCount, maxRowCount, activeSchedule, previewSchedule, hand
 					rows[meetingItem.period - 1][meetingItem.day] = {
 						...sectionInfoObject,
 						period: meetingItem.period,
+						building: meetingItem.building,
 						location: `${meetingItem.building.code} ${meetingItem.room}`,
 						length: meetingItem.length,
 						distance: meetingItem?.distance && meetingItem.length == 1 ? meetingItem.distance : null,
@@ -97,6 +99,7 @@ const Schedule = ({ colCount, maxRowCount, activeSchedule, previewSchedule, hand
 					for (var i = 1; i < meetingItem.length; i++) {
 						rows[meetingItem.period - 1 + i][meetingItem.day] = {
 							...sectionInfoObject,
+							building: meetingItem.building,
 							location: `${meetingItem.building.code} ${meetingItem.room}`,
 							period: meetingItem.period,
 							isClass: true,

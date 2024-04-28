@@ -1,8 +1,8 @@
 const StyleColors = [
-    "#eb7817",  // Index 1: Orange",
-    "#285797",   // Index 0: Blue",
-    "#ebebeb", // Index 2: Gray",
-    "#fed27e", // Index 3: Beige",
+    "#eb7817",
+    "#285797",
+    "#ebebeb",
+    "#fed27e",
     "#FF5733",
     "#33FF57",
     "#5733FF",

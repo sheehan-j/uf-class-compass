@@ -113,7 +113,7 @@ const MySchedules = ({
 				</button>
 			</div>
 			<div className="flex justify-center w-full mb-4">
-				<div className="flex justify-center text-center p-1 bg-white rounded-full w-10/12 shadow-lg">
+				<div className="flex justify-center text-center p-1 bg-white rounded-full w-10/12 shadow-lg border">
 					{activeSchedule?.name ? activeSchedule.name : "No Schedule Selected"}
 				</div>
 			</div>

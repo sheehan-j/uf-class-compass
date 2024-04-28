@@ -21,7 +21,6 @@ const Sidebar = ({
 	sidebarVisible,
 	handleToggleSidebar,
 }) => {
-	const [selectedButton, setSelectedButton] = useState("schedulePlanner");
 	const [classResults, setClassResults] = useState([]);
 	const [searchTerm, setSearchTerm] = useState("");
 	const [searchError, setSearchError] = useState("");
@@ -158,6 +157,7 @@ const Sidebar = ({
 		}
 	}, [activeSchedule]);
 
+
 	useEffect(() => {
 		const handleOutsideClick = (event) => {
 			if (autoCompleteRef.current && !autoCompleteRef.current.contains(event.target)) {
@@ -171,6 +171,31 @@ const Sidebar = ({
 			document.body.removeEventListener("mousedown", handleOutsideClick);
 		};
 	}, []);
+
+	const [selectedOptionIndex, setSelectedOptionIndex] = useState(null);
+	const selectedOptionRef = useRef(null);
+	const handleArrowKeyPress = (event) => {
+        if (showAutoComplete) {
+            if (event.key === "ArrowUp" || (event.key === "Tab" && event.shiftKey		)) {
+				event.preventDefault();
+                setSelectedOptionIndex((prevIndex) => (prevIndex === null ? 0 : Math.max(0, prevIndex - 1)));
+            } else if (event.key === "ArrowDown" || event.key === "Tab") {
+				event.preventDefault();
+                setSelectedOptionIndex((prevIndex) => (prevIndex === null ? 0 : Math.min(classByPrefix.length - 1, prevIndex + 1)));
+            } else if (event.key === "Enter" && selectedOptionRef.current) {
+				event.preventDefault();
+                selectedOptionRef.current.click();
+            }
+        }
+    };
+
+    useEffect(() => {
+        document.addEventListener("keydown", handleArrowKeyPress);
+        return () => {
+            document.removeEventListener("keydown", handleArrowKeyPress);
+        };
+    }, [showAutoComplete, selectedOptionIndex]);
+
 
 	return (
 		<div
@@ -232,7 +257,8 @@ const Sidebar = ({
 					/>
 					{classByPrefix && (
 						<div
-							className={`absolute z-50 w-full ${showAutoComplete ? "block" : "hidden"} w-full h-[200px] overflow-y-scroll`}
+							className={`absolute z-50 w-full ${showAutoComplete ? "block" : "hidden"} w-full overflow-y-auto`}
+							style={{ maxHeight: "36rem" }}
 							ref={autoCompleteRef}
 						>
 							{classByPrefix.map((classCode, index) => {
@@ -242,12 +268,17 @@ const Sidebar = ({
 
 								return (
 									<div
-										className="w-full py-2 px-2 flex align-center bg-gray-100 border border-gray-300 cursor-pointer"
+										ref={index === selectedOptionIndex ? selectedOptionRef : null}
+										className={`w-full py-2 px-2 flex align-center bg-gray-100 border border-gray-300 cursor-pointer ${index === selectedOptionIndex ? "bg-blue-200" : ""}`}
 										key={index}
 										onClick={() => handleClickAutocomplete(toSearch)}
 									>
-										<strong>{searchTerm.toUpperCase()}</strong>
-										<span>{nonBolded}</span>
+										{index === selectedOptionIndex ? 
+										(<strong>{classCode.toUpperCase()}</strong>) : 
+										(<>
+											<strong>{searchTerm.toUpperCase()}</strong>
+											<span>{nonBolded}</span>
+										</>)}	
 									</div>
 								);
 							})}
