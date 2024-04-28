@@ -66,7 +66,7 @@ const Schedule = ({ colCount, maxRowCount, activeSchedule, previewSchedule, hand
 					credits: section.credits,
 					final: section.final,
 					department: section.department,
-					color: Colors.classColors[colorIndex],
+					color: Colors.classColors[colorIndex % Colors.classColors.length] ,
 					code: section.class.code,
 					title: section.class.title,
 					description: section.class.description,
