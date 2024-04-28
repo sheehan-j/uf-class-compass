@@ -85,7 +85,7 @@ const ClassCell = ({ cell, onCellClick }) => {
 					>
 						<p
 							ref={distanceTooltipRef}
-							className="absolute text-sm text-nowrap bg-white py-0.5 px-2 rounded border-gray-300 border"
+							className="absolute text-sm text-nowrap bg-white py-0.5 px-2 rounded border-gray-300 border z-20"
 							style={{
 								left: "50%",
 								width: "auto",
