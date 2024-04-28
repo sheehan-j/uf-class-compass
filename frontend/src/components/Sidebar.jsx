@@ -111,7 +111,6 @@ const Sidebar = ({
 
 	const handleDeleteClass = async (section) => {
 		const result = await SchedulesApi.deleteClassFromSchedule(activeSchedule._id, section._id);
-		setSchedules(result);
 		const newActiveSchedule = await DistanceUtil.updateScheduleWithDistances(
 			result.filter((schedule) => schedule._id == activeSchedule._id)[0]
 		);
