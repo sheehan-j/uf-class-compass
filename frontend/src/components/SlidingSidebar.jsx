@@ -1,16 +1,16 @@
 import { useState, useEffect, useRef } from "react";
-import { Map, Marker } from "@vis.gl/react-google-maps";
+import { Map, Marker, useMap, useMarkerRef } from "@vis.gl/react-google-maps";
+// import Map from "./Map";
 import PropTypes from "prop-types";
 import StyleColors from "../constants/StyleColors";
 
 const SlidingSidebar = ({ isClassClicked, setIsClassClicked, cell }) => {
-	console.log(cell);
-	// const { credits, final, department, color, code, title, description, prerequisites, location } = cell;
 	const handleMinimize = () => {
 		setIsClassClicked(false);
 	};
 	const [mapConatinerWidth, setMapContainerWidth] = useState(0);
 	const mapContainerRef = useRef(null);
+	const map = useMap();
 
 	useEffect(() => {
 		const handleResize = () => {
@@ -25,28 +25,35 @@ const SlidingSidebar = ({ isClassClicked, setIsClassClicked, cell }) => {
 		};
 	}, []);
 
-	const position = { lat: 61.2176, lng: -149.8997 };
+	useEffect(() => {
+		if (!map) return;
+
+		if (cell?.building?.lat && cell?.building?.long) {
+			map.setCenter({ lat: cell?.building?.lat, lng: cell?.building?.long });
+			map.setZoom(18);
+		}
+	}, [map, cell]);
 
 	const renderStars = (numStars) => {
-        const roundedStars = Math.round(numStars * 2) / 2;
-        const wholeStars = Math.floor(roundedStars);
-        const hasHalfStar = roundedStars % 1 !== 0 && roundedStars % 1 >= 0.25 && roundedStars % 1 < 0.75;
-        const stars = [];
-        for (let i = 0; i < wholeStars; i++) {
-            stars.push(<img key={"star"+i} src="/star.svg" alt="Star" />);
-        }
-        if (hasHalfStar) {
-            stars.push(<img key="half-star" src="/halfStar.svg" alt="Half Star" />);
-        }
-        return (<span className="flex">{stars}</span>);
-    };
+		const roundedStars = Math.round(numStars * 2) / 2;
+		const wholeStars = Math.floor(roundedStars);
+		const hasHalfStar = roundedStars % 1 !== 0 && roundedStars % 1 >= 0.25 && roundedStars % 1 < 0.75;
+		const stars = [];
+		for (let i = 0; i < wholeStars; i++) {
+			stars.push(<img key={"star" + i} src="/star.svg" alt="Star" />);
+		}
+		if (hasHalfStar) {
+			stars.push(<img key="half-star" src="/halfStar.svg" alt="Half Star" />);
+		}
+		return <span className="flex">{stars}</span>;
+	};
 	return (
 		<div
 			style={{
 				transition: "right 0.5s linear",
 				right: isClassClicked ? "0" : "-100%",
 			}}
-			className="w-1/2 md:w-5/12 xl:w-4/12 z-40 absolute top-0 py-3 overflow-y-visible h-full bg-customGray flex flex-col"
+			className="w-10/12 md:w-5/12 xl:w-4/12 z-40 absolute top-0 py-3 overflow-y-visible h-full bg-customGray flex flex-col"
 		>
 			<div className="px-2 mb-2" onClick={handleMinimize}>
 				<img className="hover:cursor-pointer" src="/remove.svg" />
@@ -97,36 +104,46 @@ const SlidingSidebar = ({ isClassClicked, setIsClassClicked, cell }) => {
 								<div className="text-end">{cell?.department}</div>
 							</div>
 						)}
-						{cell?.rmpData && 
+						{cell?.rmpData && (
 							<>
-							<div className="w-full bg-gray-300 my-3" style={{ height: "1px" }}></div>
-							<div className="font-semibold w-full">RMP Data</div>
-							<div className="flex flex-row gap-2 justify-between items-center">
-									<div className="text-end flex flex-col items-center"> <span><span className="font-semibold mr-1">Rating: </span> {JSON.stringify(cell.rmpData.rating)} / 5</span>  <span className="ml-2 ">{renderStars(cell.rmpData.rating)}</span></div>
-									<div className="text-end"> <span className="font-semibold">Difficulty: </span>{JSON.stringify(cell.rmpData.difficulty)} / 5</div>
-									<div className="text-end text-blue-700"> <a href={`https://www.ratemyprofessors.com/professor/${cell.rmpData.rmpId}`}>Link to RMP</a></div>
+								<div className="w-full bg-gray-300 my-3" style={{ height: "1px" }}></div>
+								<div className="font-semibold w-full">RMP Data</div>
+								<div className="flex flex-row gap-2 justify-between items-center">
+									<div className="text-end flex flex-col items-center">
+										{" "}
+										<span>
+											<span className="font-semibold mr-1">Rating: </span>{" "}
+											{JSON.stringify(cell.rmpData.rating)} / 5
+										</span>{" "}
+										<span className="ml-2 ">{renderStars(cell.rmpData.rating)}</span>
+									</div>
+									<div className="text-end">
+										{" "}
+										<span className="font-semibold">Difficulty: </span>
+										{JSON.stringify(cell.rmpData.difficulty)} / 5
+									</div>
+									<div className="text-end text-blue-700">
+										{" "}
+										<a href={`https://www.ratemyprofessors.com/professor/${cell.rmpData.rmpId}`}>
+											Link to RMP
+										</a>
+									</div>
 								</div>
-								</>
-							}
+							</>
+						)}
 					</div>
 				</div>
 			</div>
-			<div ref={mapContainerRef} className="mx-3 border border-gray-300">
-				<Map
-					style={{ height: mapConatinerWidth * (2 / 3), width: "100%" }}
-					defaultCenter={position}
-					defaultZoom={10}
-					disableDefaultUI={true}
-				>
-					<Marker
-						defaultCenter={position}
-						defaultZoom={3}
-						gestureHandling={"greedy"}
+			{!cell?.isOnline && (
+				<div ref={mapContainerRef} className="mx-3 border border-gray-300">
+					<Map
+						style={{ height: mapConatinerWidth * (2 / 3), width: "100%" }}
+						defaultCenter={{ lat: 0, lng: 0 }}
+						defaultZoom={10}
 						disableDefaultUI={true}
-						controlled={true}
 					/>
-				</Map>
-			</div>
+				</div>
+			)}
 		</div>
 	);
 };
