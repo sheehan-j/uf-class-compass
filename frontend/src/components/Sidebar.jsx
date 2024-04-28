@@ -30,7 +30,6 @@ const Sidebar = ({
 
 	const handleChangeSearchTerm = async (cls) => {
 		const code = cls.toUpperCase();
-		setPrefix(code);
 		setSearchTerm(code);
 		if (code.length == 0) {
 			setClassByPrefix([]);
