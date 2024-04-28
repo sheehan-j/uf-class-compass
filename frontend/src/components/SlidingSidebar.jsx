@@ -52,7 +52,7 @@ const SlidingSidebar = ({ isClassClicked, setIsClassClicked, cell }) => {
 				transition: "right 0.5s linear",
 				right: isClassClicked ? "0" : "-100%",
 			}}
-			className="w-10/12 md:w-5/12 xl:w-4/12 z-40 absolute top-0 py-3 overflow-y-visible h-full bg-customGray flex flex-col"
+			className="w-10/12 md:w-5/12 xl:w-4/12 z-40 absolute top-0 py-3 overflow-y-visible h-full bg-customGray flex flex-col border-l border-gray-400"
 		>
 			<div className="px-2 mb-2" onClick={handleMinimize}>
 				<img className="hover:cursor-pointer" src="/remove.svg" />
