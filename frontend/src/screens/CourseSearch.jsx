@@ -53,6 +53,7 @@ const CourseSearch = () => {
 		if (titleSearch != "") params = { ...params, title: titleSearch };
 		if (numberSearch != "") params = { ...params, number: numberSearch };
 		if (codeSearch != "") params = { ...params, class: codeSearch };
+		if (filters.length > 0) params = { ...params, filters: filters };
 
 		const response = await SearchApi.search(params);
 		setSearchResults(response.result);

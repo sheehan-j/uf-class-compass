@@ -4,7 +4,7 @@ import Dropdown from "react-multilevel-dropdown";
 const BuildingFilter = ({ handleAddFilter }) => {
 	const [searchInput, setSearchInput] = useState("");
 	const handleKeyDown = (e) => {
-		if (e.key === "Enter") {
+		if (e.key === "Enter" && searchInput !== "") {
 			handleAddFilter("Building", searchInput);
 		}
 	};

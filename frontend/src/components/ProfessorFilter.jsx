@@ -5,7 +5,7 @@ const ProfessorFilter = ({ handleAddFilter }) => {
 	const [searchInput, setSearchInput] = useState("");
 
 	const handleKeyDown = (e) => {
-		if (e.key === "Enter") {
+		if (e.key === "Enter" && searchInput !== "") {
 			handleAddFilter("Professor", searchInput);
 		}
 	};

@@ -12,19 +12,20 @@ import { config } from "../config/config";
  * }
  */
 const search = async (params) => {
-	let queryParams =
-		JSON.stringify(params) === "{}"
-			? ""
-			: "?" +
-			  Object.keys(params)
-					.map((key) => `${encodeURIComponent(key)}=${encodeURIComponent(params[key])}`)
-					.join("&");
+	// let queryParams =
+	// 	JSON.stringify(params) === "{}"
+	// 		? ""
+	// 		: "?" +
+	// 		  Object.keys(params)
+	// 				.map((key) => `${encodeURIComponent(key)}=${encodeURIComponent(params[key])}`)
+	// 				.join("&");
 
-	const response = await fetch(`${config.API_BASE_URL}/search${queryParams}`, {
-		method: "GET",
+	const response = await fetch(`${config.API_BASE_URL}/search`, {
+		method: "POST",
 		headers: {
 			"Content-Type": "application/json",
 		},
+		body: JSON.stringify(params),
 	});
 	const result = await response.json();
 	return { result: result, status: response.status };
