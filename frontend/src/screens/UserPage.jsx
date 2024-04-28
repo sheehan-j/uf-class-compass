@@ -87,17 +87,7 @@ const UserPage = () => {
                             <p>Options</p>
                             <div className="w-full flex justify-center">
                                 <div className="w-full sm:w-8/12 colors flex flex-wrap gap-3">
-                                    {[
-                                        "#F2C4DE",
-                                        "#71B1D9",
-                                        "#AED8F2",
-                                        "#F2DEA2",
-                                        "#F2CDC4",
-                                        "#ABD3DB",
-                                        "#C2E6DF",
-                                        "#E5F5DC",
-                                        "#FFFFE1",
-                                    ].map((color, index) => (
+                                    {StyleColors.map((color, index) => (
                                         <button
                                             key={"color" + index}
                                             className={`h-10 w-10 rounded-full `}

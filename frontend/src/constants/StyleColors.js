@@ -33,6 +33,15 @@ const StyleColors = [
     "#CC0000",
     "#00CC00",
     "#0000CC",
+    "#F2C4DE",
+    "#71B1D9",
+    "#AED8F2",
+    "#F2DEA2",
+    "#F2CDC4",
+    "#ABD3DB",
+    "#C2E6DF",
+    "#E5F5DC",
+    "#FFFFE1",
 ];
 
 export default StyleColors;

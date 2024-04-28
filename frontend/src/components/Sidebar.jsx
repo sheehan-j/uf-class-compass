@@ -26,10 +26,12 @@ const Sidebar = ({
 	const [searchError, setSearchError] = useState("");
 	const [classByPrefix, setClassByPrefix] = useState([]);
 	const [showAutoComplete, setShowAutoComplete] = useState(true);
+	const [prefix, setPrefix] = useState(null);
 	const autoCompleteRef = useRef(null);
 
 	const handleChangeSearchTerm = async (cls) => {
 		const code = cls.toUpperCase();
+		setPrefix(code);
 		setSearchTerm(code);
 		if (code.length == 0) {
 			setClassByPrefix([]);
@@ -175,18 +177,18 @@ const Sidebar = ({
 	const [selectedOptionIndex, setSelectedOptionIndex] = useState(null);
 	const selectedOptionRef = useRef(null);
 	const handleArrowKeyPress = (event) => {
-        if (showAutoComplete) {
-            if (event.key === "ArrowUp" || (event.key === "Tab" && event.shiftKey		)) {
+		if (showAutoComplete) {
+			if (event.key === "ArrowUp" || (event.key === "Tab" && event.shiftKey)) {
 				event.preventDefault();
-                setSelectedOptionIndex((prevIndex) => (prevIndex === null ? 0 : Math.max(0, prevIndex - 1)));
-            } else if (event.key === "ArrowDown" || event.key === "Tab") {
+				setSelectedOptionIndex((prevIndex) => (prevIndex === null ? 0 : Math.max(0, prevIndex - 1)));
+			} else if (event.key === "ArrowDown" || event.key === "Tab") {
 				event.preventDefault();
-                setSelectedOptionIndex((prevIndex) => (prevIndex === null ? 0 : Math.min(classByPrefix.length - 1, prevIndex + 1)));
-            } else if (event.key === "Enter" && selectedOptionRef.current) {
+				setSelectedOptionIndex((prevIndex) => (prevIndex === null ? 0 : Math.min(classByPrefix.length - 1, prevIndex + 1)));
+			} else if (event.key === "Enter" && selectedOptionRef.current) {
 				event.preventDefault();
-                selectedOptionRef.current.click();
-            }
-        }
+				selectedOptionRef.current.click();
+			}
+		}
     };
 
     useEffect(() => {
@@ -265,7 +267,6 @@ const Sidebar = ({
 								const prefixIdx = classCode.toUpperCase().indexOf(searchTerm.toUpperCase());
 								const toSearch = classCode;
 								const nonBolded = classCode.substring(prefixIdx + searchTerm.length);
-
 								return (
 									<div
 										ref={index === selectedOptionIndex ? selectedOptionRef : null}
@@ -273,12 +274,8 @@ const Sidebar = ({
 										key={index}
 										onClick={() => handleClickAutocomplete(toSearch)}
 									>
-										{index === selectedOptionIndex ? 
-										(<strong>{classCode.toUpperCase()}</strong>) : 
-										(<>
-											<strong>{searchTerm.toUpperCase()}</strong>
-											<span>{nonBolded}</span>
-										</>)}	
+										<strong>{searchTerm.toUpperCase()}</strong>
+										<span>{nonBolded}</span>
 									</div>
 								);
 							})}
