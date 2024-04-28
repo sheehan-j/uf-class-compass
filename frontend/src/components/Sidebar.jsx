@@ -26,7 +26,6 @@ const Sidebar = ({
 	const [searchError, setSearchError] = useState("");
 	const [classByPrefix, setClassByPrefix] = useState([]);
 	const [showAutoComplete, setShowAutoComplete] = useState(true);
-	const [prefix, setPrefix] = useState(null);
 	const autoCompleteRef = useRef(null);
 
 	const handleChangeSearchTerm = async (cls) => {

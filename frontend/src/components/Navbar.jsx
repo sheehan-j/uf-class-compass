@@ -48,6 +48,20 @@ const Navbar = () => {
 		}
 	};
 
+
+	const userDropDwon = useRef(null);
+	useEffect(() => {
+		const handleOutsideClick = (event) => {
+			if (userDropDwon.current && !userDropDwon.current.contains(event.target)) {
+				setUserDropDown(false);
+			}
+		};
+		document.body.addEventListener("mousedown", handleOutsideClick);
+		return () => {
+			document.body.removeEventListener("mousedown", handleOutsideClick);
+		};
+	}, []);
+
 	return (
 		<header className="w-full text-white relative bg-customBlue">
 			<nav className="w-full relative" style={{ borderBottom: "1px solid rgba(235,235,235, 0.5)" }}>
@@ -120,7 +134,8 @@ const Navbar = () => {
 					</div>
 				</div>
 					{userDropDown && (
-						<div className="rounded-lg gap-4 absolute px-5 py-3 flex flex-col bg-gray-400 h-fit w-fit z-50 top-22 right-5 justify-center text-center items-center">
+						<div ref={userDropDwon}
+						className="rounded-lg gap-4 absolute px-5 py-3 flex flex-col bg-gray-400 h-fit w-fit z-50 top-22 right-5 justify-center text-center items-center">
 							<p>{auth?.user?.email}</p>
 							{auth?.user && <UserIcon/>}
 							<Link to="/UserPage">Your Profile</Link>
