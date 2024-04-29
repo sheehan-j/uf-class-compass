@@ -155,7 +155,6 @@ const Sidebar = ({
 		}
 	}, [activeSchedule]);
 
-
 	useEffect(() => {
 		const handleOutsideClick = (event) => {
 			if (autoCompleteRef.current && !autoCompleteRef.current.contains(event.target)) {
@@ -179,21 +178,22 @@ const Sidebar = ({
 				setSelectedOptionIndex((prevIndex) => (prevIndex === null ? 0 : Math.max(0, prevIndex - 1)));
 			} else if (event.key === "ArrowDown" || event.key === "Tab") {
 				event.preventDefault();
-				setSelectedOptionIndex((prevIndex) => (prevIndex === null ? 0 : Math.min(classByPrefix.length - 1, prevIndex + 1)));
+				setSelectedOptionIndex((prevIndex) =>
+					prevIndex === null ? 0 : Math.min(classByPrefix.length - 1, prevIndex + 1)
+				);
 			} else if (event.key === "Enter" && selectedOptionRef.current) {
 				event.preventDefault();
 				selectedOptionRef.current.click();
 			}
 		}
-    };
+	};
 
-    useEffect(() => {
-        document.addEventListener("keydown", handleArrowKeyPress);
-        return () => {
-            document.removeEventListener("keydown", handleArrowKeyPress);
-        };
-    }, [showAutoComplete, selectedOptionIndex]);
-
+	useEffect(() => {
+		document.addEventListener("keydown", handleArrowKeyPress);
+		return () => {
+			document.removeEventListener("keydown", handleArrowKeyPress);
+		};
+	}, [showAutoComplete, selectedOptionIndex]);
 
 	return (
 		<div
@@ -201,9 +201,9 @@ const Sidebar = ({
 				transition: "left 0.3s linear",
 				left: sidebarVisible ? "0" : "-100%",
 			}}
-			className="bg-customGray min-h-full top-0 w-full md:w-7/12 text-black absolute lg:w-1/4 lg:sticky overflow-x-visible overflow-y-auto z-50 border-r border-gray-300 lg:border-none"
+			className="bg-customGray top-0 w-full h-full md:w-7/12 text-black absolute lg:w-1/4 lg:sticky overflow-x-visible overflow-y-scroll z-50 border-r border-gray-300 lg:border-none pb-5"
 		>
-			<div className="sticky top-0 overflow-y-visible h-fit p-5">
+			<div className="sticky top-0 overflow-y-visible p-5">
 				<div className="mb-3 lg:hidden w-full flex justify-end">
 					<button onClick={handleToggleSidebar}>
 						<img src="/remove.svg" />
@@ -254,7 +254,9 @@ const Sidebar = ({
 					/>
 					{classByPrefix && (
 						<div
-							className={`absolute z-50 w-full ${showAutoComplete ? "block" : "hidden"} w-full overflow-y-auto`}
+							className={`absolute z-50 w-full ${
+								showAutoComplete ? "block" : "hidden"
+							} w-full overflow-y-auto`}
 							style={{ maxHeight: "36rem" }}
 							ref={autoCompleteRef}
 						>
@@ -264,12 +266,15 @@ const Sidebar = ({
 								return (
 									<div
 										ref={index === selectedOptionIndex ? selectedOptionRef : null}
-										className={`w-full py-2 px-2 flex align-center bg-gray-100 border border-gray-300 cursor-pointer ${index === selectedOptionIndex ? "bg-blue-200" : ""}`}
+										className={`w-full py-2 px-2 flex align-center bg-gray-100 border border-gray-300 cursor-pointer ${
+											index === selectedOptionIndex ? "bg-blue-200" : ""
+										}`}
 										key={index}
 										onClick={() => {
 											handleClickAutocomplete(classCode);
 											handleSearch(classCode);
-										}}>
+										}}
+									>
 										<strong>{searchTerm.toUpperCase()}</strong>
 										<span>{nonBolded}</span>
 									</div>
