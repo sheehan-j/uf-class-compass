@@ -113,8 +113,8 @@ const SearchResultBox = ({
 														? `-${getPeriodLabel(meeting.period + meeting.length - 1)}`
 														: ""}{" "}
 													{"("}
-													{getPeriodTimes(meeting.period).start} -{" "}
-													{getPeriodTimes(meeting.period + meeting.length - 1)?.end}
+													{meeting.period && getPeriodTimes(meeting.period)?.start} -{" "}
+													{meeting.period && getPeriodTimes(meeting.period + meeting.length - 1)?.end}
 													{")"}
 												</div>
 											))}

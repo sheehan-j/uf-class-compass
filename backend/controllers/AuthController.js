@@ -5,7 +5,7 @@ const User = require("../model/User.js");
 /* Register User */
 exports.register = async (req, res) => {
 	try {
-		const { firstName, lastName, email, password } = req.body;
+		const { firstName, lastName, email, password, iconColor } = req.body;
 
 		const userSearch = await User.findOne({ email: email });
 		if (userSearch) return res.status(400).json({ error: "User already registred to this email." });
@@ -19,6 +19,7 @@ exports.register = async (req, res) => {
 			lastName,
 			email,
 			password: passwordHash,
+			iconColor,
 		});
 		const savedUser = await newUser.save();
 		//frontend receive here

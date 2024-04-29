@@ -77,7 +77,7 @@ const ClassCell = ({ cell, onCellClick }) => {
 					)}
 					<div className="font-semibold">{displayText && location}</div>
 				</div>
-				{distance && screenWidth >= 640 && (
+				{distance?.time && screenWidth >= 640 && (
 					<div
 						className="relative block pb-1.5"
 						onMouseEnter={() => setDistanceHovered(true)}
@@ -85,7 +85,7 @@ const ClassCell = ({ cell, onCellClick }) => {
 					>
 						<p
 							ref={distanceTooltipRef}
-							className="absolute text-sm text-nowrap bg-white py-0.5 px-2 rounded border-gray-300 border"
+							className="absolute text-sm text-nowrap bg-white py-0.5 px-2 rounded border-gray-300 border z-20"
 							style={{
 								left: "50%",
 								width: "auto",

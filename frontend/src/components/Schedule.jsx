@@ -7,7 +7,6 @@ import { Days } from "../constants/Days";
 import { getPeriodTimes } from "../constants/BlockTimes";
 import { getPeriodLabel } from "../constants/Periods";
 import { SchedulesApi } from "../api/SchedulesApi";
-import StyleColors from "../constants/StyleColors";
 import SlidingSidebar from "./SlidingSidebar";
 import OnlineSection from "./OnlineSection";
 
@@ -67,7 +66,7 @@ const Schedule = ({ colCount, maxRowCount, activeSchedule, previewSchedule, hand
 					credits: section.credits,
 					final: section.final,
 					department: section.department,
-					color: Colors.classColors[colorIndex],
+					color: Colors.classColors[colorIndex % Colors.classColors.length] ,
 					code: section.class.code,
 					title: section.class.title,
 					description: section.class.description,

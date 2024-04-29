@@ -1,5 +1,4 @@
 import { Days, getDayString } from "../constants/Days";
-import StyleColors from "../constants/StyleColors";
 import { useState, useEffect } from "react";
 const DaysBox = () => {
 	const currentDate = new Date().getDay() - 1; // Adjusting for Monday start
@@ -25,17 +24,8 @@ const DaysBox = () => {
 			{daysArray.map((day, index) => (
 				<div
 					key={"dayWrapper" + index}
-					className={`${isMobileScreen ? "rounded-l" : "rounded-3xl"}`}
-					style={{
-						display: "flex",
-						justifyContent: "center",
-						alignItems: "center",
-						backgroundColor: index === currentDate ? `${StyleColors.blue}` : `${StyleColors.gray}`,
-						color: index === currentDate ? "white" : "#8F8F8F",
-						border: index === currentDate ? "none" : "2px solid #DEDEDE",
-						width: "100%",
-						height: "100%",
-					}}
+					className={`flex justify-center items-center h-full w-full ${isMobileScreen ? "rounded-l" : "rounded-3xl"} 
+						${index === currentDate? "bg-customBlue text-white border-none" : "bg-customGray text-[#8F8F8F] border border-solid border-[#DEDEDE]"}`}
 				>
 					{!isMobileScreen ? getDayString(day) : getDayString(day).charAt(0)}
 				</div>

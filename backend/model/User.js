@@ -19,6 +19,10 @@ const UserSchema = new mongoose.Schema({
     required: true,
     min: 8,
   },
+  iconColor: {
+    type: Number,
+    default: 0,
+  },
 });
 
 const User = mongoose.model('User', UserSchema, 'users');

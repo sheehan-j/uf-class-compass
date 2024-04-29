@@ -21,7 +21,6 @@ const Sidebar = ({
 	sidebarVisible,
 	handleToggleSidebar,
 }) => {
-	const [selectedButton, setSelectedButton] = useState("schedulePlanner");
 	const [classResults, setClassResults] = useState([]);
 	const [searchTerm, setSearchTerm] = useState("");
 	const [searchError, setSearchError] = useState("");
@@ -112,7 +111,6 @@ const Sidebar = ({
 
 	const handleDeleteClass = async (section) => {
 		const result = await SchedulesApi.deleteClassFromSchedule(activeSchedule._id, section._id);
-		setSchedules(result);
 		const newActiveSchedule = await DistanceUtil.updateScheduleWithDistances(
 			result.filter((schedule) => schedule._id == activeSchedule._id)[0]
 		);
@@ -158,6 +156,7 @@ const Sidebar = ({
 		}
 	}, [activeSchedule]);
 
+
 	useEffect(() => {
 		const handleOutsideClick = (event) => {
 			if (autoCompleteRef.current && !autoCompleteRef.current.contains(event.target)) {
@@ -172,14 +171,38 @@ const Sidebar = ({
 		};
 	}, []);
 
+	const [selectedOptionIndex, setSelectedOptionIndex] = useState(null);
+	const selectedOptionRef = useRef(null);
+	const handleArrowKeyPress = (event) => {
+		if (showAutoComplete) {
+			if (event.key === "ArrowUp" || (event.key === "Tab" && event.shiftKey)) {
+				event.preventDefault();
+				setSelectedOptionIndex((prevIndex) => (prevIndex === null ? 0 : Math.max(0, prevIndex - 1)));
+			} else if (event.key === "ArrowDown" || event.key === "Tab") {
+				event.preventDefault();
+				setSelectedOptionIndex((prevIndex) => (prevIndex === null ? 0 : Math.min(classByPrefix.length - 1, prevIndex + 1)));
+			} else if (event.key === "Enter" && selectedOptionRef.current) {
+				event.preventDefault();
+				selectedOptionRef.current.click();
+			}
+		}
+    };
+
+    useEffect(() => {
+        document.addEventListener("keydown", handleArrowKeyPress);
+        return () => {
+            document.removeEventListener("keydown", handleArrowKeyPress);
+        };
+    }, [showAutoComplete, selectedOptionIndex]);
+
+
 	return (
 		<div
 			style={{
-				backgroundColor: StyleColors.gray,
 				transition: "left 0.3s linear",
 				left: sidebarVisible ? "0" : "-100%",
 			}}
-			className="min-h-full top-0 w-full md:w-7/12 text-black absolute lg:w-1/4 lg:sticky overflow-x-visible z-50 border-r border-gray-300 lg:border-none"
+			className="bg-customGray min-h-full top-0 w-full md:w-7/12 text-black absolute lg:w-1/4 lg:sticky overflow-x-visible overflow-y-auto z-50 border-r border-gray-300 lg:border-none"
 		>
 			<div className="sticky top-0 overflow-y-visible h-fit p-5">
 				<div className="mb-3 lg:hidden w-full flex justify-end">
@@ -219,7 +242,7 @@ const Sidebar = ({
 				)}
 
 				<p className={`mb-1 ${activeSchedule?.sections ? "" : "opacity-40"}`}>Course Code Search</p>
-				<div className="relative w-full" ref={autoCompleteRef}>
+				<div className="relative w-full " ref={autoCompleteRef}>
 					<input
 						className={`w-full py-2 px-2 flex align-center bg-white border border-gray-300 ${
 							activeSchedule?.sections ? "" : "opacity-60 line-through"
@@ -232,17 +255,18 @@ const Sidebar = ({
 					/>
 					{classByPrefix && (
 						<div
-							className={`absolute z-50 w-full ${showAutoComplete ? "block" : "hidden"} w-full`}
+							className={`absolute z-50 w-full ${showAutoComplete ? "block" : "hidden"} w-full overflow-y-auto`}
+							style={{ maxHeight: "36rem" }}
 							ref={autoCompleteRef}
 						>
 							{classByPrefix.map((classCode, index) => {
 								const prefixIdx = classCode.toUpperCase().indexOf(searchTerm.toUpperCase());
 								const toSearch = classCode;
 								const nonBolded = classCode.substring(prefixIdx + searchTerm.length);
-
 								return (
 									<div
-										className="w-full py-2 px-2 flex align-center bg-gray-100 border border-gray-300 cursor-pointer"
+										ref={index === selectedOptionIndex ? selectedOptionRef : null}
+										className={`w-full py-2 px-2 flex align-center bg-gray-100 border border-gray-300 cursor-pointer ${index === selectedOptionIndex ? "bg-blue-200" : ""}`}
 										key={index}
 										onClick={() => handleClickAutocomplete(toSearch)}
 									>
