@@ -113,6 +113,7 @@ const LoginPage = () => {
 												name="firstName"
 												id="firstName"
 												value={firstName}
+												autoComplete="given-name"
 												onChange={(e) => setFirstName(e.target.value)}
 												className="bg-white border border-gray-300 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 text-black"
 												placeholder=""
@@ -127,6 +128,7 @@ const LoginPage = () => {
 												type="text"
 												name="lastName"
 												id="lastName"
+												autoComplete="family-name"
 												value={lastName}
 												onChange={(e) => setLastName(e.target.value)}
 												className="bg-white border border-gray-300 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 text-black"
@@ -145,6 +147,7 @@ const LoginPage = () => {
 										name="email"
 										id="email"
 										value={email}
+										autoComplete="email"
 										onChange={(e) => setEmail(e.target.value)}
 										className="bg-white border border-gray-300 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 text-black"
 										placeholder=""
@@ -159,6 +162,7 @@ const LoginPage = () => {
 										type="password"
 										name="password"
 										id="password"
+										autoComplete={isSignIn ? "current-password" : "new-password"}
 										value={password}
 										onChange={(e) => setPassword(e.target.value)}
 										className="bg-white border border-gray-300 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 text-black"
@@ -175,6 +179,7 @@ const LoginPage = () => {
 											name="password"
 											id="confirmPassword"
 											value={confirmPassword}
+											autoComplete="new-password"
 											onChange={(e) => setConfirmPassword(e.target.value)}
 											className="bg-white border border-gray-300 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 text-black"
 											required

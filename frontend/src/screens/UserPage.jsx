@@ -10,6 +10,10 @@ const UserPage = () => {
     const [token] = useState(localStorage.getItem("site") || "");
     const [user, setUser] = useState(null);
     const [initialUser, setInitialUser] = useState(null); // Store initial user state for cancel functionality
+    const [saved, setSaved] = useState(false);
+    const [password, setPassword] = useState("");
+    const [confirmPassword, setConfirmPassword] = useState("");
+    const [passwordMatch, setPasswordMatch] = useState(true);
 
     useEffect(() => {
         try {
@@ -21,12 +25,33 @@ const UserPage = () => {
             setInitialUser(auth.user);
         }
     }, [auth]);
+    
+
 
     const handleUpdate = async (e) => {
         e.preventDefault();
+
+        let toUpdate = user;
+
+        if (password !== confirmPassword) {
+            setPasswordMatch(false);
+            return;
+        }
+
+        if (password === confirmPassword && password !== "") {
+            setPasswordMatch(true);
+            toUpdate = { ...user, password: password };
+        }
+
         try {
-            const response = await UserApi.updateUser(token, user);
-            setUser(response);
+            const response = await UserApi.updateUser(token, toUpdate);
+            const {password, ...newUser} = response;
+            setUser(newUser);
+            setInitialUser(newUser);
+            setSaved(true);
+            setTimeout(() => {
+                setSaved(false);
+            }, 3000);
         } catch (error) {
             console.error("Error updating user information:", error);
         }
@@ -35,11 +60,6 @@ const UserPage = () => {
     const handleCancel = () => {
         // Reset user state to initial state
         setUser(initialUser);
-    };
-
-    const handleColorChange = (index) => {
-        // Update the iconColor property with the selected color index
-        setUser((prevUser) => ({ ...prevUser, iconColor: index }));
     };
 
     return (
@@ -68,11 +88,26 @@ const UserPage = () => {
                         </div>
 
                         <div className="flex flex-col gap-3 mt-5">
+                            <label htmlFor="password" className="font-bold">Password</label>
+                            <input type="password" id="password" name="password" autoComplete="new-password" className={`${!passwordMatch && "border-red-200"} shadow appearance-none border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline`} value={password} onChange={(e) => setPassword(e.target.value )} required={true} />
+                        </div>
+
+                        <div className="flex flex-col gap-3 mt-5">
+                            <label htmlFor="confirmPassword" className="font-bold">Confirm New Password</label>
+                            <input type="password" id="confirmPassword" name="confirmPassword" autoComplete="new-password" className={`${!passwordMatch && "border-red-200"} shadow appearance-none border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline`} value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} required={true} />
+                        </div>
+
+                        {!passwordMatch && (<div className="mt-3 text-[#ff0000] flex flex-row gap-2">
+                                <img src="/warning.svg"/>
+                                These Passwords Do Not Match
+                            </div>)}
+
+                        <div className="flex flex-col gap-3 mt-5">
                             <div className="flex justify-between items-center">
                                 <p className="font-bold w-full">Icon Color</p>
                                 <div className="w-full flex justify-end">
-                                    <button className="bg-customOrange text-white px-5 py-3 rounded-xl mt-5 mr-3" type="submit" onClick={handleUpdate}>
-                                        Save Changes
+                                    <button className={`text-white px-5 py-3 rounded-xl mt-5 mr-3 ${saved ? "bg-green-600" : "bg-customOrange" }`} type="submit" onClick={handleUpdate}>
+                                        {saved ? <p>Saved</p> : <p>Save Changes</p>}
                                     </button>
                                     <button className="bg-gray-300 text-gray-700 px-5 py-3 rounded-xl mt-5" onClick={handleCancel}>
                                         Cancel
@@ -92,7 +127,7 @@ const UserPage = () => {
                                             key={"color" + index}
                                             className={`h-10 w-10 rounded-full `}
                                             style={{ backgroundColor: color }}
-                                            onClick={() => handleColorChange(index)} // Pass the index to the handler
+                                            onClick={() => setUser({ ...user, iconColor: index })} // Pass the index to the handler
                                         />
                                     ))}
                                 </div>
@@ -102,7 +137,6 @@ const UserPage = () => {
                 </div>
             ) : (
                 <div>
-                    Please Log in to access this page
                 </div>
             )}
         </div>

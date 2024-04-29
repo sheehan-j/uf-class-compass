@@ -41,7 +41,6 @@ const getUser = async (token) => {
 };
 
 const updateUser = async (token, userData) => {
-	console.log(JSON.stringify(userData))
 	const response = await fetch(config.API_BASE_URL + `/user/edit`, {
 		method: "PUT",
 		headers: {
