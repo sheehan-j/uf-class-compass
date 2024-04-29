@@ -69,12 +69,12 @@ const Sidebar = ({
 		}
 	};
 
-	const handleSearch = async () => {
-		let result = await ClassesApi.getClassSections(searchTerm.toUpperCase());
+	const handleSearch = async (term = searchTerm) => {
+		let result = await ClassesApi.getClassSections(term.toUpperCase());
 		if (result) {
 			result = await ConflictsUtil.updateClassListWithConflicts(activeSchedule, result);
 			setClassResults(result);
-			setActiveClass(searchTerm.toUpperCase());
+			setActiveClass(term.toUpperCase());
 		} else {
 			setClassResults([]);
 			setActiveClass("");
@@ -260,15 +260,16 @@ const Sidebar = ({
 						>
 							{classByPrefix.map((classCode, index) => {
 								const prefixIdx = classCode.toUpperCase().indexOf(searchTerm.toUpperCase());
-								const toSearch = classCode;
 								const nonBolded = classCode.substring(prefixIdx + searchTerm.length);
 								return (
 									<div
 										ref={index === selectedOptionIndex ? selectedOptionRef : null}
 										className={`w-full py-2 px-2 flex align-center bg-gray-100 border border-gray-300 cursor-pointer ${index === selectedOptionIndex ? "bg-blue-200" : ""}`}
 										key={index}
-										onClick={() => handleClickAutocomplete(toSearch)}
-									>
+										onClick={() => {
+											handleClickAutocomplete(classCode);
+											handleSearch(classCode);
+										}}>
 										<strong>{searchTerm.toUpperCase()}</strong>
 										<span>{nonBolded}</span>
 									</div>
