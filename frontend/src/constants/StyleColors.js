@@ -9,6 +9,7 @@ const StyleColors = [
     "#0000CC",
     "#00FF99",
     "#999999",
+    "#C4A484",
     "#FAEDCB",  //START OF PASTEL
     "#C9E4DE",
     "#C6DEF1",

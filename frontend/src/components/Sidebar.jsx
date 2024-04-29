@@ -7,7 +7,6 @@ import { SchedulesApi } from "../api/SchedulesApi";
 import { ConflictsUtil } from "../../util/ConflictsUtil";
 import { DistanceUtil } from "../../util/DistanceUtil";
 import PropTypes from "prop-types";
-import StyleColors from "../constants/StyleColors";
 
 const Sidebar = ({
 	schedules,
