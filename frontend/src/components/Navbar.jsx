@@ -135,11 +135,23 @@ const Navbar = () => {
 				</div>
 					{userDropDown && (
 						<div ref={userDropDwon}
-						className="rounded-lg gap-4 absolute px-5 py-3 flex flex-col bg-gray-400 h-fit w-fit z-50 top-22 right-5 justify-center text-center items-center">
-							<p>{auth?.user?.email}</p>
-							{auth?.user && <UserIcon/>}
-							<Link to="/UserPage">Your Profile</Link>
-							<button onClick={() => {auth.logout()}}>Logout</button>
+						className="rounded-lg gap-4 absolute py-3 flex flex-col bg-white text-black shadow-xl border h-fit min-w-[15rem] max-w-[30rem] w-fit z-50 top-22 right-5">
+							<div className="flex flex-col px-5 items-center gap-4 overflow-x-hidden">
+								<p>{auth?.user?.email}</p>
+								{auth?.user && <UserIcon/>}
+							</div>
+							<span className="bg-gray-200 w-full h-0.5"/>
+							<div className="flex flex-col px-5 gap-4">
+								<Link to="/UserPage" className="flex flex-row  gap-2 hover:bg-blue-200 p-1 cursor-pointer">
+									<img className="h-5" src="/profile_icon.svg"/>
+									<span>Your Profile</span>
+								</Link>
+								<div className="flex flex-row gap-2 hover:bg-blue-200 p-1 cursor-pointer" onClick={() => {auth.logout()}}>
+									<img className="h-5" src="/logout.svg"/>
+									<span>Logout</span>
+								</div>
+							</div>
+
 						</div>
 					)}
 			</nav>

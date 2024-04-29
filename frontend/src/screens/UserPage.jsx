@@ -53,18 +53,18 @@ const UserPage = () => {
                             <p>Welcome to your account. Edit your profile here.</p>
                         </div>
                         <div className="flex flex-col gap-3 mt-5">
-                            <label htmlFor="firstName" className="font-bold">First name</label>
-                            <input type="text" id="first_name" className="shadow appearance-none border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline" value={user.firstName} onChange={(e) => setUser({ ...user, firstName: e.target.value })} />
+                            <label htmlFor="first_name" className="font-bold">First name</label>
+                            <input type="text" id="first_name" autoComplete="given-name" className="shadow appearance-none border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline" value={user.firstName} onChange={(e) => setUser({ ...user, firstName: e.target.value })} />
                         </div>
 
                         <div className="flex flex-col gap-3 mt-5">
-                            <label htmlFor="lastName" className="font-bold">Last Name</label>
-                            <input type="text" id="last_name" className="shadow appearance-none border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline" value={user.lastName} onChange={(e) => setUser({ ...user, lastName: e.target.value })} required={true} />
+                            <label htmlFor="last_name" className="font-bold">Last Name</label>
+                            <input type="text" id="last_name" autoComplete="family-name" className="shadow appearance-none border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline" value={user.lastName} onChange={(e) => setUser({ ...user, lastName: e.target.value })} required={true} />
                         </div>
 
                         <div className="flex flex-col gap-3 mt-5">
-                            <label htmlFor="Email" className="font-bold">Email</label>
-                            <input type="text" id="email" className="shadow appearance-none border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline" value={user.email} onChange={(e) => setUser({ ...user, email: e.target.value })} required={true} />
+                            <label htmlFor="email" className="font-bold">Email</label>
+                            <input type="text" id="email" autoComplete="email" className="shadow appearance-none border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline" value={user.email} onChange={(e) => setUser({ ...user, email: e.target.value })} required={true} />
                         </div>
 
                         <div className="flex flex-col gap-3 mt-5">
