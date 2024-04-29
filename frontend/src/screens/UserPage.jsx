@@ -120,7 +120,7 @@ const UserPage = () => {
                             </div>
 
                             <p>Options</p>
-                            <div className="w-full flex justify-center">
+                            <div className="w-full flex justify-center mb-10">
                                 <div className="w-full sm:w-8/12 colors flex flex-wrap gap-3">
                                     {StyleColors.map((color, index) => (
                                         <button
