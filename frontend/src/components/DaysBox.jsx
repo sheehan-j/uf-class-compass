@@ -1,7 +1,6 @@
 import { Days, getDayString } from "../constants/Days";
 import { useState, useEffect } from "react";
 const DaysBox = () => {
-	const currentDate = new Date().getDay() - 1; // Adjusting for Monday start
 	const [isMobileScreen, setIsMobileScreen] = useState(window.matchMedia("(max-width: 640px)").matches);
 
 	useEffect(() => {
