@@ -15,16 +15,14 @@ const Home = () => {
 					</Link>
 				</div>
 				<div className="hidden md:block md:w-7/12 px-5 h-auto">
-					<img src="/mockup.webp" className="w-full h-auto" alt="Logo" />
+					<img src="https://ufcc.jordansheehan.com/mockup.webp" className="w-full h-auto" alt="Logo" />
 				</div>
 			</div>
 			<div
 				className="flex flex-col justify-center items-center bg-customGray"
 				style={{ paddingTop: "8rem", paddingBottom: "8rem" }}
 			>
-				<h1
-					className="text-center w-full text-2xl xl:text-3xl font-bold mb-7 text-customOrange"
-				>
+				<h1 className="text-center w-full text-2xl xl:text-3xl font-bold mb-7 text-customOrange">
 					What is UF Class Compass?
 				</h1>
 				{/* <div className="w-full md:w-2/5 md:item-center">
