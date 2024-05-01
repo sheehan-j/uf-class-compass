@@ -11,8 +11,10 @@
 	"author": "",
 	"license": "ISC",
 	"dependencies": {
-		"bcrypt": "^5.1.1",
 		"@googlemaps/google-maps-services-js": "^3.3.42",
+		"axios": "^1.6.8",
+		"bcrypt": "^5.1.1",
+		"cheerio": "^1.0.0-rc.12",
 		"cors": "^2.8.5",
 		"dotenv": "^16.4.5",
 		"express": "^4.19.1",

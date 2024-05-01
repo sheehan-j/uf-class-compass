@@ -1,6 +1,8 @@
 const DataAccessUtil = require("../util/DataAccessUtil");
 const Class = require("../model/Class");
 const Section = require("../model/Section");
+const axios = require("axios");
+const cheerio = require("cheerio");
 
 exports.getClass = async (req, res) => {
 	try {
@@ -49,6 +51,76 @@ exports.getSections = async (req, res) => {
 	} catch (err) {
 		console.error("Error:", err);
 		return res.status(500).json({ message: "Internal server error." });
+	}
+};
+
+exports.getTextbooksBySection = async (req, res) => {
+	const url = `https://www.bsd.ufl.edu/textadoption/studentview/displayadoption1sect.aspx?SECT=${req.query.section}&YEAR=24&TERM=8`;
+	const response = await axios.get(url); //fetches html
+	const htmlContent = response.data;
+	const $ = cheerio.load(htmlContent); //creates a query item out of html
+	const table = $("table.books");
+
+	if (table) {
+		const data = [];
+		const rows = $("table.books tbody tr");
+
+		const requiredInfo = [
+			//teh stuff we want :)
+			"Title",
+			"ISBN",
+			"Cover",
+			"Author",
+			"Edition",
+			"Copyright",
+			"Publisher",
+			"NewRetailPrice",
+			"UsedRetailPrice",
+			"NewRentalFee",
+			"UsedRentalFee",
+		];
+
+		let tempObject = {};
+
+		//goes through each row and grabs every key possible but filters it to just the stuff we want
+		rows.each((index, element) => {
+			$(element)
+				.find("td")
+				.each((i, el) => {
+					const key = $(el).text().trim().replace(":", ""); // Get the key for the object
+					const value = $(el).next("td.books").text().trim(); // Get the value for the key
+					// Store the data if it is required information
+					const trimmedKey = key.trim();
+					const normalizedKey = trimmedKey.replace(/\s/g, ""); // remove spaces
+					if (key && requiredInfo.includes(normalizedKey)) {
+						tempObject[normalizedKey.toLowerCase()] = value; //set to lowercase and add
+					}
+
+					if (normalizedKey.startsWith("Thistextis")) {
+						const restOfKey = normalizedKey.substring("Thistextis".length);
+						tempObject["textis"] = restOfKey.toUpperCase();
+					}
+				});
+
+			if (Object.keys(tempObject).length > 0) {
+				data.push(tempObject);
+				tempObject = {};
+			}
+		});
+
+		// Combine every four array items because the website set up their table in the worst way possible
+		const combinedObjects = [];
+		for (let i = 0; i < data.length; i += 4) {
+			const combined = {};
+			for (let j = 0; j < 4 && i + j < data.length; j++) {
+				Object.assign(combined, data[i + j]);
+			}
+			combinedObjects.push(combined);
+		}
+
+		return res.status(200).json(combinedObjects);
+	} else {
+		return res.status(304).json([]);
 	}
 };
 
