@@ -10,12 +10,20 @@ import { SchedulesApi } from "../api/SchedulesApi";
 import SlidingSidebar from "./SlidingSidebar";
 import OnlineSection from "./OnlineSection";
 
-const Schedule = ({ colCount, maxRowCount, activeSchedule, previewSchedule, handleToggleSidebar }) => {
+const Schedule = ({
+	colCount,
+	maxRowCount,
+	activeSchedule,
+	previewSchedule,
+	handleToggleSidebar,
+	isClassClicked,
+	setIsClassClicked,
+	cell,
+	setCell,
+}) => {
 	const [grid, setGrid] = useState([]);
 	const [credits, setCredits] = useState(0);
 	const [newRowCount, setRowCount] = useState(maxRowCount);
-	const [isClassClicked, setIsClassClicked] = useState(false);
-	const [cell, setCell] = useState();
 	const [gridWidth, setGridWidth] = useState(null);
 	const [onlineSections, setOnlineSections] = useState([]);
 	const gridRefMain = useRef(null);
@@ -66,7 +74,7 @@ const Schedule = ({ colCount, maxRowCount, activeSchedule, previewSchedule, hand
 					credits: section.credits,
 					final: section.final,
 					department: section.department,
-					color: Colors.classColors[colorIndex % Colors.classColors.length] ,
+					color: Colors.classColors[colorIndex % Colors.classColors.length],
 					code: section.class.code,
 					title: section.class.title,
 					description: section.class.description,
@@ -133,7 +141,7 @@ const Schedule = ({ colCount, maxRowCount, activeSchedule, previewSchedule, hand
 	}, [colCount, maxRowCount, activeSchedule, previewSchedule]);
 
 	return (
-		<div className="pl-3 pr-1 sm:px-10 py-20 w-full min-h-full flex flex-col relative overflow-x-clip">
+		<div className="pl-3 pr-1 sm:px-10 py-20 w-full overflow-y-scroll flex flex-col relative overflow-x-clip">
 			<div className="flex flex-row grow">
 				<div className="absolute top-5 right-5 font-bold p-2">CREDITS: {credits}</div>
 				<div
@@ -237,7 +245,6 @@ const Schedule = ({ colCount, maxRowCount, activeSchedule, previewSchedule, hand
 					/>
 				))}
 			</div>
-			<SlidingSidebar isClassClicked={isClassClicked} setIsClassClicked={setIsClassClicked} cell={cell} />
 		</div>
 	);
 };

@@ -48,7 +48,6 @@ const Navbar = () => {
 		}
 	};
 
-
 	const userDropDwon = useRef(null);
 	useEffect(() => {
 		const handleOutsideClick = (event) => {
@@ -73,7 +72,7 @@ const Navbar = () => {
 							onClick={() => setIsMobileMenuOpen((prev) => !prev)}
 						/>
 						<div className="pr-5" onClick={() => setUserDropDown(!userDropDown)}>
-							{auth?.user && <UserIcon auth={auth}/>}
+							{auth?.user && <UserIcon auth={auth} />}
 						</div>
 					</div>
 					<div
@@ -92,8 +91,12 @@ const Navbar = () => {
 							/>
 							<span className="max-lg:hidden font-bold text-start lg:text-2xl">UF Class Compass</span>
 						</Link>
-						<div className="flex flex-col sm:items-center sm:flex-row gap-3 h-full">
-							<div className={`flex flex-col w-full mt-2 sm:mt-0 sm:w-auto sm:grid ${auth.user ? "sm:grid-cols-2" : "sm:grid-cols-3" } gap-3`}>
+						<div className="flex flex-col sm:items-center sm:flex-row gap-3 max-sm:w-full h-full">
+							<div
+								className={`flex flex-col w-full mt-2 sm:mt-0 sm:w-auto sm:grid ${
+									auth.user ? "sm:grid-cols-2" : "sm:grid-cols-3"
+								} gap-3`}
+							>
 								<Link className={`link-item w-full sm:w-auto sm:hidden`} to="/">
 									<button className="py-2.5 px-5 rounded-lg w-full bg-customOrange hover:bg-customOrange-dark">
 										Home
@@ -121,39 +124,51 @@ const Navbar = () => {
 									{auth?.user ? "Logout" : "Login"}
 									</button>
 								</Link> */}
-								<Link className={`${auth.user? "hidden" : "block"} link-item`} to={auth?.user ? "" : "/login"}>
+								<Link
+									className={`${auth.user ? "hidden" : "block"} link-item`}
+									to={auth?.user ? "" : "/login"}
+								>
 									<button className="py-2.5 px-5 rounded-lg w-full bg-customOrange hover:bg-customOrange-dark">
 										Login
 									</button>
 								</Link>
 							</div>
-								<button  className="hidden sm:block h-full link-item" onClick={() => setUserDropDown(!userDropDown)}>
-									{auth?.user && <UserIcon/>}
-								</button>
+							<button
+								className="hidden sm:block h-full link-item"
+								onClick={() => setUserDropDown(!userDropDown)}
+							>
+								{auth?.user && <UserIcon />}
+							</button>
 						</div>
 					</div>
 				</div>
-					{userDropDown && (
-						<div ref={userDropDwon}
-						className="rounded-lg gap-4 absolute py-3 flex flex-col bg-white text-black shadow-xl border h-fit min-w-[15rem] max-w-[30rem] w-fit z-50 top-22 right-5">
-							<div className="flex flex-col px-5 items-center gap-4 overflow-x-hidden">
-								<p>{auth?.user?.email}</p>
-								{auth?.user && <UserIcon/>}
-							</div>
-							<span className="bg-gray-200 w-full h-0.5"/>
-							<div className="flex flex-col px-5 gap-4">
-								<Link to="/UserPage" className="flex flex-row  gap-2 hover:bg-blue-200 p-1 cursor-pointer">
-									<img className="h-5" src="/profile_icon.svg"/>
-									<span>Your Profile</span>
-								</Link>
-								<div className="flex flex-row gap-2 hover:bg-blue-200 p-1 cursor-pointer" onClick={() => {auth.logout()}}>
-									<img className="h-5" src="/logout.svg"/>
-									<span>Logout</span>
-								</div>
-							</div>
-
+				{userDropDown && (
+					<div
+						ref={userDropDwon}
+						className="rounded-lg gap-4 absolute py-3 flex flex-col bg-white text-black shadow-xl border h-fit min-w-[15rem] max-w-[30rem] w-fit z-50 top-22 right-5"
+					>
+						<div className="flex flex-col px-5 items-center gap-4 overflow-x-hidden">
+							<p>{auth?.user?.email}</p>
+							{auth?.user && <UserIcon />}
 						</div>
-					)}
+						<span className="bg-gray-200 w-full h-0.5" />
+						<div className="flex flex-col px-5 gap-4">
+							<Link to="/UserPage" className="flex flex-row  gap-2 hover:bg-blue-200 p-1 cursor-pointer">
+								<img className="h-5" src="/profile_icon.svg" />
+								<span>Your Profile</span>
+							</Link>
+							<div
+								className="flex flex-row gap-2 hover:bg-blue-200 p-1 cursor-pointer"
+								onClick={() => {
+									auth.logout();
+								}}
+							>
+								<img className="h-5" src="/logout.svg" />
+								<span>Logout</span>
+							</div>
+						</div>
+					</div>
+				)}
 			</nav>
 		</header>
 	);

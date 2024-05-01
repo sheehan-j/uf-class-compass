@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { SchedulesApi } from "../api/SchedulesApi";
 import { DistanceUtil } from "../../util/DistanceUtil";
 import { useAuth } from "../hooks/AuthProvider";
+import SlidingSidebar from "../components/SlidingSidebar";
 
 const SchedulePage = () => {
 	const [sidebarVisible, setSidebarVisible] = useState(false);
@@ -15,6 +16,8 @@ const SchedulePage = () => {
 	const [activeSchedule, setActiveSchedule] = useState({});
 	const [activeClass, setActiveClass] = useState(""); // the CODE of the active class (e.g. COP3502C)
 	const [previewSchedule, setPreviewSchedule] = useState({});
+	const [cell, setCell] = useState({});
+	const [isClassClicked, setIsClassClicked] = useState(false);
 	const auth = useAuth();
 
 	useEffect(() => {
@@ -49,9 +52,9 @@ const SchedulePage = () => {
 	}, [auth]);
 
 	return (
-		<div className="w-screen h-screen flex flex-col relative">
+		<div className="w-screen h-screen overflow-hidden flex flex-col relative">
 			<Navbar />
-			<div className="flex grow relative">
+			<div className="flex grow overflow-hidden relative">
 				<Sidebar
 					schedules={schedules}
 					setSchedules={setSchedules}
@@ -70,7 +73,12 @@ const SchedulePage = () => {
 					activeSchedule={activeSchedule}
 					previewSchedule={previewSchedule}
 					handleToggleSidebar={toggleSidebar}
+					isClassClicked={isClassClicked}
+					setIsClassClicked={setIsClassClicked}
+					cell={cell}
+					setCell={setCell}
 				/>
+				<SlidingSidebar isClassClicked={isClassClicked} setIsClassClicked={setIsClassClicked} cell={cell} />
 			</div>
 		</div>
 	);

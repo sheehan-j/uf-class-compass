@@ -66,13 +66,13 @@ const LoginPage = () => {
 			<Navbar />
 			<div className="w-full h-full flex pt-10">
 				<div className="w-full flex justify-center">
-					<div
-						className="w-full sm:w-3/4 lg:w-4/6 h-fit pb-10 rounded-lg shadow dark:border text-white bg-customBlue"
-					>
+					<div className="w-full sm:w-3/4 lg:w-4/6 h-fit pb-10 rounded-lg shadow dark:border text-white bg-customBlue">
 						<div className="p-6 space-y-4 md:space-y-6 sm:p-8 text-white">
 							<div className="signInButtons flex justify-center">
 								<button
-									className={`rounded-l-lg p-3 text-xl font-bold leading-tight tracking-tight md:text-2xl dark:text-black ${isSignIn ? "bg-customOrange !text-white" : "bg-white text-black"}`}
+									className={`rounded-l-lg p-3 text-xl font-bold leading-tight tracking-tight md:text-2xl dark:text-black ${
+										isSignIn ? "bg-customOrange !text-white" : "bg-white text-black"
+									}`}
 									onClick={() => {
 										switchForms(true);
 									}}
@@ -81,7 +81,9 @@ const LoginPage = () => {
 									Sign in
 								</button>
 								<button
-									className={`rounded-r-lg p-3 text-xl font-bold leading-tight tracking-tight md:text-2xl dark:text-black ${isSignIn ? "bg-white text-black" : "bg-customOrange !text-white"}`}
+									className={`rounded-r-lg p-3 text-xl font-bold leading-tight tracking-tight md:text-2xl dark:text-black ${
+										isSignIn ? "bg-white text-black" : "bg-customOrange !text-white"
+									}`}
 									onClick={() => {
 										switchForms(false);
 									}}
@@ -191,14 +193,14 @@ const LoginPage = () => {
 									{isSignIn ? (
 										<button
 											type="submit"
-											className="bg-teal-500 rounded-lg  w-1/2 p-3 text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white"
+											className="bg-customOrange hover:bg-customOrange-dark rounded-lg  w-1/2 p-3 text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white"
 										>
 											Sign in
 										</button>
 									) : (
 										<button
 											type="submit"
-											className="bg-teal-500 w-1/2 rounded-lg p-3 text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white"
+											className="bg-customOrange hover:bg-customOrange-dark w-1/2 rounded-lg p-3 text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white"
 										>
 											Sign up
 										</button>
