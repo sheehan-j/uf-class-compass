@@ -146,17 +146,7 @@ const SlidingSidebar = ({ isClassClicked, setIsClassClicked, cell }) => {
 					</div>
 				</div>
 			</div>
-			{!cell?.isOnline && (
-				<div ref={mapContainerRef} className="mx-3 mb-3 border border-gray-300">
-					<Map
-						style={{ height: mapConatinerWidth * (2 / 3), width: "100%" }}
-						defaultCenter={{ lat: 0, lng: 0 }}
-						defaultZoom={10}
-						disableDefaultUI={true}
-					/>
-				</div>
-			)}
-			<div className="px-3">
+			<div className="px-3 mb-3">
 				<div className="border border-gray-300 bg-white flex flex-col">
 					<div
 						className="font-semibold relative px-2 py-2 leading-6"
@@ -215,6 +205,16 @@ const SlidingSidebar = ({ isClassClicked, setIsClassClicked, cell }) => {
 					)}
 				</div>
 			</div>
+			{!cell?.isOnline && (
+				<div ref={mapContainerRef} className="mx-3 border border-gray-300">
+					<Map
+						style={{ height: mapConatinerWidth * (2 / 3), width: "100%" }}
+						defaultCenter={{ lat: 0, lng: 0 }}
+						defaultZoom={10}
+						disableDefaultUI={true}
+					/>
+				</div>
+			)}
 		</div>
 	);
 };
