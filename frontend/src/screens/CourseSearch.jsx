@@ -122,7 +122,6 @@ const CourseSearch = () => {
 	};
 
 	const handleRemoveFilter = (filterType, filterValue) => {
-		console.log(filterType + filterValue);
 		let newFilters = [];
 		filters.forEach((filter) => {
 			if (filter.type !== filterType || filter.value !== filterValue) newFilters.push(filter);

@@ -36,7 +36,6 @@ const SlidingSidebar = ({ isClassClicked, setIsClassClicked, cell }) => {
 		}
 		const getTextbooks = async (section) => {
 			const response = await TextbooksApi.getTextbooksBySection(section);
-			console.log(response);
 			setTextbooks(response);
 		};
 
@@ -44,7 +43,6 @@ const SlidingSidebar = ({ isClassClicked, setIsClassClicked, cell }) => {
 		setIframeUrl(
 			cell?.building?.bid ? `https://campusmap.ufl.edu/#/${cell?.building?.bid}` : "https://campusmap.ufl.edu/#/"
 		);
-		console.log(cell);
 		if (cell?.number) getTextbooks(cell.number);
 	}, [map, cell]);
 

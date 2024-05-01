@@ -21,7 +21,6 @@ const MeetingFilter = ({ handleAddFilter }) => {
 					return daysOfWeekOrder.indexOf(a) - daysOfWeekOrder.indexOf(b);
 			  });
 
-		console.log(updatedSelectedDays);
 		setSelectedDays(updatedSelectedDays);
 		// onSelect(`Days: ${updatedSelectedDays.join(", ")} - Period: ${value[0]}-${value[1]}`);
 		handleAddFilter("Days", updatedSelectedDays);
