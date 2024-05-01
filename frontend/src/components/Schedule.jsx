@@ -70,6 +70,7 @@ const Schedule = ({
 
 				let sectionInfoObject = {
 					_id: section._id,
+					number: section.number,
 					instructor: section.instructor.name,
 					credits: section.credits,
 					final: section.final,

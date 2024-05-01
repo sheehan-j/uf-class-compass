@@ -1,6 +1,8 @@
 import { useState, useEffect, useRef } from "react";
 import { Map, Marker, useMap, useMarkerRef } from "@vis.gl/react-google-maps";
 import PropTypes from "prop-types";
+import { TextbooksApi } from "../api/TextbooksApi";
+// import Map from "./Map";
 
 const SlidingSidebar = ({ isClassClicked, setIsClassClicked, cell }) => {
 	const handleMinimize = () => {
@@ -8,6 +10,7 @@ const SlidingSidebar = ({ isClassClicked, setIsClassClicked, cell }) => {
 	};
 	const [mapConatinerWidth, setMapContainerWidth] = useState(0);
 	const [iframeUrl, setIframeUrl] = useState("https://campusmap.ufl.edu/#/");
+	const [textbooks, setTextbooks] = useState([]);
 	const mapContainerRef = useRef(null);
 	const map = useMap();
 
@@ -31,6 +34,18 @@ const SlidingSidebar = ({ isClassClicked, setIsClassClicked, cell }) => {
 			map.setCenter({ lat: cell?.building?.lat, lng: cell?.building?.long });
 			map.setZoom(18);
 		}
+		const getTextbooks = async (section) => {
+			const response = await TextbooksApi.getTextbooksBySection(section);
+			console.log(response);
+			setTextbooks(response);
+		};
+
+		setTextbooks([]);
+		setIframeUrl(
+			cell?.building?.bid ? `https://campusmap.ufl.edu/#/${cell?.building?.bid}` : "https://campusmap.ufl.edu/#/"
+		);
+		console.log(cell);
+		if (cell?.number) getTextbooks(cell.number);
 	}, [map, cell]);
 
 	const renderStars = (numStars) => {
@@ -134,7 +149,7 @@ const SlidingSidebar = ({ isClassClicked, setIsClassClicked, cell }) => {
 				</div>
 			</div>
 			{!cell?.isOnline && (
-				<div ref={mapContainerRef} className="mx-3 border border-gray-300">
+				<div ref={mapContainerRef} className="mx-3 mb-3 border border-gray-300">
 					<Map
 						style={{ height: mapConatinerWidth * (2 / 3), width: "100%" }}
 						defaultCenter={{ lat: 0, lng: 0 }}
@@ -143,6 +158,65 @@ const SlidingSidebar = ({ isClassClicked, setIsClassClicked, cell }) => {
 					/>
 				</div>
 			)}
+			<div className="px-3">
+				<div className="border border-gray-300 bg-white flex flex-col">
+					<div
+						className="font-semibold relative px-2 py-2 leading-6"
+						style={{ backgroundColor: cell?.color }}
+					>
+						<div
+							className="absolute left-0 top-0 w-1 h-full"
+							style={{ backgroundColor: cell?.color }}
+						></div>
+						Textbooks
+					</div>
+					{textbooks.length > 0 ? (
+						<div className="px-3 py-3 text-sm flex flex-col gap-4">
+							{textbooks.map((textbook, index) => (
+								<div key={textbook.title} className="flex flex-col gap-2">
+									{index > 0 && <div className="w-full bg-black" style={{ height: "0.05rem" }}></div>}
+									<div className="flex flex-row gap-2 justify-between items-center">
+										<div className="font-semibold">Title</div>
+										<div className="text-end">{textbook?.title}</div>
+									</div>
+									<div className="flex flex-row gap-2 justify-between items-center">
+										<div className="font-semibold">ISBN</div>
+										<div className="text-end">{textbook?.isbn}</div>
+									</div>
+									<div className="flex flex-row gap-2 justify-between items-center">
+										<div className="font-semibold">Author</div>
+										<div className="text-end">{textbook?.author}</div>
+									</div>
+									<div className="flex flex-row gap-2 justify-between items-center">
+										<div className="font-semibold">New Retail Price</div>
+										<div className="text-end">{textbook?.newretailprice}</div>
+									</div>
+									<div className="flex flex-row gap-2 justify-between items-center">
+										<div className="font-semibold">Used Retail Price</div>
+										<div className="text-end">{textbook?.usedretailprice}</div>
+									</div>
+									<div className="flex flex-row gap-2 justify-between items-center">
+										<div className="font-semibold">New Rental Fee</div>
+										<div className="text-end">{textbook?.newrentalfee}</div>
+									</div>
+									<div className="flex flex-row gap-2 justify-between items-center">
+										<div className="font-semibold">Used Rental Fee</div>
+										<div className="text-end">{textbook?.usedrentalfee}</div>
+									</div>
+									<div className="flex flex-row gap-2 justify-between items-center">
+										<div className="font-semibold">Required</div>
+										<div className="text-end">{textbook?.textis === "REQUIRED" ? "Yes" : "No"}</div>
+									</div>
+								</div>
+							))}
+						</div>
+					) : (
+						<div className="px-3 py-2 text-sm flex flex-col gap-2">
+							<div className="font-semibold">No Information Available</div>
+						</div>
+					)}
+				</div>
+			</div>
 		</div>
 	);
 };
