@@ -176,10 +176,10 @@ const Sidebar = ({
 		if (showAutoComplete) {
 			if (event.key === "ArrowUp" || (event.key === "Tab" && event.shiftKey)) {
 				event.preventDefault();
-				setSelectedOptionIndex((prevIndex) => (prevIndex === null ? 0 : Math.max(0, prevIndex - 1)));
+				setSelectedOptionIndex(selectedOptionIndex === null ? 0 : Math.max(0, selectedOptionIndex - 1));
 			} else if (event.key === "ArrowDown" || event.key === "Tab") {
 				event.preventDefault();
-				setSelectedOptionIndex((prevIndex) => (prevIndex === null ? 0 : Math.min(classByPrefix.length - 1, prevIndex + 1)));
+				setSelectedOptionIndex(selectedOptionIndex === null ? 0 : Math.min(classByPrefix.length - 1, selectedOptionIndex + 1));
 			} else if (event.key === "Enter" && selectedOptionRef.current) {
 				event.preventDefault();
 				selectedOptionRef.current.click();
@@ -264,7 +264,7 @@ const Sidebar = ({
 								return (
 									<div
 										ref={index === selectedOptionIndex ? selectedOptionRef : null}
-										className={`w-full py-2 px-2 flex align-center bg-gray-100 border border-gray-300 cursor-pointer ${index === selectedOptionIndex ? "bg-blue-200" : ""}`}
+										className={`w-full py-2 px-2 flex align-center border border-gray-300 cursor-pointer hover:bg-green-200 ${index === selectedOptionIndex ? "bg-blue-200" : "bg-gray-100"}`}
 										key={index}
 										onClick={() => {
 											handleClickAutocomplete(classCode);
