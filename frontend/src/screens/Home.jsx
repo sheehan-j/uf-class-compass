@@ -20,7 +20,7 @@ const Home = () => {
 			</div>
 			<div
 				className="flex flex-col justify-center items-center bg-customGray"
-				style={{ paddingTop: "8rem", paddingBottom: "8rem" }}
+				style={{ paddingTop: "6rem", paddingBottom: "6rem" }}
 			>
 				<h1 className="text-center w-full text-2xl xl:text-3xl font-bold mb-7 text-customOrange">
 					What is UF Class Compass?
@@ -50,6 +50,28 @@ const Home = () => {
 							We aim to provide robust features including support for multiple schedules, seamless course
 							lookup, and personalized schedule suggestions.
 						</p>
+					</div>
+				</div>
+			</div>
+			<div
+				className="flex flex-col justify-center items-center bg-white"
+				style={{ paddingTop: "6rem", paddingBottom: "6rem" }}
+			>
+				<h1 className="text-center w-full text-2xl xl:text-3xl font-bold text-customBlue">Documentation</h1>
+				<p className="text-customBlue mb-4">Our Project Documentation for Reference</p>
+				{/* <div className="w-full md:w-2/5 md:item-center">
+						<img className="w-full object-scale-down" src="/homeExample.png" />
+					</div> */}
+				<div className="w-7/12 md:w-5/12 xl:w-3/12 flex flex-col max-md:gap-4 md:flex-row justify-center items-center">
+					<div className="text-center text-lg px-5 grow">
+						<a href="/manual.pdf" target="_blank" className="text-semibold underline">
+							Manual
+						</a>
+					</div>
+					<div className="text-center text-lg px-5 grow">
+						<a href="./erd.png" target="_blank" className="text-semibold underline">
+							ERD
+						</a>
 					</div>
 				</div>
 			</div>
