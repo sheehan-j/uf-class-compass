@@ -67,7 +67,7 @@ const UserPage = () => {
             <Navbar />
             {user ? (
                 <div className="w-full flex justify-center mt-10 ">
-                    <div className="w-full sm:w-10/12">
+                    <div className="px-3 w-full sm:w-10/12">
                         <div className="bg-[#eef8fc] p-3">
                             <p className="text-2xl">Hi</p>
                             <p>Welcome to your account. Edit your profile here.</p>
