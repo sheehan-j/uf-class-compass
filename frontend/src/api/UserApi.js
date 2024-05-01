@@ -20,7 +20,8 @@ const register = async (userData) => {
 		},
 		body: JSON.stringify(userData),
 	});
-	const result = await response.json();
+	const resWithPass = await response.json();
+	const { password, ...result } = resWithPass;
 	return { ...result, status: response.status };
 };
 
@@ -32,12 +33,32 @@ const getUser = async (token) => {
 			"Content-Type": "application/json",
 		},
 	});
-	const result = await response.json();
+
+	const resWithPass = await response.json();
+	const { password, ...result } = resWithPass;
+
 	return { ...result, status: response.status };
 };
+
+const updateUser = async (token, userData) => {
+	const response = await fetch(config.API_BASE_URL + `/user/edit`, {
+		method: "PUT",
+		headers: {
+			Authorization: `Bearer ${token}`,
+			"Content-Type": "application/json",
+		},
+		body: JSON.stringify(userData),
+	});
+	const resWithPass = await response.json();
+	const { password, ...result } = resWithPass
+
+	return { ...result, status: response.status };
+};
+
 
 export const UserApi = {
 	login,
 	register,
 	getUser,
+	updateUser,
 };

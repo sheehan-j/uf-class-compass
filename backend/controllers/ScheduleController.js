@@ -42,7 +42,8 @@ exports.deleteSchedule = async (req, res) => {
 		if (!scheduleSearch) return res.status(400).json({ error: "Schedule not found" });
 
 		const deleteResult = await Schedule.deleteOne({ _id: req.query.id });
-		const result = await DataAccessUtil.getSchedules({ user: scheduleSearch.user });
+		let result = await DataAccessUtil.getSchedules({ user: scheduleSearch.user });
+
 		if (deleteResult.deletedCount == 1) {
 			return res.status(200).json(result);
 		} else {

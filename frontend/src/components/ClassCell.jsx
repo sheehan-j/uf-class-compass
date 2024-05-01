@@ -24,10 +24,9 @@ const ClassCell = ({ cell, onCellClick }) => {
 	}, []);
 
 	useEffect(() => {
-		if (distance) {
-			console.log(typeof distance.time.split(" ")[0]);
-			if (distance.time.split(" ")[0] === "1") {
-				setDistanceString(distance.time);
+		if (distance?.time) {
+			if (distance?.time?.split(" ")[0] === "1") {
+				setDistanceString(distance?.time);
 			} else {
 				setDistanceString(distance.time.substring(0, distance.time.length - 1));
 			}
@@ -51,9 +50,7 @@ const ClassCell = ({ cell, onCellClick }) => {
 	};
 	return (
 		<div
-			className={`overflow-scroll sm:overflow-visible z-10 p-1.5 flex flex-col justify-between box-content relative ${
-				distance ? "z-20" : "z-10"
-			}`}
+			className={`overflow-scroll sm:overflow-visible p-1.5 flex flex-col justify-between box-content relative`}
 			style={{ backgroundColor: color, borderWidth: "1px", borderColor: color, cursor: "pointer" }}
 			onClick={clickClass}
 		>
@@ -80,7 +77,7 @@ const ClassCell = ({ cell, onCellClick }) => {
 					)}
 					<div className="font-semibold">{displayText && location}</div>
 				</div>
-				{distance && screenWidth >= 640 && (
+				{distance?.time && screenWidth >= 640 && (
 					<div
 						className="relative block pb-1.5"
 						onMouseEnter={() => setDistanceHovered(true)}
@@ -88,7 +85,7 @@ const ClassCell = ({ cell, onCellClick }) => {
 					>
 						<p
 							ref={distanceTooltipRef}
-							className="absolute text-sm text-nowrap bg-white py-0.5 px-2 rounded border-gray-300 border"
+							className="absolute text-sm text-nowrap bg-white py-0.5 px-2 rounded border-gray-300 border z-20"
 							style={{
 								left: "50%",
 								width: "auto",
@@ -100,14 +97,14 @@ const ClassCell = ({ cell, onCellClick }) => {
 						>
 							<span
 								className={`font-bold ${
-									parseInt(distance.time.substring(0, distance.time.indexOf(" "))) >= 16
+									parseInt(distance?.time?.substring(0, distance.time.indexOf(" "))) >= 16
 										? "text-red-800"
 										: "text-lime-600"
 								}`}
 							>
 								{distanceString}
 							</span>{" "}
-							walk to {distance.class}
+							walk to {distance?.class}
 						</p>
 						<img src="./walking.svg" className="w-7 h-7" />
 						<img

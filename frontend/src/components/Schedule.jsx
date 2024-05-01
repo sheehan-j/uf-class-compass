@@ -5,17 +5,25 @@ import Colors from "../constants/Colors";
 import DaysBox from "./DaysBox";
 import { Days } from "../constants/Days";
 import { getPeriodTimes } from "../constants/BlockTimes";
+import { getPeriodLabel } from "../constants/Periods";
 import { SchedulesApi } from "../api/SchedulesApi";
-import StyleColors from "../constants/StyleColors";
 import SlidingSidebar from "./SlidingSidebar";
 import OnlineSection from "./OnlineSection";
 
-const Schedule = ({ colCount, maxRowCount, activeSchedule, previewSchedule, handleToggleSidebar }) => {
+const Schedule = ({
+	colCount,
+	maxRowCount,
+	activeSchedule,
+	previewSchedule,
+	handleToggleSidebar,
+	isClassClicked,
+	setIsClassClicked,
+	cell,
+	setCell,
+}) => {
 	const [grid, setGrid] = useState([]);
 	const [credits, setCredits] = useState(0);
 	const [newRowCount, setRowCount] = useState(maxRowCount);
-	const [isClassClicked, setIsClassClicked] = useState(false);
-	const [cell, setCell] = useState();
 	const [gridWidth, setGridWidth] = useState(null);
 	const [onlineSections, setOnlineSections] = useState([]);
 	const gridRefMain = useRef(null);
@@ -66,13 +74,13 @@ const Schedule = ({ colCount, maxRowCount, activeSchedule, previewSchedule, hand
 					credits: section.credits,
 					final: section.final,
 					department: section.department,
-					color: Colors.classColors[colorIndex],
+					color: Colors.classColors[colorIndex % Colors.classColors.length],
 					code: section.class.code,
 					title: section.class.title,
 					description: section.class.description,
 					prerequisites: section.class?.prerequisites ? section.class?.prerequisites : null,
 					rmpData: section.instructor.rmpData,
-					number: section.number
+					isOnline: section.isOnline,
 				};
 
 				if (section?.isOnline) {
@@ -81,33 +89,35 @@ const Schedule = ({ colCount, maxRowCount, activeSchedule, previewSchedule, hand
 						location: "Online",
 					};
 					newOnlineSections.push(onlineSection);
-				} else {
-					section?.meetings?.forEach((meetingItem) => {
-						// ** Subtract 1 from the period to zero it (all periods stored for sections are 1-based)
-						rows[meetingItem.period - 1][meetingItem.day] = {
-							...sectionInfoObject,
-							period: meetingItem.period,
-							location: `${meetingItem.building.code} ${meetingItem.room}`,
-							length: meetingItem.length,
-							distance: meetingItem?.distance && meetingItem.length == 1 ? meetingItem.distance : null,
-							isClass: true,
-							displayText: true,
-						};
-
-						for (var i = 1; i < meetingItem.length; i++) {
-							rows[meetingItem.period - 1 + i][meetingItem.day] = {
-								...sectionInfoObject,
-								location: `${meetingItem.building.code} ${meetingItem.room}`,
-								period: meetingItem.period,
-								isClass: true,
-								displayText: false,
-								distance:
-									// If this is class > 2 in length, add the distance to the last cell
-									meetingItem?.distance && i == meetingItem.length - 1 ? meetingItem.distance : null,
-							};
-						}
-					});
 				}
+
+				section?.meetings?.forEach((meetingItem) => {
+					// ** Subtract 1 from the period to zero it (all periods stored for sections are 1-based)
+					rows[meetingItem.period - 1][meetingItem.day] = {
+						...sectionInfoObject,
+						period: meetingItem.period,
+						building: meetingItem.building,
+						location: `${meetingItem.building.code} ${meetingItem.room}`,
+						length: meetingItem.length,
+						distance: meetingItem?.distance && meetingItem.length == 1 ? meetingItem.distance : null,
+						isClass: true,
+						displayText: true,
+					};
+
+					for (var i = 1; i < meetingItem.length; i++) {
+						rows[meetingItem.period - 1 + i][meetingItem.day] = {
+							...sectionInfoObject,
+							building: meetingItem.building,
+							location: `${meetingItem.building.code} ${meetingItem.room}`,
+							period: meetingItem.period,
+							isClass: true,
+							displayText: false,
+							distance:
+								// If this is class > 2 in length, add the distance to the last cell
+								meetingItem?.distance && i == meetingItem.length - 1 ? meetingItem.distance : null,
+						};
+					}
+				});
 
 				colorIndex++;
 			});
@@ -126,11 +136,12 @@ const Schedule = ({ colCount, maxRowCount, activeSchedule, previewSchedule, hand
 			setRowCount(rows.length);
 			setGrid(rows);
 			setOnlineSections(newOnlineSections);
+			setCredits(totalCredits);
 		}
 	}, [colCount, maxRowCount, activeSchedule, previewSchedule]);
 
 	return (
-		<div className="pl-3 pr-1 sm:px-10 py-20 w-full min-h-full flex flex-col relative overflow-x-clip">
+		<div className="pl-3 pr-1 sm:px-10 py-20 w-full overflow-y-scroll flex flex-col relative overflow-x-clip">
 			<div className="flex flex-row grow">
 				<div className="absolute top-5 right-5 font-bold p-2">CREDITS: {credits}</div>
 				<div
@@ -169,7 +180,7 @@ const Schedule = ({ colCount, maxRowCount, activeSchedule, previewSchedule, hand
 										alignItems: "center",
 									}}
 								>
-									{row[0].period}
+									{getPeriodLabel(row[0].period)}
 								</div>
 							</div>
 						))}
@@ -234,7 +245,6 @@ const Schedule = ({ colCount, maxRowCount, activeSchedule, previewSchedule, hand
 					/>
 				))}
 			</div>
-			<SlidingSidebar isClassClicked={isClassClicked} setIsClassClicked={setIsClassClicked} cell={cell} />
 		</div>
 	);
 };

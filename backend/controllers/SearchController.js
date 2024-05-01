@@ -14,16 +14,16 @@ exports.fullSearch = async (req, res) => {
 
 	// If there was a number searched, only check for the number, there's no need to check based on code or title otherwise because
 	// there should only be a single match by number
-	if (req.query?.number) {
-		sections = sections.filter((section) => section.number.toString().includes(req.query.number.toString()));
+	if (req.body?.number) {
+		sections = sections.filter((section) => section.number.toString().includes(req.body.number.toString()));
 	} else {
 		// Filter for sections whose class CONTAINS the searched code
-		if (req.query?.class)
-			sections = sections.filter((section) => section.class.code.includes(req.query.class.toUpperCase()));
+		if (req.body?.class)
+			sections = sections.filter((section) => section.class.code.includes(req.body.class.toUpperCase()));
 
-		if (req.query?.title) {
+		if (req.body?.title) {
 			// Split the title into keywords
-			let titleTerms = req.query.title.split(" ");
+			let titleTerms = req.body.title.split(" ");
 			titleTerms = titleTerms.map((titleTerm) => titleTerm.toLowerCase());
 
 			sections = sections.map((section) => {
@@ -57,6 +57,86 @@ exports.fullSearch = async (req, res) => {
 				delete section.matchCount;
 				return section;
 			});
+		}
+	}
+
+	const dayMap = {
+		M: 0,
+		T: 1,
+		W: 2,
+		R: 3,
+		F: 4,
+	};
+
+	if (req.body?.filters) {
+		const filters = req.body.filters;
+		const professors = [];
+		const credits = [];
+		const levels = [];
+		const buildings = [];
+		const days = [];
+		const periods = [];
+
+		// Add each of the filter values to the appropriate list
+		filters.forEach((filter) => {
+			if (filter.type === "Professor") {
+				professors.push(filter.value.toLowerCase());
+			} else if (filter.type === "Building") {
+				buildings.push(filter.value.toLowerCase());
+			} else if (filter.type === "Level") {
+				levels.push(parseInt(filter.value.split(" ")[0]));
+			} else if (filter.type === "Days") {
+				filter.value.split(", ").forEach((day) => {
+					days.push(dayMap[day]);
+				});
+			} else if (filter.type === "Credits") {
+				credits.push(parseInt(filter.value));
+			} else if (filter.type === "Periods") {
+				filter.value.split(" - ").forEach((period) => {
+					if (period === "E1") period = 12;
+					else if (period === "E2") period = 13;
+					else if (period === "E3") period = 14;
+					periods.push(parseInt(period));
+				});
+			}
+		});
+
+		// Apply each of the filters as applicable
+		if (professors.length > 0) {
+			sections = sections.filter((section) => professors.includes(section.instructor.name.toLowerCase()));
+		}
+		if (buildings.length > 0) {
+			sections = sections.filter(
+				(section) =>
+					section.meetings.filter((meeting) => buildings.includes(meeting.building.code.toLowerCase()))
+						.length == section.meetings.length && !section.isOnline
+			);
+		}
+		if (credits.length > 0) {
+			sections = sections.filter((section) => credits.includes(section.credits));
+		}
+		if (levels.length > 0) {
+			sections = sections.filter((section) =>
+				levels.some(
+					(level) =>
+						parseInt(section.class.code.match(/\d+/g)) >= level &&
+						parseInt(section.class.code.match(/\d+/g)) <= level + 999
+				)
+			);
+		}
+		if (periods.length > 0) {
+			sections = sections.filter(
+				(section) =>
+					section.meetings.filter(
+						(meeting) => meeting.period >= periods[0] && meeting.period + meeting.length - 1 <= periods[1]
+					).length === section.meetings.length && !section.isOnline
+			);
+		}
+		if (days.length > 0) {
+			sections = sections.filter(
+				(section) =>
+					section.meetings.filter((meeting) => days.includes(meeting.day)).length === section.meetings.length
+			);
 		}
 	}
 

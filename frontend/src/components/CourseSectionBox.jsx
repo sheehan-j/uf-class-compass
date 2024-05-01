@@ -25,6 +25,7 @@ const CourseSectionBox = ({
 				className={`relative border border-gray-300 py-2 px-3 cursor-pointer bg-white ${
 					section?.conflicts?.length > 0 ? "cursor-not-allowed" : ""
 				}`}
+				onClick={section.conflicts.length === 0 ? addClass : null}
 			>
 				<div
 					className={`flex items-center justify-between ${
@@ -33,7 +34,7 @@ const CourseSectionBox = ({
 				>
 					<p className="text-sm">{`Class #${section.number}`}</p>
 					{section?.conflicts?.length == 0 && (
-						<button style={{ width: "1.1rem" }} onClick={addClass}>
+						<button style={{ width: "1.1rem" }}>
 							{activeSchedule?.sections?.some(
 								(activeScheduleClass) =>
 									activeScheduleClass._id == section._id &&
