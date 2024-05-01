@@ -8,6 +8,7 @@ const SlidingSidebar = ({ isClassClicked, setIsClassClicked, cell }) => {
 		setIsClassClicked(false);
 	};
 	const [mapConatinerWidth, setMapContainerWidth] = useState(0);
+	const [iframeUrl, setIframeUrl] = useState("https://campusmap.ufl.edu/#/");
 	const mapContainerRef = useRef(null);
 	const map = useMap();
 
@@ -25,12 +26,17 @@ const SlidingSidebar = ({ isClassClicked, setIsClassClicked, cell }) => {
 	}, []);
 
 	useEffect(() => {
-		if (!map) return;
+		// if (!map) return;
 
-		if (cell?.building?.lat && cell?.building?.long) {
-			map.setCenter({ lat: cell?.building?.lat, lng: cell?.building?.long });
-			map.setZoom(18);
-		}
+		// if (cell?.building?.lat && cell?.building?.long) {
+		// 	map.setCenter({ lat: cell?.building?.lat, lng: cell?.building?.long });
+		// 	map.setZoom(18);
+		// }
+
+		setIframeUrl(
+			cell?.building?.bid ? `https://campusmap.ufl.edu/#/${cell?.building?.bid}` : "https://campusmap.ufl.edu/#/"
+		);
+		console.log(cell?.building?.bid);
 	}, [map, cell]);
 
 	const renderStars = (numStars) => {
@@ -134,13 +140,25 @@ const SlidingSidebar = ({ isClassClicked, setIsClassClicked, cell }) => {
 				</div>
 			</div>
 			{!cell?.isOnline && (
+				// <div ref={mapContainerRef} className="mx-3 border border-gray-300">
+				// 	<Map
+				// 		style={{ height: mapConatinerWidth * (2 / 3), width: "100%" }}
+				// 		defaultCenter={{ lat: 0, lng: 0 }}
+				// 		defaultZoom={10}
+				// 		disableDefaultUI={true}
+				// 	/>
+				// </div>
 				<div ref={mapContainerRef} className="mx-3 border border-gray-300">
-					<Map
+					<iframe
+						id="mapIframe"
+						key={iframeUrl}
 						style={{ height: mapConatinerWidth * (2 / 3), width: "100%" }}
-						defaultCenter={{ lat: 0, lng: 0 }}
-						defaultZoom={10}
-						disableDefaultUI={true}
-					/>
+						title="Campus Map"
+						width="100%"
+						src={iframeUrl}
+						frameBorder="0"
+						allowFullScreen
+					></iframe>
 				</div>
 			)}
 		</div>
