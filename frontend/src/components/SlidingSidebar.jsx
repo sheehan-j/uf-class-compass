@@ -1,6 +1,5 @@
 import { useState, useEffect, useRef } from "react";
 import { Map, Marker, useMap, useMarkerRef } from "@vis.gl/react-google-maps";
-// import Map from "./Map";
 import PropTypes from "prop-types";
 
 const SlidingSidebar = ({ isClassClicked, setIsClassClicked, cell }) => {
@@ -26,17 +25,12 @@ const SlidingSidebar = ({ isClassClicked, setIsClassClicked, cell }) => {
 	}, []);
 
 	useEffect(() => {
-		// if (!map) return;
+		if (!map) return;
 
-		// if (cell?.building?.lat && cell?.building?.long) {
-		// 	map.setCenter({ lat: cell?.building?.lat, lng: cell?.building?.long });
-		// 	map.setZoom(18);
-		// }
-
-		setIframeUrl(
-			cell?.building?.bid ? `https://campusmap.ufl.edu/#/${cell?.building?.bid}` : "https://campusmap.ufl.edu/#/"
-		);
-		console.log(cell?.building?.bid);
+		if (cell?.building?.lat && cell?.building?.long) {
+			map.setCenter({ lat: cell?.building?.lat, lng: cell?.building?.long });
+			map.setZoom(18);
+		}
 	}, [map, cell]);
 
 	const renderStars = (numStars) => {
@@ -140,25 +134,13 @@ const SlidingSidebar = ({ isClassClicked, setIsClassClicked, cell }) => {
 				</div>
 			</div>
 			{!cell?.isOnline && (
-				// <div ref={mapContainerRef} className="mx-3 border border-gray-300">
-				// 	<Map
-				// 		style={{ height: mapConatinerWidth * (2 / 3), width: "100%" }}
-				// 		defaultCenter={{ lat: 0, lng: 0 }}
-				// 		defaultZoom={10}
-				// 		disableDefaultUI={true}
-				// 	/>
-				// </div>
 				<div ref={mapContainerRef} className="mx-3 border border-gray-300">
-					<iframe
-						id="mapIframe"
-						key={iframeUrl}
+					<Map
 						style={{ height: mapConatinerWidth * (2 / 3), width: "100%" }}
-						title="Campus Map"
-						width="100%"
-						src={iframeUrl}
-						frameBorder="0"
-						allowFullScreen
-					></iframe>
+						defaultCenter={{ lat: 0, lng: 0 }}
+						defaultZoom={10}
+						disableDefaultUI={true}
+					/>
 				</div>
 			)}
 		</div>
