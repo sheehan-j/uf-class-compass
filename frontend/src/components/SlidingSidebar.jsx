@@ -11,6 +11,7 @@ const SlidingSidebar = ({ isClassClicked, setIsClassClicked, cell }) => {
 	const [mapConatinerWidth, setMapContainerWidth] = useState(0);
 	const [iframeUrl, setIframeUrl] = useState("https://campusmap.ufl.edu/#/");
 	const [textbooks, setTextbooks] = useState([]);
+	const [loadingTextbooks, setLoadingTextbooks] = useState(false);
 	const mapContainerRef = useRef(null);
 	const map = useMap();
 
@@ -35,8 +36,10 @@ const SlidingSidebar = ({ isClassClicked, setIsClassClicked, cell }) => {
 			map.setZoom(18);
 		}
 		const getTextbooks = async (section) => {
+			setLoadingTextbooks(true);
 			const response = await TextbooksApi.getTextbooksBySection(section);
 			setTextbooks(response);
+			setLoadingTextbooks(false);
 		};
 
 		setTextbooks([]);
@@ -200,7 +203,9 @@ const SlidingSidebar = ({ isClassClicked, setIsClassClicked, cell }) => {
 						</div>
 					) : (
 						<div className="px-3 py-2 text-sm flex flex-col gap-2">
-							<div className="font-semibold">No Information Available</div>
+							<div className="font-semibold">
+								{loadingTextbooks ? "Loading Textbooks..." : "No Information Available"}
+							</div>
 						</div>
 					)}
 				</div>
