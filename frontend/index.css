@@ -1,4 +1,8 @@
-:root{
-    width: 100vw;
-    overflow-x: clip;
+:root {
+	width: 100vw;
+	overflow-x: clip;
+}
+
+html {
+	font-family: "Inter", sans-serif;
 }

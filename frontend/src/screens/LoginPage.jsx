@@ -193,14 +193,14 @@ const LoginPage = () => {
 									{isSignIn ? (
 										<button
 											type="submit"
-											className="bg-customOrange hover:bg-customOrange-dark rounded-lg  w-1/2 p-3 text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white"
+											className="bg-customOrange hover:bg-customOrange-dark rounded-lg  w-1/2 p-3 text-xl font-bold leading-tight tracking-tight  md:text-2xl text-white"
 										>
 											Sign in
 										</button>
 									) : (
 										<button
 											type="submit"
-											className="bg-customOrange hover:bg-customOrange-dark w-1/2 rounded-lg p-3 text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white"
+											className="bg-customOrange hover:bg-customOrange-dark w-1/2 rounded-lg p-3 text-xl font-bold leading-tight tracking-tight  md:text-2xl text-white"
 										>
 											Sign up
 										</button>
