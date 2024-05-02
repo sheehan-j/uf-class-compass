@@ -69,7 +69,14 @@ const AddSectionFromSearch = ({ schedules, setSchedules, modalOpen, setModalOpen
 						}}
 						style={{ minWidth: "33%" }}
 					>
-						<div className="text-xl font-bold">Add Section</div>
+						<div className="w-full flex justify-between items-center">
+							<div className="text-xl font-bold">Add Section</div>
+							<img
+								className="hover:cursor-pointer w-6"
+								onClick={(event) => handleClickOff(event)}
+								src="/remove.svg"
+							/>
+						</div>
 						<div className="w-full flex text-lg gap-3 justify-between items-center">
 							<span className="text-base">Schedule to add to:</span>
 							<select

@@ -1,6 +1,11 @@
 import Navbar from "../components/Navbar";
 import { Link } from "react-router-dom";
+import AttributionsModal from "../components/AttributionsModal";
+import { useState } from "react";
+
 const Home = () => {
+	const [modalOpen, setModalOpen] = useState(false);
+
 	return (
 		<div className="w-screen">
 			<Navbar />
@@ -75,6 +80,19 @@ const Home = () => {
 					</div>
 				</div>
 			</div>
+			<div className="bg-gray-300" style={{ height: "0.05rem" }}></div>
+			<div className="flex justify-between items-center bg-white py-3 px-5">
+				<p className="text-sm">&#169; 2024 Duck Duck Slow. All rights reserved.</p>
+				<button
+					onClick={() => {
+						setModalOpen(true);
+					}}
+					className="text-sm underline"
+				>
+					Attributions
+				</button>
+			</div>
+			<AttributionsModal modalOpen={modalOpen} setModalOpen={setModalOpen} />
 		</div>
 	);
 };
