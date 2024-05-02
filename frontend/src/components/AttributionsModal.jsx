@@ -30,16 +30,10 @@ const AttributionsModal = ({ modalOpen, setModalOpen }) => {
 							<span className="text-bold">MacBook Mockup: </span>
 							<span className="underline text-blue-500">
 								<a href="https://www.freepik.com/free-psd/digital-device-mockup_4264999.htm#query=macbook%20mockup&position=0&from_view=keyword&track=ais&uuid=bd936f87-3feb-4451-9b71-f5c4ca6eb225">
-									Image by rawpixel.com
-								</a>{" "}
-								on Freepik
+									Image by rawpixel.com on Freepik
+								</a>
 							</span>
 							<br />
-							<span className="italic" style={{ fontSize: "0.75rem", lineHeight: "0.01rem" }}>
-								{
-									"(Clicking the link will likely lead to a 403 Forbidden error due to restrictions on Freepik's website. You can copy the link and paste it into your browser to visit it.)"
-								}
-							</span>
 						</div>
 						<div className="text-base mb-3">
 							<span className="text-bold">Maps JavaScript API: </span>
