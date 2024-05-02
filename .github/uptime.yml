@@ -1,0 +1,17 @@
+name: Uptime Monitor
+
+on:
+    schedule:
+        # Run every 5 minutes
+        - cron: "*/5 * * * *"
+
+jobs:
+    ping_site:
+        runs-on: ubuntu-latest
+        name: Uptime Check
+        steps:
+            - name: Pign Site
+              uses: srt32/uptime@master
+              with:
+                  url-to-hit: "https://ufcc.jordansheehan.com/"
+                  expected-statuses: "200"
